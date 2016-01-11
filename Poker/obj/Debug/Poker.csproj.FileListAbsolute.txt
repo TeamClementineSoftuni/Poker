@@ -1,0 +1,13 @@
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Form1.resources
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
+D:\SoftUni\High-Quality-Code\TeamWork\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
+D:\Poker\Poker\Poker\bin\Debug\Poker.exe.config
+D:\Poker\Poker\Poker\obj\Debug\Poker.exe
+D:\Poker\Poker\Poker\obj\Debug\Poker.pdb
