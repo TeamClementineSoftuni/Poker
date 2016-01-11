@@ -21,6 +21,7 @@ namespace Poker
         public int Nm;
         Panel pPanel = new Panel(); Panel b1Panel = new Panel(); Panel b2Panel = new Panel(); Panel b3Panel = new Panel();
         Panel b4Panel = new Panel(); Panel b5Panel = new Panel();
+
         int call = 500, foldedPlayers = 5;
         public int Chips = 10000, bot1Chips = 10000, bot2Chips = 10000, bot3Chips = 10000, bot4Chips = 10000, bot5Chips = 10000;
         double type, rounds = 0, b1Power, b2Power, b3Power, b4Power, b5Power, pPower = 0, pType = -1, Raise = 0,
