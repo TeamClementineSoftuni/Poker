@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Poker.Interfaces;
 
 namespace Poker.Models
 {
-    public class Card
+    public class Card : ICard
     {
         public Card(Suits suit, CardsRank rank, Image cardImage)
         {

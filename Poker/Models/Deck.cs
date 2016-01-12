@@ -5,10 +5,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Poker.Interfaces;
 
 namespace Poker.Models
 {
-    public class Deck
+    public class Deck : IDeck
     {
         //TODO: rename cards images files to fit the format --> example: AceSpades.png
         private const int SuitsCount = 4;
