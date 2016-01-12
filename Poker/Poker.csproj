@@ -57,7 +57,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Bot.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\CardsRank.cs" />
     <Compile Include="Models\Chip.cs" />
+    <Compile Include="Models\Deck.cs" />
+    <Compile Include="Models\Suits.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressBars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

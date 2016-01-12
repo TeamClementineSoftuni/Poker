@@ -28,3 +28,6 @@ D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\D
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.Form1.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+C:\GIT\Poker\bin\Debug\Poker.exe.config
+C:\GIT\Poker\obj\Debug\Poker.exe
+C:\GIT\Poker\obj\Debug\Poker.pdb
