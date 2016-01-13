@@ -1,82 +1,55 @@
-﻿namespace Poker.Models
+﻿using System.Runtime.InteropServices;
+
+namespace Poker.Models
 {
     using System.Drawing;
     using System.Windows.Forms;
 
     public class Bot
     {
-        private Panel botPanel = new Panel();
+        private static int instanceCounter = 1;
 
-        private int botChips = 10000;
+        private Panel panel;
 
-        private double botPower;
+        private Chip chip;
 
-        private double botType = -1;
+        private double power;
 
-        private bool botTurn = false;
+        private double type = -1;
 
-        private bool botFolded;
+        private bool turn = false;
 
-        private int botCall = 0;
+        private bool isFolded;
 
-        private int botRaise = 0;
+        private int call = 0;
 
-        public Panel BotPanel
+        private int raise = 0;
+
+        private string name;
+
+        public Bot()
         {
-            get { return this.BotPanel; }
-            set { this.botPanel = value; }
-        }
+            this.name = "Bot " + instanceCounter;
+            Panel = new Panel();
+            Chip = new Chip();
+            instanceCounter++;
+        }      
 
-        public int BotChips
-        {
-            get { return this.botChips; }
-            set { this.botChips += value; }
-        }
 
-        public double BotPower
-        {
-            get { return this.botPower; }
-            set { this.botPower = value; }
-        }
+        public Panel Panel { get; set; }
 
-        public double BotType
-        {
-            get { return this.botType; }
-            set { this.botType = value; }
-        }
+        public Chip Chip { get; set; }
 
-        public bool BotTurn
-        {
-            get { return this.botTurn; }
-            set { this.botTurn = value; }
-        }
+        public double Power { get; set; }
 
-        public bool BotFolded
-        {
-            get { return this.botFolded; }
-            set { this.botFolded = value; }
-        }
+        public double Type { get; set; }
 
-        public int BotCall
-        {
-            get { return this.botCall; }
-            set { this.botCall = value; }
-        }
+        public bool Turn { get; set; }
 
-        public int BotRaise
-        {
-            get { return this.botRaise; }
-            set { this.botRaise = value; }
-        }
+        public bool IsFolded { get; set; }
 
-        public bool CheckChips()
-        {
-            if (this.botChips < 0)
-            {
-                return false;
-            }
+        public int Call { get; set; }
 
-            return true;
-        }
+        public int Raise { get; set; }
     }
 }

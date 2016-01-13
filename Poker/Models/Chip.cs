@@ -8,7 +8,19 @@ namespace Poker.Models
 {
     public class Chip
     {
+        private const int defaultChipAmount = 10000;
         private int amount;
+
+        public Chip(int amount)
+        {
+            this.amount = amount;
+        }
+
+        public Chip()
+            : this(defaultChipAmount)
+        {
+        }
+
 
         public int Amount
         {
