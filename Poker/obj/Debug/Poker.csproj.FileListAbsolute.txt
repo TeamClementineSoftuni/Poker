@@ -31,3 +31,6 @@ D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\D
 C:\GIT\Poker\bin\Debug\Poker.exe.config
 C:\GIT\Poker\obj\Debug\Poker.exe
 C:\GIT\Poker\obj\Debug\Poker.pdb
+D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\bin\Debug\Poker.exe.config
+D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\obj\Debug\Poker.exe
+D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\obj\Debug\Poker.pdb
