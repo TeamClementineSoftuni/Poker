@@ -34,3 +34,10 @@ C:\GIT\Poker\obj\Debug\Poker.pdb
 D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\bin\Debug\Poker.exe.config
 D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\obj\Debug\Poker.exe
 D:\Git_Root\Software-University\High-Quality-Code\TeamWork\Poker\Poker\obj\Debug\Poker.pdb
+C:\GIT\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\GIT\Poker\obj\Debug\Poker.AddChips.resources
+C:\GIT\Poker\obj\Debug\Poker.Form1.resources
+C:\GIT\Poker\obj\Debug\Poker.Properties.Resources.resources
+C:\GIT\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+C:\GIT\Poker\bin\Debug\Poker.exe
+C:\GIT\Poker\bin\Debug\Poker.pdb

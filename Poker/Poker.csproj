@@ -59,11 +59,14 @@
     </Compile>
     <Compile Include="Interfaces\ICard.cs" />
     <Compile Include="Interfaces\IDeck.cs" />
+    <Compile Include="Models\Actions.cs" />
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\CardsRank.cs" />
     <Compile Include="Models\Chip.cs" />
     <Compile Include="Models\Deck.cs" />
+    <Compile Include="Models\GameStatus.cs" />
+    <Compile Include="Models\Hand.cs" />
     <Compile Include="Models\Suits.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressBars.cs" />

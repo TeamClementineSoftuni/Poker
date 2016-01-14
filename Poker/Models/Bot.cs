@@ -33,8 +33,10 @@ namespace Poker.Models
             Panel = new Panel();
             Chip = new Chip();
             instanceCounter++;
-        }      
+            this.Hand = new Hand();
+        }
 
+        public Hand Hand { get; set; }
 
         public Panel Panel { get; set; }
 
@@ -51,5 +53,11 @@ namespace Poker.Models
         public int Call { get; set; }
 
         public int Raise { get; set; }
+
+        public GameStatus Act(int street, int raisedToAmount)
+        {
+            //TODO: implementation
+            return new GameStatus(Actions.Fold, 0, 0);
+        }
     }
 }

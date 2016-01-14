@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Poker.Models;
 
 
 namespace Poker
@@ -18,6 +19,17 @@ namespace Poker
 
     public partial class Form1 : Form
     {
+        // parallel branch
+        private Card[] board = new Card[5];
+        private Deck deck = new Deck("Assets\\Cards\\RenamedCards\\");
+        private Bot[] bots = new Bot[5];
+        private List<Bot> playersNotFolded = new List<Bot>();
+        private List<Bot> playersLeftToAct = new List<Bot>();
+        private int pot = 0;
+
+        //TODO: initialize arrays and lists
+        // parallel branch
+
         #region Variables
         ProgressBar asd = new ProgressBar();
         public int Nm;
@@ -69,6 +81,11 @@ namespace Poker
 
         public Form1()
         {
+            // parallel
+            DealCards();
+            ProcessHand();
+            // parallel
+
             //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
             call = bb;
             MaximizeBox = false;
@@ -109,6 +126,72 @@ namespace Poker
             bSB.Visible = false;
             tbRaise.Text = (bb * 2).ToString();
         }
+
+        // parallel
+        private void DealCards()
+        {
+            for (int bot = 0; bot < bots.Length; bot++)
+            {
+                bots[bot] = new Bot();
+            }
+
+            // give 2 cards to every player  --> the cards are taken from the deck;
+            for (int botIndex = 0; botIndex < bots.Length; botIndex++)
+            {
+                bots[botIndex].Hand.Card1 = deck.Cards[2 * botIndex];
+                bots[botIndex].Hand.Card2 = deck.Cards[2 * botIndex + 1];
+            }
+
+            // we have given every player 2 cards ( 6 * 2 = 12), so the first 12 cards from the deck are already reserved. 
+            // Now we reserve 5 more cards for the board (the five cards visible by every player). 
+            for (int index = 12; index < 12 + 5; index++)
+            {
+                board[index - 12] = deck.Cards[index];
+            }
+
+
+
+        }
+
+        // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
+        // and somehow getting rid of if-s with polymorphism i guess?
+        private void ProcessHand()
+        {
+            int amountRaisedTo = 0;
+
+            for (int street = 0; street < 4; street++)
+            {
+                while (playersLeftToAct.Count != 0)
+                {
+                    foreach (var player in playersLeftToAct)
+                    {
+                        GameStatus currentGameStatus = player.Act(street, amountRaisedTo);
+
+                        if (currentGameStatus.Action == Actions.Fold)
+                        {
+                            this.playersLeftToAct.Remove(player);
+                        }
+                        else if (currentGameStatus.Action == Actions.Raise)
+                        {
+                            amountRaisedTo = currentGameStatus.AmountRaisedTo;
+                        }
+
+                        this.pot += currentGameStatus.ChipsAddedToPot;
+                    }
+                }
+
+                // TODO: figure out how to show common cards (board) after each street.
+                // after the first street 3 cards are shown (flop)
+                //after the last street, no more cards from the board are left to be shown. That's why
+                //there are 2 conditions in the loop
+                for (int boardCard = 0; boardCard < street + 3 && boardCard < board.Length; boardCard++)
+                {
+                    //Show() method is not implemented
+                    board[boardCard].Show();
+                }
+            }
+        }
+        //parallel
 
         // Copied in Class PokerGenerator -not finished yet
         async Task Shuffle()

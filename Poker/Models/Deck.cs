@@ -44,7 +44,7 @@ namespace Poker.Models
 
             for (int suit = 0; suit < 4; suit++)
             {
-                for (int rank = 0; rank < 12; rank++)
+                for (int rank = 0; rank < 13; rank++)
                 {
                     Suits cardSuit = (Suits)suit;
                     CardsRank cardRank = (CardsRank)rank;
@@ -71,6 +71,11 @@ namespace Poker.Models
                 cards[RandomIndex] = cards[currentIndex - 1];
                 cards[currentIndex - 1] = randomCard;
             }
+        }
+
+        public Card[] Cards
+        {
+            get { return this.cards; }
         }
     }
 }
