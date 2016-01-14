@@ -77,5 +77,7 @@ namespace Poker.Models
         {
             get { return this.cards; }
         }
+
+        
     }
 }
