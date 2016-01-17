@@ -6,21 +6,15 @@ using System.Threading.Tasks;
 
 namespace Poker.Models
 {
-    public class Chip
+    public class ChipsSet
     {
-        private const int defaultChipAmount = 10000;
+        private const int defaultChipsSetAmount = 10000;
         private int amount;
 
-        public Chip(int amount)
+        public ChipsSet(int amount = defaultChipsSetAmount)
         {
             this.amount = amount;
         }
-
-        public Chip()
-            : this(defaultChipAmount)
-        {
-        }
-
 
         public int Amount
         {

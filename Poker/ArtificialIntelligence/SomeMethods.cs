@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Poker.Models;
 
 namespace Poker.ArtificialIntelligence
 {
@@ -17,11 +18,11 @@ namespace Poker.ArtificialIntelligence
             raising = false;
         } 
 
-        public static void Call(ref int sChips, ref bool sTurn, Label sStatus , int call,ref  bool raising,TextBox tbPot)
+        public static void Call(ChipsSet sChips, ref bool sTurn, Label sStatus , int call,ref  bool raising,TextBox tbPot)
         {
             raising = false;
             sTurn = false;
-            sChips -= call;
+            sChips.Amount -= call;
             sStatus.Text = "Call " + call;
             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
         }
@@ -34,15 +35,16 @@ namespace Poker.ArtificialIntelligence
             sFTurn = true;
         }
 
-        public static void Raised(ref int sChips, ref bool sTurn, Label sStatus, ref int call, ref bool raising, TextBox tbPot,ref double Raise)
+        public static void Raised(ChipsSet sChips, ref bool sTurn, Label sStatus, ref int call, ref bool raising, TextBox tbPot,ref double Raise)
         {
-            sChips -= Convert.ToInt32(Raise);
+            sChips.Amount -= Convert.ToInt32(Raise);
             sStatus.Text = "Raise " + Raise;
             tbPot.Text = (int.Parse(tbPot.Text) + Convert.ToInt32(Raise)).ToString();
             call = Convert.ToInt32(Raise);
             raising = true;
             sTurn = false;
         }
+
         public static double RoundN(int sChips, int n)
         {
             double a = Math.Round((sChips / n) / 100d, 0) * 100;

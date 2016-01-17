@@ -1,17 +1,20 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Poker.Models
+namespace Poker.Models.Players
 {
-    using System.Drawing;
-    using System.Windows.Forms;
-
-    public class Bot
+    public abstract class Player
     {
+        private const string defaultPlayerName = "Player";
         private static int instanceCounter = 1;
 
         private Panel panel;
 
-        private Chip chip;
+        private ChipsSet chip;
 
         private double power;
 
@@ -27,12 +30,10 @@ namespace Poker.Models
 
         private string name;
 
-        public Bot()
+        protected Player(string name = defaultPlayerName)
         {
-            this.name = "Bot " + instanceCounter;
             Panel = new Panel();
-            Chip = new Chip();
-            instanceCounter++;
+            ChipsSet = new ChipsSet();
             this.Hand = new Hand();
         }
 
@@ -40,7 +41,7 @@ namespace Poker.Models
 
         public Panel Panel { get; set; }
 
-        public Chip Chip { get; set; }
+        public ChipsSet ChipsSet { get; set; }
 
         public double Power { get; set; }
 
@@ -54,10 +55,6 @@ namespace Poker.Models
 
         public int Raise { get; set; }
 
-        public GameStatus Act(int street, int raisedToAmount)
-        {
-            //TODO: implementation
-            return new GameStatus(Actions.Fold, 0, 0);
-        }
+        public string Name { get; set; }
     }
 }
