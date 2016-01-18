@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Windows.Forms.VisualStyles;
 using Poker.Models;
 using Poker.Models.Players;
 
@@ -28,7 +30,7 @@ namespace Poker
         private List<Bot> playersNotFolded = new List<Bot>(); // Bot object should hava indicators for that(by Maria)
         private List<Bot> playersLeftToAct = new List<Bot>();
         private int pot = 0;
-
+        private List<Panel> playersPanels = new List<Panel>();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -36,9 +38,6 @@ namespace Poker
         #region Variables
         ProgressBar asd = new ProgressBar();
         public int Nm;
-
-        Panel pPanel = new Panel(); Panel b1Panel = new Panel(); Panel b2Panel = new Panel(); Panel b3Panel = new Panel();
-        Panel b4Panel = new Panel(); Panel b5Panel = new Panel();
 
         int call = 500, foldedPlayers = 5;
 
@@ -51,6 +50,11 @@ namespace Poker
         bool pFolded, b1Folded, b2Folded, b3Folded, b4Folded, b5Folded, intsadded, changed;
 
         int pCall = 0, b1Call = 0, b2Call = 0, b3Call = 0, b4Call = 0, b5Call = 0, pRaise = 0, b1Raise = 0, b2Raise = 0, b3Raise = 0, b4Raise = 0, b5Raise = 0;
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         int last = 123, raisedTurn = 1;
@@ -83,10 +87,6 @@ namespace Poker
 
         public Form1()
         {
-            // parallel
-            DealCards();
-            ProcessHand();
-            // parallel
 
             //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
             call = bb;
@@ -94,6 +94,12 @@ namespace Poker
             MinimizeBox = false;
             Updates.Start();
             InitializeComponent();
+            //parallel branch
+            InitializePlayersPanels();
+            DealCards();
+            ProcessHand();
+            // parallel
+
             width = this.Width;
             height = this.Height;
             Shuffle();
@@ -129,6 +135,7 @@ namespace Poker
             tbRaise.Text = (bb * 2).ToString();
         }
 
+
         // parallel
         private void DealCards()
         {
@@ -137,6 +144,13 @@ namespace Poker
             for (int bot = 1; bot < players.Length; bot++)
             {
                 players[bot] = new Bot();
+            }
+
+            // Set the panel for every player
+            for (int index = 0; index < players.Length; index++)
+            {
+                players[index].Panel = playersPanels[index];
+                this.Controls.Add(players[index].Panel);
             }
 
             // give 2 cards to every player  --> the cards are taken from the deck;
@@ -184,7 +198,7 @@ namespace Poker
                     }
                 }
 
-                // TODO: figure out how to show common cards (board) after each street.
+                // TODO: figure out how to show common cards (board) after each street. Maybe solved?
                 // after the first street 3 cards are shown (flop)
                 //after the last street, no more cards from the board are left to be shown. That's why
                 //there are 2 conditions in the loop
@@ -249,12 +263,6 @@ namespace Poker
                     //Holder[i].Dock = DockStyle.Top;
                     Holder[i].Location = new Point(horizontal, vertical);
                     horizontal += Holder[i].Width;
-                    this.Controls.Add(pPanel);
-                    pPanel.Location = new Point(Holder[0].Left - 10, Holder[0].Top - 10);
-                    pPanel.BackColor = Color.DarkBlue;
-                    pPanel.Height = 150;
-                    pPanel.Width = 180;
-                    pPanel.Visible = false;
                 }
                 if (players[1].ChipsSet.Amount > 0)
                 {
@@ -278,12 +286,6 @@ namespace Poker
                         Holder[i].Location = new Point(horizontal, vertical);
                         horizontal += Holder[i].Width;
                         Holder[i].Visible = true;
-                        this.Controls.Add(b1Panel);
-                        b1Panel.Location = new Point(Holder[2].Left - 10, Holder[2].Top - 10);
-                        b1Panel.BackColor = Color.DarkBlue;
-                        b1Panel.Height = 150;
-                        b1Panel.Width = 180;
-                        b1Panel.Visible = false;
                         if (i == 3)
                         {
                             check = false;
@@ -312,12 +314,6 @@ namespace Poker
                         Holder[i].Location = new Point(horizontal, vertical);
                         horizontal += Holder[i].Width;
                         Holder[i].Visible = true;
-                        this.Controls.Add(b2Panel);
-                        b2Panel.Location = new Point(Holder[4].Left - 10, Holder[4].Top - 10);
-                        b2Panel.BackColor = Color.DarkBlue;
-                        b2Panel.Height = 150;
-                        b2Panel.Width = 180;
-                        b2Panel.Visible = false;
                         if (i == 5)
                         {
                             check = false;
@@ -346,12 +342,6 @@ namespace Poker
                         Holder[i].Location = new Point(horizontal, vertical);
                         horizontal += Holder[i].Width;
                         Holder[i].Visible = true;
-                        this.Controls.Add(b3Panel);
-                        b3Panel.Location = new Point(Holder[6].Left - 10, Holder[6].Top - 10);
-                        b3Panel.BackColor = Color.DarkBlue;
-                        b3Panel.Height = 150;
-                        b3Panel.Width = 180;
-                        b3Panel.Visible = false;
                         if (i == 7)
                         {
                             check = false;
@@ -380,12 +370,6 @@ namespace Poker
                         Holder[i].Location = new Point(horizontal, vertical);
                         horizontal += Holder[i].Width;
                         Holder[i].Visible = true;
-                        this.Controls.Add(b4Panel);
-                        b4Panel.Location = new Point(Holder[8].Left - 10, Holder[8].Top - 10);
-                        b4Panel.BackColor = Color.DarkBlue;
-                        b4Panel.Height = 150;
-                        b4Panel.Width = 180;
-                        b4Panel.Visible = false;
                         if (i == 9)
                         {
                             check = false;
@@ -414,12 +398,6 @@ namespace Poker
                         Holder[i].Location = new Point(horizontal, vertical);
                         horizontal += Holder[i].Width;
                         Holder[i].Visible = true;
-                        this.Controls.Add(b5Panel);
-                        b5Panel.Location = new Point(Holder[10].Left - 10, Holder[10].Top - 10);
-                        b5Panel.BackColor = Color.DarkBlue;
-                        b5Panel.Height = 150;
-                        b5Panel.Width = 180;
-                        b5Panel.Visible = false;
                         if (i == 11)
                         {
                             check = false;
@@ -938,7 +916,12 @@ namespace Poker
                         bRaise.Text = "Raise";
                     }
                 }
-                pPanel.Visible = false; b1Panel.Visible = false; b2Panel.Visible = false; b3Panel.Visible = false; b4Panel.Visible = false; b5Panel.Visible = false;
+
+                foreach (var player in this.players)
+                {
+                    player.Panel.Visible = false;
+                }
+
                 pCall = 0; pRaise = 0;
                 b1Call = 0; b1Raise = 0;
                 b2Call = 0; b2Raise = 0;
@@ -1098,42 +1081,42 @@ namespace Poker
                 {
                     players[0].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[0].ChipsSet.Amount.ToString();
-                    pPanel.Visible = true;
+                    this.players[0].Panel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
                     players[1].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[1].ChipsSet.Amount.ToString();
-                    b1Panel.Visible = true;
+                    this.players[1].Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
                     players[2].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[2].ChipsSet.Amount.ToString();
-                    b2Panel.Visible = true;
+                    this.players[2].Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
                     players[3].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[3].ChipsSet.Amount.ToString();
-                    b3Panel.Visible = true;
+                    this.players[3].Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
                     players[4].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[4].ChipsSet.Amount.ToString();
-                    b4Panel.Visible = true;
+                    this.players[4].Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
                     players[5].ChipsSet.Amount += int.Parse(tbPot.Text);
                     tbChips.Text = players[5].ChipsSet.Amount.ToString();
-                    b5Panel.Visible = true;
+                    this.players[5].Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
                 }
                 for (int j = 0; j <= 16; j++)
@@ -1159,7 +1142,12 @@ namespace Poker
             {
                 FixWinners();
             }
-            pPanel.Visible = false; b1Panel.Visible = false; b2Panel.Visible = false; b3Panel.Visible = false; b4Panel.Visible = false; b5Panel.Visible = false;
+
+            foreach (var player in players)
+            {
+                player.Panel.Visible = false;
+            }
+
             call = bb; Raise = 0;
             foldedPlayers = 5;
             type = 0; rounds = 0; b1Power = 0; b2Power = 0; b3Power = 0; b4Power = 0; b5Power = 0; pPower = 0; pType = -1; Raise = 0;
@@ -1547,5 +1535,19 @@ namespace Poker
             height = this.Height;
         }
         #endregion
+
+        private void InitializePlayersPanels()
+        {
+            this.playersPanels = new List<Panel>()
+            {
+                this.humanPlayerPanel,
+                this.bot1Panel,
+                this.bot2Panel,
+                this.bot3Panel,
+                this.bot4Panel,
+                this.bot5Panel
+            };
+        }
+
     }
 }

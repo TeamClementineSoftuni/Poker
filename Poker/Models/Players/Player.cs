@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ namespace Poker.Models.Players
     public abstract class Player
     {
         private const string defaultPlayerName = "Player";
-        private static int instanceCounter = 1;
+        private const int PanelWidth = 180;
+        private const int PanelHeight = 150;
 
         private Panel panel;
 
@@ -32,7 +34,7 @@ namespace Poker.Models.Players
 
         protected Player(string name = defaultPlayerName)
         {
-            Panel = new Panel();
+            InitializePanel();
             ChipsSet = new ChipsSet();
             this.Hand = new Hand();
         }
@@ -56,5 +58,14 @@ namespace Poker.Models.Players
         public int Raise { get; set; }
 
         public string Name { get; set; }
+
+        public void InitializePanel()
+        {
+            this.Panel = new Panel();
+            this.Panel.Width = PanelWidth;
+            this.Panel.Height = PanelHeight;
+            this.Panel.BackColor = Color.DarkBlue;
+            this.Panel.Visible = false;
+        }
     }
 }

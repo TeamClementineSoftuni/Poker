@@ -41,3 +41,13 @@ C:\GIT\Poker\obj\Debug\Poker.Properties.Resources.resources
 C:\GIT\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 C:\GIT\Poker\bin\Debug\Poker.exe
 C:\GIT\Poker\bin\Debug\Poker.pdb
+C:\Users\Skynet\ClementineTeam\Poker\bin\Debug\Poker.exe.config
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.exe
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.pdb
+C:\Users\Skynet\ClementineTeam\Poker\bin\Debug\Poker.exe
+C:\Users\Skynet\ClementineTeam\Poker\bin\Debug\Poker.pdb
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.AddChips.resources
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.Form1.resources
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.Properties.Resources.resources
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache

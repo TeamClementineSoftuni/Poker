@@ -1,4 +1,7 @@
-﻿namespace Poker
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace Poker
 {
     partial class Form1
     {
@@ -55,6 +58,12 @@
             this.b2Status = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tbRaise = new System.Windows.Forms.TextBox();
+            this.bot1Panel = new System.Windows.Forms.Panel();
+            this.humanPlayerPanel = new System.Windows.Forms.Panel();
+            this.bot5Panel = new System.Windows.Forms.Panel();
+            this.bot2Panel = new System.Windows.Forms.Panel();
+            this.bot3Panel = new System.Windows.Forms.Panel();
+            this.bot4Panel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // bFold
@@ -316,6 +325,60 @@
             this.tbRaise.Size = new System.Drawing.Size(108, 20);
             this.tbRaise.TabIndex = 0;
             // 
+            // bot1Panel
+            // 
+            this.bot1Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.bot1Panel.Location = new System.Drawing.Point(-5, 409);
+            this.bot1Panel.Name = "bot1Panel";
+            this.bot1Panel.Size = new System.Drawing.Size(180, 150);
+            this.bot1Panel.TabIndex = 32;
+            this.bot1Panel.Visible = false;
+            // 
+            // humanPlayerPanel
+            // 
+            this.humanPlayerPanel.BackColor = System.Drawing.Color.DarkBlue;
+            this.humanPlayerPanel.Location = new System.Drawing.Point(569, 461);
+            this.humanPlayerPanel.Name = "humanPlayerPanel";
+            this.humanPlayerPanel.Size = new System.Drawing.Size(180, 150);
+            this.humanPlayerPanel.TabIndex = 33;
+            this.humanPlayerPanel.Visible = false;
+            // 
+            // bot5Panel
+            // 
+            this.bot5Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.bot5Panel.Location = new System.Drawing.Point(1158, 397);
+            this.bot5Panel.Name = "bot5Panel";
+            this.bot5Panel.Size = new System.Drawing.Size(180, 150);
+            this.bot5Panel.TabIndex = 34;
+            this.bot5Panel.Visible = false;
+            // 
+            // bot2Panel
+            // 
+            this.bot2Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.bot2Panel.Location = new System.Drawing.Point(73, 59);
+            this.bot2Panel.Name = "bot2Panel";
+            this.bot2Panel.Size = new System.Drawing.Size(180, 150);
+            this.bot2Panel.TabIndex = 35;
+            this.bot2Panel.Visible = false;
+            // 
+            // bot3Panel
+            // 
+            this.bot3Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.bot3Panel.Location = new System.Drawing.Point(569, 12);
+            this.bot3Panel.Name = "bot3Panel";
+            this.bot3Panel.Size = new System.Drawing.Size(180, 150);
+            this.bot3Panel.TabIndex = 36;
+            this.bot3Panel.Visible = false;
+            // 
+            // bot4Panel
+            // 
+            this.bot4Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.bot4Panel.Location = new System.Drawing.Point(1113, 59);
+            this.bot4Panel.Name = "bot4Panel";
+            this.bot4Panel.Size = new System.Drawing.Size(180, 150);
+            this.bot4Panel.TabIndex = 37;
+            this.bot4Panel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -323,6 +386,12 @@
             this.BackgroundImage = global::Poker.Properties.Resources.poker_table___Copy;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1350, 729);
+            this.Controls.Add(this.bot4Panel);
+            this.Controls.Add(this.bot3Panel);
+            this.Controls.Add(this.bot2Panel);
+            this.Controls.Add(this.bot5Panel);
+            this.Controls.Add(this.humanPlayerPanel);
+            this.Controls.Add(this.bot1Panel);
             this.Controls.Add(this.tbRaise);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.b2Status);
@@ -353,11 +422,14 @@
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "GLS Texas Poker";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout_Change);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
+
+       
 
         #endregion
 
@@ -388,9 +460,12 @@
         private System.Windows.Forms.Label b2Status;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbRaise;
-
-
-
+        private System.Windows.Forms.Panel bot1Panel;
+        private System.Windows.Forms.Panel humanPlayerPanel;
+        private System.Windows.Forms.Panel bot5Panel;
+        private System.Windows.Forms.Panel bot2Panel;
+        private System.Windows.Forms.Panel bot3Panel;
+        private System.Windows.Forms.Panel bot4Panel;
     }
 }
 
