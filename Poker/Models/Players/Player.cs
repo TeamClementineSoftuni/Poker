@@ -12,8 +12,6 @@ namespace Poker.Models.Players
     {
         private const string defaultPlayerName = "Player";
 
-        private double power;
-
         private double type = -1;
 
         private bool turn = false;
@@ -30,6 +28,7 @@ namespace Poker.Models.Players
             this.ChipsTextBox = new TextBox();
             this.ChipsSet = new ChipsSet();
             this.Hand = new Hand();
+            this.Name = name;
         }
 
         public string Name { get; set; }

@@ -6,8 +6,6 @@ namespace Poker.ArtificialIntelligence
 
     public class ArtificialIntelligence
     {
-        //AI(2, 3, players[1].ChipsSet, ref B1turn, ref  B1Fturn, b1Status, 0, b1Power, b1Type,this.Holder,ref this.rounds,ref call,ref this.Raise,ref this.raising,this.tbPot);
-        // ChipsSet sChips,double botPower, double botCurrent
         public static void AI(int c1, int c2, Player player , ref bool sTurn, ref bool sFTurn, Label sStatus, int name,
             PictureBox[] Holder, ref double rounds,ref int call, ref double Raise, ref bool raising,TextBox tbPot)
         {

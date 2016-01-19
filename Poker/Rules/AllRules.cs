@@ -10,8 +10,6 @@
 
     public class AllRules
     {
-        //(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
-        //string currentText, ref double current, ref double Power -> to Player
         public static void Rules(int c1, int c2, Player player , bool foldedTurn, int[] Reserve, int i, Label pStatus, PictureBox[] Holder,
             List<Type> Win, ref Type sorted, double type)
         {

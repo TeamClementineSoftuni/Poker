@@ -32,7 +32,7 @@ namespace Poker
         private int pot = 0;
         private List<Panel> playersPanels = new List<Panel>();
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
-        List<Player> listOfWinners = new List<Player>();
+        private List<Player> listOfWinners = new List<Player>();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -55,6 +55,7 @@ namespace Poker
 
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         int last = 123, raisedTurn = 1;
+
         List<bool?> bools = new List<bool?>();
         List<Type> Win = new List<Type>();
         
@@ -1064,42 +1065,42 @@ namespace Poker
                 if (index == 0)
                 {
                     players[0].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                     this.players[0].Panel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
                     players[1].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
                     this.players[1].Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
                     players[2].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
                     this.players[2].Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
                     players[3].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
                     this.players[3].Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
                     players[4].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
                     this.players[4].Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
                     players[5].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    humanChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
                     this.players[5].Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
                 }
@@ -1252,13 +1253,11 @@ namespace Poker
         }
         private void Update_Tick(object sender, object e)
         {
-            humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
-            bot1ChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
-            bot2ChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
-            bot3ChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
-            bot4ChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
-            bot5ChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
-
+            foreach (var player in players)
+            {
+                player.ChipsTextBox.Text = player.ChipsSet.Amount.ToString();
+            }
+  
             if (players[0].ChipsSet.Amount <= 0)
             {
                 Pturn = false;
@@ -1341,7 +1340,8 @@ namespace Poker
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
-                humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+
                 if (tbPot.Text != "")
                 {
                     tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
@@ -1350,6 +1350,7 @@ namespace Poker
                 {
                     tbPot.Text = call.ToString();
                 }
+
                 Pturn = false;
                 pStatus.Text = "Call " + call;
                 pCall = call;
@@ -1359,7 +1360,7 @@ namespace Poker
                 tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
                 pStatus.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
-                humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                 Pturn = false;
                 bFold.Enabled = false;
                 pCall = players[0].ChipsSet.Amount;
@@ -1421,14 +1422,13 @@ namespace Poker
             if (tbAdd.Text == "") { }
             else
             {
-                players[0].ChipsSet.Amount += int.Parse(tbAdd.Text);
-                players[1].ChipsSet.Amount += int.Parse(tbAdd.Text);
-                players[2].ChipsSet.Amount += int.Parse(tbAdd.Text);
-                players[3].ChipsSet.Amount += int.Parse(tbAdd.Text);
-                players[4].ChipsSet.Amount += int.Parse(tbAdd.Text);
-                players[5].ChipsSet.Amount += int.Parse(tbAdd.Text);
+                foreach (var player in players)
+                {
+                    player.ChipsSet.Amount += int.Parse(tbAdd.Text);
+                }
             }
-            humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+
+            players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
         }
         private void bOptions_Click(object sender, EventArgs e)
         {
