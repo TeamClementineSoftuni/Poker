@@ -1,4 +1,4 @@
-﻿using Poker.Models;
+﻿using Poker.Models.Players;
 
 namespace Poker.ArtificialIntelligence
 {
@@ -6,50 +6,52 @@ namespace Poker.ArtificialIntelligence
 
     public class ArtificialIntelligence
     {
-        public static void AI(int c1, int c2, ChipsSet sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower, double botCurrent,
+        //AI(2, 3, players[1].ChipsSet, ref B1turn, ref  B1Fturn, b1Status, 0, b1Power, b1Type,this.Holder,ref this.rounds,ref call,ref this.Raise,ref this.raising,this.tbPot);
+        // ChipsSet sChips,double botPower, double botCurrent
+        public static void AI(int c1, int c2, Player player , ref bool sTurn, ref bool sFTurn, Label sStatus, int name,
             PictureBox[] Holder, ref double rounds,ref int call, ref double Raise, ref bool raising,TextBox tbPot)
         {
             if (!sFTurn)
             {
-                if (botCurrent == -1)
+                if (player.Type == -1)
                 {
-                    AIHands.HighCard(sChips, ref sTurn, ref sFTurn, sStatus, botPower,ref call,ref Raise,ref raising,tbPot);
+                    AIHands.HighCard(player, ref sTurn, ref sFTurn, sStatus ,ref call,ref Raise,ref raising,tbPot);
                 }
-                if (botCurrent == 0)
+                if (player.Type == 0)
                 {
-                    AIHands.PairTable(sChips, ref sTurn, ref sFTurn, sStatus, botPower, ref call, ref Raise,ref raising, tbPot);
+                    AIHands.PairTable(player, ref sTurn, ref sFTurn, sStatus, ref call, ref Raise,ref raising, tbPot);
                 }
-                if (botCurrent == 1)
+                if (player.Type == 1)
                 {
-                    AIHands.PairHand(sChips, ref sTurn, ref sFTurn, sStatus, botPower,ref rounds ,ref call, ref Raise,ref raising, tbPot);
+                    AIHands.PairHand(player, ref sTurn, ref sFTurn, sStatus, ref rounds ,ref call, ref Raise,ref raising, tbPot);
                 }
-                if (botCurrent == 2)
+                if (player.Type == 2)
                 {
-                    AIHands.TwoPair(sChips, ref sTurn, ref sFTurn, sStatus, botPower,ref rounds,ref call,ref Raise,ref raising,tbPot);
+                    AIHands.TwoPair(player, ref sTurn, ref sFTurn, sStatus, ref rounds,ref call,ref Raise,ref raising,tbPot);
                 }
-                if (botCurrent == 3)
+                if (player.Type == 3)
                 {
-                    AIHands.ThreeOfAKind(ref sChips, ref sTurn, ref sFTurn, sStatus, name, botPower, ref rounds, ref call, ref Raise, ref raising, tbPot);
+                    AIHands.ThreeOfAKind(player, ref sTurn, ref sFTurn, sStatus, name, ref rounds, ref call, ref Raise, ref raising, tbPot);
                 }
-                if (botCurrent == 4)
+                if (player.Type == 4)
                 {
-                    AIHands.Straight(sChips, ref sTurn, ref sFTurn, sStatus, name, botPower,  ref call, ref Raise, ref raising, tbPot);
+                    AIHands.Straight(player, ref sTurn, ref sFTurn, sStatus, name,  ref call, ref Raise, ref raising, tbPot);
                 }
-                if (botCurrent == 5 || botCurrent == 5.5)
+                if (player.Type == 5 || player.Type == 5.5)
                 {
-                    AIHands.Flush(sChips, ref sTurn, ref sFTurn, sStatus, name, botPower, ref call, ref Raise, ref raising, tbPot);
+                    AIHands.Flush(player, ref sTurn, ref sFTurn, sStatus, name, ref call, ref Raise, ref raising, tbPot);
                 }
-                if (botCurrent == 6)
+                if (player.Type == 6)
                 {
-                    AIHands.FullHouse(sChips, ref sTurn, ref sFTurn, sStatus, name, botPower, ref call, ref Raise, ref raising, tbPot);
+                    AIHands.FullHouse(player, ref sTurn, ref sFTurn, sStatus, name, ref call, ref Raise, ref raising, tbPot);
                 }
-                if (botCurrent == 7)
+                if (player.Type == 7)
                 {
-                    AIHands.FourOfAKind(sChips, ref sTurn, ref sFTurn, sStatus, name, botPower, ref call, ref Raise, ref raising, tbPot);
+                    AIHands.FourOfAKind(player, ref sTurn, ref sFTurn, sStatus, name, ref call, ref Raise, ref raising, tbPot);
                 }
-                if (botCurrent == 8 || botCurrent == 9)
+                if (player.Type == 8 || player.Type == 9)
                 {
-                    AIHands.StraightFlush(sChips, ref sTurn, ref sFTurn, sStatus, name, botPower, ref call, ref Raise, ref raising, tbPot);
+                    AIHands.StraightFlush(player, ref sTurn, ref sFTurn, sStatus, name, ref call, ref Raise, ref raising, tbPot);
                 }
             }
             if (sFTurn)

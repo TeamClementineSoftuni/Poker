@@ -11,12 +11,6 @@ namespace Poker.Models.Players
     public abstract class Player
     {
         private const string defaultPlayerName = "Player";
-        private const int PanelWidth = 180;
-        private const int PanelHeight = 150;
-
-        private Panel panel;
-
-        private ChipsSet chip;
 
         private double power;
 
@@ -30,20 +24,26 @@ namespace Poker.Models.Players
 
         private int raise = 0;
 
-        private string name;
-
         protected Player(string name = defaultPlayerName)
         {
-            InitializePanel();
-            ChipsSet = new ChipsSet();
+            this.Panel = new Panel();
+            this.ChipsTextBox = new TextBox();
+            this.ChipsSet = new ChipsSet();
             this.Hand = new Hand();
         }
+
+        public string Name { get; set; }
 
         public Hand Hand { get; set; }
 
         public Panel Panel { get; set; }
 
+        public TextBox ChipsTextBox { get; set; }
+
         public ChipsSet ChipsSet { get; set; }
+
+
+        public bool IsFolded { get; set; }
 
         public double Power { get; set; }
 
@@ -51,21 +51,9 @@ namespace Poker.Models.Players
 
         public bool Turn { get; set; }
 
-        public bool IsFolded { get; set; }
-
         public int Call { get; set; }
 
         public int Raise { get; set; }
 
-        public string Name { get; set; }
-
-        public void InitializePanel()
-        {
-            this.Panel = new Panel();
-            this.Panel.Width = PanelWidth;
-            this.Panel.Height = PanelHeight;
-            this.Panel.BackColor = Color.DarkBlue;
-            this.Panel.Visible = false;
-        }
     }
 }

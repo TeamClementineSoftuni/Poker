@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Poker.Models;
+using Poker.Models.Players;
 
 namespace Poker.ArtificialIntelligence
 {
@@ -11,7 +12,7 @@ namespace Poker.ArtificialIntelligence
 
     public class HPAndPHAndSmooth
     {
-        public static void HP(ChipsSet sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower, int n, int n1,ref int call, ref double Raise, ref bool raising, TextBox tbPod)
+        public static void HP(Player player, ref bool sTurn, ref bool sFTurn, Label sStatus, int n, int n1,ref int call, ref double Raise, ref bool raising, TextBox tbPod)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 4);
@@ -23,9 +24,9 @@ namespace Poker.ArtificialIntelligence
             {
                 if (rnd == 1)
                 {
-                    if (call <= SomeMethods.RoundN(sChips.Amount, n))
+                    if (call <= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
-                        SomeMethods.Call(sChips, ref sTurn, sStatus,call,ref raising, tbPod);
+                        SomeMethods.Call(player, ref sTurn, sStatus,call,ref raising, tbPod);
                     }
                     else
                     {
@@ -34,9 +35,9 @@ namespace Poker.ArtificialIntelligence
                 }
                 if (rnd == 2)
                 {
-                    if (call <= SomeMethods.RoundN(sChips.Amount, n1))
+                    if (call <= SomeMethods.RoundN(player.ChipsSet.Amount, n1))
                     {
-                        SomeMethods.Call(sChips, ref sTurn, sStatus, call, ref raising, tbPod);
+                        SomeMethods.Call(player, ref sTurn, sStatus, call, ref raising, tbPod);
                     }
                     else
                     {
@@ -49,14 +50,14 @@ namespace Poker.ArtificialIntelligence
                 if (Raise == 0)
                 {
                     Raise = call * 2;
-                    SomeMethods.Raised(sChips, ref sTurn, sStatus,ref call,ref raising,tbPod, ref Raise);
+                    SomeMethods.Raised(player, ref sTurn, sStatus,ref call,ref raising,tbPod, ref Raise);
                 }
                 else
                 {
-                    if (Raise <= SomeMethods.RoundN(sChips.Amount, n))
+                    if (Raise <= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
                         Raise = call * 2;
-                        SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPod, ref Raise);
+                        SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPod, ref Raise);
                     }
                     else
                     {
@@ -64,14 +65,14 @@ namespace Poker.ArtificialIntelligence
                     }
                 }
             }
-            if (sChips.Amount <= 0)
+            if (player.ChipsSet.Amount <= 0)
             {
                 sFTurn = true;
             }
         }
 
 
-        public static void PH(ChipsSet sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int n, int n1, int r, ref double rounds, ref int call, ref double Raise, ref bool raising, TextBox tbPot)
+        public static void PH(Player player, ref bool sTurn, ref bool sFTurn, Label sStatus, int n, int n1, int r, ref double rounds, ref int call, ref double Raise, ref bool raising, TextBox tbPot)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 3);
@@ -83,35 +84,35 @@ namespace Poker.ArtificialIntelligence
                 }
                 if (call > 0)
                 {
-                    if (call >= SomeMethods.RoundN(sChips.Amount, n))
+                    if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
                         SomeMethods.Fold(ref sTurn, ref sFTurn, sStatus, ref raising);
                     }
-                    if (Raise > SomeMethods.RoundN(sChips.Amount, n))
+                    if (Raise > SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
                         SomeMethods.Fold(ref sTurn, ref sFTurn, sStatus, ref raising);
                     }
                     if (!sFTurn)
                     {
-                        if (call >= SomeMethods.RoundN(sChips.Amount, n) && call <= SomeMethods.RoundN(sChips.Amount, n))
+                        if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n) && call <= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                         {
-                            SomeMethods.Call(sChips, ref sTurn, sStatus, call, ref raising, tbPot);
+                            SomeMethods.Call(player, ref sTurn, sStatus, call, ref raising, tbPot);
                         }
-                        if (Raise <= SomeMethods.RoundN(sChips.Amount, n) && Raise >= SomeMethods.RoundN(sChips.Amount, n) / 2)
+                        if (Raise <= SomeMethods.RoundN(player.ChipsSet.Amount, n) && Raise >= SomeMethods.RoundN(player.ChipsSet.Amount, n) / 2)
                         {
-                            SomeMethods.Call(sChips, ref sTurn, sStatus, call, ref raising, tbPot);
+                            SomeMethods.Call(player, ref sTurn, sStatus, call, ref raising, tbPot);
                         }
-                        if (Raise <= (SomeMethods.RoundN(sChips.Amount, n)) / 2)
+                        if (Raise <= (SomeMethods.RoundN(player.ChipsSet.Amount, n)) / 2)
                         {
                             if (Raise > 0)
                             {
-                                Raise = SomeMethods.RoundN(sChips.Amount, n);
-                                SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
+                                Raise = SomeMethods.RoundN(player.ChipsSet.Amount, n);
+                                SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
                             }
                             else
                             {
                                 Raise = call * 2;
-                                SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
+                                SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
                             }
                         }
 
@@ -122,52 +123,52 @@ namespace Poker.ArtificialIntelligence
             {
                 if (call > 0)
                 {
-                    if (call >= SomeMethods.RoundN(sChips.Amount, n1 - rnd))
+                    if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n1 - rnd))
                     {
                         SomeMethods.Fold(ref sTurn, ref sFTurn, sStatus, ref raising);
                     }
-                    if (Raise > SomeMethods.RoundN(sChips.Amount, n - rnd))
+                    if (Raise > SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd))
                     {
                         SomeMethods.Fold(ref sTurn, ref sFTurn, sStatus, ref raising);
                     }
                     if (!sFTurn)
                     {
-                        if (call >= SomeMethods.RoundN(sChips.Amount, n - rnd) && call <= SomeMethods.RoundN(sChips.Amount, n1 - rnd))
+                        if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd) && call <= SomeMethods.RoundN(player.ChipsSet.Amount, n1 - rnd))
                         {
-                            SomeMethods.Call(sChips, ref sTurn, sStatus, call, ref raising, tbPot);
+                            SomeMethods.Call(player, ref sTurn, sStatus, call, ref raising, tbPot);
                         }
-                        if (Raise <= SomeMethods.RoundN(sChips.Amount, n - rnd) && Raise >= (SomeMethods.RoundN(sChips.Amount, n - rnd)) / 2)
+                        if (Raise <= SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd) && Raise >= (SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd)) / 2)
                         {
-                            SomeMethods.Call(sChips, ref sTurn, sStatus, call, ref raising, tbPot);
+                            SomeMethods.Call(player, ref sTurn, sStatus, call, ref raising, tbPot);
                         }
-                        if (Raise <= (SomeMethods.RoundN(sChips.Amount, n - rnd)) / 2)
+                        if (Raise <= (SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd)) / 2)
                         {
                             if (Raise > 0)
                             {
-                                Raise = SomeMethods.RoundN(sChips.Amount, n - rnd);
-                                SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
+                                Raise = SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd);
+                                SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
                             }
                             else
                             {
                                 Raise = call * 2;
-                                SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
+                                SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
                             }
                         }
                     }
                 }
                 if (call <= 0)
                 {
-                    Raise = SomeMethods.RoundN(sChips.Amount, r - rnd);
-                    SomeMethods.Raised(sChips, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
+                    Raise = SomeMethods.RoundN(player.ChipsSet.Amount, r - rnd);
+                    SomeMethods.Raised(player, ref sTurn, sStatus, ref call, ref raising, tbPot, ref Raise);
                 }
             }
-            if (sChips.Amount <= 0)
+            if (player.ChipsSet.Amount <= 0)
             {
                 sFTurn = true;
             }
         }
        
-        public static void Smooth(ChipsSet botChips, ref bool botTurn, ref bool botFTurn, Label botStatus, int name, int n, int r, ref int call, ref double Raise,ref bool raising, TextBox tbPot)
+        public static void Smooth(Player player, ref bool botTurn, ref bool botFTurn, Label botStatus, int name, int n, int r, ref int call, ref double Raise,ref bool raising, TextBox tbPot)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 3);
@@ -177,48 +178,47 @@ namespace Poker.ArtificialIntelligence
             }
             else
             {
-                if (call >= SomeMethods.RoundN(botChips.Amount, n))
+                if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                 {
-                    if (botChips.Amount > call)
+                    if (player.ChipsSet.Amount > call)
                     {
-                        SomeMethods.Call(botChips, ref botTurn, botStatus, call, ref raising, tbPot);
+                        SomeMethods.Call(player, ref botTurn, botStatus, call, ref raising, tbPot);
                     }
-                    else if (botChips.Amount <= call)
+                    else if (player.ChipsSet.Amount <= call)
                     {
                         raising = false;
                         botTurn = false;
-                        botChips.Amount = 0;
-                        botStatus.Text = "Call " + botChips;
-                        tbPot.Text = (int.Parse(tbPot.Text) + botChips.Amount).ToString();
+                        player.ChipsSet.Amount = 0;
+                        botStatus.Text = "Call " + player.ChipsSet;
+                        tbPot.Text = (int.Parse(tbPot.Text) + player.ChipsSet.Amount).ToString();
                     }
                 }
                 else
                 {
                     if (Raise > 0)
                     {
-                        if (botChips.Amount >= Raise * 2)
+                        if (player.ChipsSet.Amount >= Raise * 2)
                         {
                             Raise *= 2;
-                            SomeMethods.Raised(botChips, ref botTurn, botStatus, ref call, ref raising, tbPot, ref Raise);
+                            SomeMethods.Raised(player, ref botTurn, botStatus, ref call, ref raising, tbPot, ref Raise);
                         }
                         else
                         {
-                            SomeMethods.Call(botChips, ref botTurn, botStatus, call, ref raising, tbPot);
+                            SomeMethods.Call(player, ref botTurn, botStatus, call, ref raising, tbPot);
                         }
                     }
                     else
                     {
                         Raise = call * 2;
                         
-                        SomeMethods.Raised(botChips, ref botTurn, botStatus, ref call, ref raising, tbPot, ref Raise);
+                        SomeMethods.Raised(player, ref botTurn, botStatus, ref call, ref raising, tbPot, ref Raise);
                     }
                 }
             }
-            if (botChips.Amount <= 0)
+            if (player.ChipsSet.Amount <= 0)
             {
                 botFTurn = true;
             }
         }
-
     }
 }

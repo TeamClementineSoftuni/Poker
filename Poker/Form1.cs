@@ -31,6 +31,8 @@ namespace Poker
         private List<Bot> playersLeftToAct = new List<Bot>();
         private int pot = 0;
         private List<Panel> playersPanels = new List<Panel>();
+        private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
+        List<Player> listOfWinners = new List<Player>();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -41,9 +43,9 @@ namespace Poker
 
         int call = 500, foldedPlayers = 5;
 
-        double type, rounds = 0, b1Power, b2Power, b3Power, b4Power, b5Power, pPower = 0, pType = -1, Raise = 0,
-        b1Type = -1, b2Type = -1, b3Type = -1, b4Type = -1, b5Type = -1;
-        
+        private double type;
+        double rounds = 0, Raise = 0;
+
         bool B1turn = false, B2turn = false, B3turn = false, B4turn = false, B5turn = false;
         bool B1Fturn = false, B2Fturn = false, B3Fturn = false, B4Fturn = false, B5Fturn = false;
 
@@ -51,16 +53,11 @@ namespace Poker
 
         int pCall = 0, b1Call = 0, b2Call = 0, b3Call = 0, b4Call = 0, b5Call = 0, pRaise = 0, b1Raise = 0, b2Raise = 0, b3Raise = 0, b4Raise = 0, b5Raise = 0;
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         int last = 123, raisedTurn = 1;
         List<bool?> bools = new List<bool?>();
         List<Type> Win = new List<Type>();
-        List<string> CheckWinners = new List<string>();
+        
         List<int> ints = new List<int>();
         bool PFturn = false, Pturn = true, restart = false, raising = false;
         Poker.Type sorted;
@@ -87,7 +84,6 @@ namespace Poker
 
         public Form1()
         {
-
             //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
             call = bb;
             MaximizeBox = false;
@@ -95,7 +91,7 @@ namespace Poker
             Updates.Start();
             InitializeComponent();
             //parallel branch
-            InitializePlayersPanels();
+            InitializePlayersComponents();
             DealCards();
             ProcessHand();
             // parallel
@@ -103,19 +99,9 @@ namespace Poker
             width = this.Width;
             height = this.Height;
             Shuffle();
+
             tbPot.Enabled = false;
-            tbChips.Enabled = false;
-            tbBotChips1.Enabled = false;
-            tbBotChips2.Enabled = false;
-            tbBotChips3.Enabled = false;
-            tbBotChips4.Enabled = false;
-            tbBotChips5.Enabled = false;
-            tbChips.Text = players[0].ChipsSet.ToString();
-            tbBotChips1.Text = players[1].ChipsSet.ToString();
-            tbBotChips2.Text = players[2].ChipsSet.ToString();
-            tbBotChips3.Text = players[3].ChipsSet.ToString();
-            tbBotChips4.Text = players[4].ChipsSet.ToString();
-            tbBotChips5.Text = players[5].ChipsSet.ToString();
+
             timer.Interval = (1 * 1 * 1000);
             timer.Tick += timer_Tick;
             Updates.Interval = (1 * 1 * 100);
@@ -146,18 +132,25 @@ namespace Poker
                 players[bot] = new Bot();
             }
 
-            // Set the panel for every player
+            // Set the panel and ChipsTextBox for every player
             for (int index = 0; index < players.Length; index++)
             {
                 players[index].Panel = playersPanels[index];
                 this.Controls.Add(players[index].Panel);
+
+                players[index].ChipsTextBox = playersChipsTextBoxs[index];
+                players[index].ChipsTextBox.Enabled = false;
+                players[index].ChipsTextBox.Text = players[index].ChipsSet.ToString();             
             }
 
             // give 2 cards to every player  --> the cards are taken from the deck;
             for (int botIndex = 0; botIndex < players.Length; botIndex++)
             {
-                players[botIndex].Hand.Card1 = deck.Cards[2 * botIndex];
-                players[botIndex].Hand.Card2 = deck.Cards[2 * botIndex + 1];
+                if (players[botIndex].ChipsSet.Amount != 0)
+                {
+                    players[botIndex].Hand.Card1 = deck.Cards[2 * botIndex];
+                    players[botIndex].Hand.Card2 = deck.Cards[2 * botIndex + 1];
+                }
             }
 
             // we have given every player 2 cards ( 6 * 2 = 12), so the first 12 cards from the deck are already reserved. 
@@ -166,9 +159,6 @@ namespace Poker
             {
                 board[index - 12] = deck.Cards[index];
             }
-
-
-
         }
 
         // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
@@ -211,7 +201,6 @@ namespace Poker
         }
         //parallel
 
-        // Copied in Class PokerGenerator -not finished yet
         async Task Shuffle()
         {
             bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
@@ -531,6 +520,7 @@ namespace Poker
                     timer.Start();
                 }
             }
+
             if (foldedPlayers == 5)
             {
                 DialogResult dialogResult = MessageBox.Show("Would You Like To Play Again ?", "You Won , Congratulations ! ", MessageBoxButtons.YesNo);
@@ -556,8 +546,6 @@ namespace Poker
                 bFold.Enabled = true;
             }
         }
-
-        // End of Copy of above code in class PokerGenerator
 
 
         async Task Turns()
@@ -611,9 +599,9 @@ namespace Poker
                     {
                         FixCall(b1Status, ref b1Call, ref b1Raise, 1);
                         FixCall(b1Status, ref b1Call, ref b1Raise, 2);
-                        AllRules.Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 1's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1].ChipsSet, ref B1turn, ref  B1Fturn, b1Status, 0, b1Power, b1Type,this.Holder,ref this.rounds,ref call,ref this.Raise,ref this.raising,this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], ref B1turn, ref  B1Fturn, b1Status, 0,this.Holder,ref this.rounds,ref call,ref this.Raise,ref this.raising,this.tbPot);
                         turnCount++;
                         last = 1;
                         B1turn = false;
@@ -638,9 +626,9 @@ namespace Poker
                     {
                         FixCall(b2Status, ref b2Call, ref b2Raise, 1);
                         FixCall(b2Status, ref b2Call, ref b2Raise, 2);
-                        AllRules.Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn,Reserve,i,pStatus,Holder,Win, ref sorted,type);
+                        AllRules.Rules(4, 5, players[2], B2Fturn,Reserve,i,pStatus,Holder,Win, ref sorted,type);
                         MessageBox.Show("Bot 2's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2].ChipsSet, ref B2turn, ref  B2Fturn, b2Status, 1, b2Power, b2Type, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], ref B2turn, ref  B2Fturn, b2Status, 1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 2;
                         B2turn = false;
@@ -665,9 +653,9 @@ namespace Poker
                     {
                         FixCall(b3Status, ref b3Call, ref b3Raise, 1);
                         FixCall(b3Status, ref b3Call, ref b3Raise, 2);
-                        AllRules.Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 3's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3].ChipsSet, ref B3turn, ref  B3Fturn, b3Status, 2, b3Power, b3Type, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], ref B3turn, ref  B3Fturn, b3Status, 2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 3;
                         B3turn = false;
@@ -692,9 +680,9 @@ namespace Poker
                     {
                         FixCall(b4Status, ref b4Call, ref b4Raise, 1);
                         FixCall(b4Status, ref b4Call, ref b4Raise, 2);
-                        AllRules.Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 4's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4].ChipsSet, ref B4turn, ref  B4Fturn, b4Status, 3, b4Power, b4Type, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], ref B4turn, ref  B4Fturn, b4Status, 3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 4;
                         B4turn = false;
@@ -719,9 +707,9 @@ namespace Poker
                     {
                         FixCall(b5Status, ref b5Call, ref b5Raise, 1);
                         FixCall(b5Status, ref b5Call, ref b5Raise, 2);
-                        AllRules.Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 5's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5].ChipsSet, ref B5turn, ref  B5Fturn, b5Status, 4, b5Power, b5Type, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], ref B5turn, ref  B5Fturn, b5Status, 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 5;
                         B5turn = false;
@@ -849,45 +837,40 @@ namespace Poker
                 if (!pStatus.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
-                    AllRules.Rules(0, 1, "Player", ref pType, ref pPower, PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
                 if (!b1Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 1";
-                    AllRules.Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
                 if (!b2Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 2";
-                    AllRules.Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
                 if (!b3Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 3";
-                    AllRules.Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
                 if (!b4Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 4";
-                    AllRules.Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
                 if (!b5Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 5";
-                    AllRules.Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
                 }
-                Poker.Win.Winner.WinnerMessege(pType, pPower, "Player", players[0].ChipsSet.Amount, fixedLast,this.Deck,this.Holder,this.sorted,this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Player", players[0].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-                Poker.Win.Winner.WinnerMessege(b1Type, b1Power, "Bot 1", players[1].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Bot 1", players[1].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-                Poker.Win.Winner.WinnerMessege(b2Type, b2Power, "Bot 2", players[2].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Bot 2", players[2].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-                Poker.Win.Winner.WinnerMessege(b3Type, b3Power, "Bot 3", players[3].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Bot 3", players[3].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-                Poker.Win.Winner.WinnerMessege(b4Type, b4Power, "Bot 4", players[4].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Bot 4", players[4].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-                Poker.Win.Winner.WinnerMessege(b5Type, b5Power, "Bot 5", players[5].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-                Poker.Win.Winner.NumbersOfWinners("Bot 5", players[5].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
+
+                foreach (var player in players)
+                {
+                    Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
+                    Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners, this.tbPot);
+                }
+
                 restart = true;
                 Pturn = true;
                 PFturn = false;
@@ -920,6 +903,8 @@ namespace Poker
                 foreach (var player in this.players)
                 {
                     player.Panel.Visible = false;
+                    player.Power = 0;
+                    player.Type = -1;
                 }
 
                 pCall = 0; pRaise = 0;
@@ -934,11 +919,10 @@ namespace Poker
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 bools.Clear();
                 rounds = 0;
-                pPower = 0; pType = -1;
-                type = 0; b1Power = 0; b2Power = 0; b3Power = 0; b4Power = 0; b5Power = 0;
-                b1Type = -1; b2Type = -1; b3Type = -1; b4Type = -1; b5Type = -1;
+                type = 0;
+
                 ints.Clear();
-                CheckWinners.Clear();
+                listOfWinners.Clear();
                 winners = 0;
                 Win.Clear();
                 sorted.Current = 0;
@@ -1080,42 +1064,42 @@ namespace Poker
                 if (index == 0)
                 {
                     players[0].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[0].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                     this.players[0].Panel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
                     players[1].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[1].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
                     this.players[1].Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
                     players[2].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[2].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
                     this.players[2].Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
                     players[3].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[3].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
                     this.players[3].Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
                     players[4].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[4].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
                     this.players[4].Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
                     players[5].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    tbChips.Text = players[5].ChipsSet.Amount.ToString();
+                    humanChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
                     this.players[5].Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
                 }
@@ -1146,12 +1130,15 @@ namespace Poker
             foreach (var player in players)
             {
                 player.Panel.Visible = false;
+                player.Power = 0;
+                player.Type = -1;
             }
 
             call = bb; Raise = 0;
             foldedPlayers = 5;
-            type = 0; rounds = 0; b1Power = 0; b2Power = 0; b3Power = 0; b4Power = 0; b5Power = 0; pPower = 0; pType = -1; Raise = 0;
-            b1Type = -1; b2Type = -1; b3Type = -1; b4Type = -1; b5Type = -1;
+            type = 0; rounds = 0;
+            Raise = 0;
+
             B1turn = false; B2turn = false; B3turn = false; B4turn = false; B5turn = false;
             B1Fturn = false; B2Fturn = false; B3Fturn = false; B4Fturn = false; B5Fturn = false;
             pFolded = false; b1Folded = false; b2Folded = false; b3Folded = false; b4Folded = false; b5Folded = false;
@@ -1160,7 +1147,7 @@ namespace Poker
             height = 0; width = 0; winners = 0; Flop = 1; Turn = 2; River = 3; End = 4; maxLeft = 6;
             last = 123; raisedTurn = 1;
             bools.Clear();
-            CheckWinners.Clear();
+            listOfWinners.Clear();
             ints.Clear();
             Win.Clear();
             sorted.Current = 0;
@@ -1213,46 +1200,39 @@ namespace Poker
             if (!pStatus.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
-                AllRules.Rules(0, 1, "Player", ref pType, ref pPower, PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
             if (!b1Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 1";
-                AllRules.Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
             if (!b2Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 2";
-                AllRules.Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
             if (!b3Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 3";
-                AllRules.Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
             if (!b4Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 4";
-                AllRules.Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
             if (!b5Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 5";
-                AllRules.Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             }
 
-            Poker.Win.Winner.WinnerMessege(pType, pPower, "Player", players[0].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Player", players[0].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-            Poker.Win.Winner.WinnerMessege(b1Type, b1Power, "Bot 1", players[1].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Bot 1", players[1].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-            Poker.Win.Winner.WinnerMessege(b2Type, b2Power, "Bot 2", players[2].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Bot 2", players[2].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-            Poker.Win.Winner.WinnerMessege(b3Type, b3Power, "Bot 3", players[3].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Bot 3", players[3].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-            Poker.Win.Winner.WinnerMessege(b4Type, b4Power, "Bot 4", players[4].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Bot 4", players[4].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
-            Poker.Win.Winner.WinnerMessege(b5Type, b5Power, "Bot 5", players[5].ChipsSet.Amount, fixedLast, this.Deck, this.Holder, this.sorted, this.CheckWinners);
-            Poker.Win.Winner.NumbersOfWinners("Bot 5", players[5].ChipsSet.Amount, fixedLast, this.CheckWinners, this.tbPot, players[0].ChipsSet.Amount, players[1].ChipsSet.Amount, players[2].ChipsSet.Amount, players[3].ChipsSet.Amount, players[4].ChipsSet.Amount, players[5].ChipsSet.Amount, this.tbChips, this.tbBotChips5, this.tbBotChips4, this.tbBotChips3, this.tbBotChips2, this.tbBotChips1);
+            foreach (var player in players)
+            {
+                Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
+                Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners, this.tbPot);
+            }
         }
 
         // ---> Events in separate folder
@@ -1272,12 +1252,12 @@ namespace Poker
         }
         private void Update_Tick(object sender, object e)
         {
-            tbChips.Text = players[0].ChipsSet.Amount.ToString();
-            tbBotChips1.Text = players[1].ChipsSet.Amount.ToString();
-            tbBotChips2.Text = players[2].ChipsSet.Amount.ToString();
-            tbBotChips3.Text = players[3].ChipsSet.Amount.ToString();
-            tbBotChips4.Text = players[4].ChipsSet.Amount.ToString();
-            tbBotChips5.Text = players[5].ChipsSet.Amount.ToString();
+            humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+            bot1ChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
+            bot2ChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
+            bot3ChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
+            bot4ChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
+            bot5ChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
 
             if (players[0].ChipsSet.Amount <= 0)
             {
@@ -1357,11 +1337,11 @@ namespace Poker
         }
         private async void bCall_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, "Player", ref pType, ref pPower, PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
-                tbChips.Text = players[0].ChipsSet.Amount.ToString();
+                humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                 if (tbPot.Text != "")
                 {
                     tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
@@ -1379,7 +1359,7 @@ namespace Poker
                 tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
                 pStatus.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
-                tbChips.Text = players[0].ChipsSet.Amount.ToString();
+                humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                 Pturn = false;
                 bFold.Enabled = false;
                 pCall = players[0].ChipsSet.Amount;
@@ -1388,7 +1368,7 @@ namespace Poker
         }
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, "Player", ref pType, ref pPower, PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
@@ -1448,7 +1428,7 @@ namespace Poker
                 players[4].ChipsSet.Amount += int.Parse(tbAdd.Text);
                 players[5].ChipsSet.Amount += int.Parse(tbAdd.Text);
             }
-            tbChips.Text = players[0].ChipsSet.Amount.ToString();
+            humanChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
         }
         private void bOptions_Click(object sender, EventArgs e)
         {
@@ -1536,7 +1516,7 @@ namespace Poker
         }
         #endregion
 
-        private void InitializePlayersPanels()
+        private void InitializePlayersComponents()
         {
             this.playersPanels = new List<Panel>()
             {
@@ -1546,6 +1526,16 @@ namespace Poker
                 this.bot3Panel,
                 this.bot4Panel,
                 this.bot5Panel
+            };
+
+            this.playersChipsTextBoxs = new List<TextBox>()
+            {
+                this.humanChipsTextBox,
+                this.bot1ChipsTextBox,
+                this.bot2ChipsTextBox,
+                this.bot3ChipsTextBox,
+                this.bot4ChipsTextBox,
+                this.bot5ChipsTextBox
             };
         }
 

@@ -4,13 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
+    using Models.Players;
 
     using Type = Poker.Type;
 
     public class AllRules
     {
-        
-        public static void Rules(int c1, int c2, string currentText, ref double current, ref double Power, bool foldedTurn, int[] Reserve, int i, Label pStatus, PictureBox[] Holder,
+        //(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+        //string currentText, ref double current, ref double Power -> to Player
+        public static void Rules(int c1, int c2, Player player , bool foldedTurn, int[] Reserve, int i, Label pStatus, PictureBox[] Holder,
             List<Type> Win, ref Type sorted, double type)
         {
             if (c1 == 0 && c2 == 1)
@@ -49,42 +51,42 @@
                     {
                         //Pair from Hand current = 1
 
-                        RulesWinningHands.PairFromHandRules(ref current, ref Power, Win , ref sorted,Reserve,i);
+                        RulesWinningHands.PairFromHandRules(player, Win , ref sorted,Reserve,i);
 
                         #region Pair or Two Pair from Table current = 2 || 0
-                        RulesWinningHands.PairTwoPairRules(ref current, ref Power, Win, ref sorted, Reserve, i);
+                        RulesWinningHands.PairTwoPairRules(player, Win, ref sorted, Reserve, i);
                         #endregion
 
                         #region Two Pair current = 2
-                        RulesWinningHands.TwoPairRules(ref current, ref Power, Win, ref sorted, Reserve, i);
+                        RulesWinningHands.TwoPairRules(player, Win, ref sorted, Reserve, i);
                         #endregion
 
                         #region Three of a kind current = 3
-                        RulesWinningHands.ThreeOfAKindRules(ref current, ref Power, Straight,Win ,ref  sorted);
+                        RulesWinningHands.ThreeOfAKindRules(player, Straight,Win ,ref  sorted);
                         #endregion
 
                         #region Straight current = 4
-                        RulesWinningHands.StraightRules(ref current, ref Power, Straight, Win,ref sorted);
+                        RulesWinningHands.StraightRules(player, Straight, Win,ref sorted);
                         #endregion
 
                         #region Flush current = 5 || 5.5
-                        RulesWinningHands.FlushRules(ref current, ref Power, ref vf, Straight1, Win, ref sorted, Reserve, i);
+                        RulesWinningHands.FlushRules(player, ref vf, Straight1, Win, ref sorted, Reserve, i);
                         #endregion
 
                         #region Full House current = 6
-                        RulesWinningHands.FullHouseRules(ref current, ref Power, ref done, Straight, Win, ref sorted, Reserve, type);
+                        RulesWinningHands.FullHouseRules(player, ref done, Straight, Win, ref sorted, Reserve, type);
                         #endregion
 
                         #region Four of a Kind current = 7
-                        RulesWinningHands.FourOfAKindRules(ref current, ref Power, Straight, Win, ref sorted);
+                        RulesWinningHands.FourOfAKindRules(player, Straight, Win, ref sorted);
                         #endregion
 
                         #region Straight Flush current = 8 || 9
-                        RulesWinningHands.StraightFlushRules(ref current, ref Power, st1, st2, st3, st4, Win, ref sorted);
+                        RulesWinningHands.StraightFlushRules(player, st1, st2, st3, st4, Win, ref sorted);
                         #endregion
 
                         #region High Card current = -1
-                        RulesWinningHands.HighCardRules(ref current, ref Power, Win, ref sorted, Reserve, i);
+                        RulesWinningHands.HighCardRules(player, Win, ref sorted, Reserve, i);
                         #endregion
                     }
                 }

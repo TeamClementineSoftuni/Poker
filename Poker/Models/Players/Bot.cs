@@ -3,17 +3,15 @@ using Poker.Models.Players;
 
 namespace Poker.Models
 {
-    using System.Drawing;
-    using System.Windows.Forms;
-
     public class Bot : Player
     {
         private static int instanceCounter = 1;
+        private const string defaultBotName = "Bot ";
 
         private string name;
 
         public Bot()
-            : base("Bot " + instanceCounter)
+            : base(defaultBotName + instanceCounter)
         {
             instanceCounter++;
         }
