@@ -41,6 +41,7 @@ namespace Poker.Models.Players
 
         public ChipsSet ChipsSet { get; set; }
 
+        public Label StatusLabel { get; set; }
 
         public bool IsFolded { get; set; }
 

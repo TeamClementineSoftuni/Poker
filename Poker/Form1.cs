@@ -34,6 +34,8 @@ namespace Poker
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private List<Player> listOfWinners = new List<Player>();
 
+        private List<Label> playersStatusLabel = new List<Label>();
+
         //TODO: initialize arrays and lists
         // parallel branch
 
@@ -58,7 +60,7 @@ namespace Poker
 
         List<bool?> bools = new List<bool?>();
         List<Type> Win = new List<Type>();
-        
+
         List<int> ints = new List<int>();
         bool PFturn = false, Pturn = true, restart = false, raising = false;
         Poker.Type sorted;
@@ -80,7 +82,7 @@ namespace Poker
         Timer timer = new Timer();
         Timer Updates = new Timer();
         int t = 60, i, bb = 500, sb = 250, up = 10000000, turnCount = 0;
-       
+
         #endregion
 
         public Form1()
@@ -133,7 +135,7 @@ namespace Poker
                 players[bot] = new Bot();
             }
 
-            // Set the panel and ChipsTextBox for every player
+            // Set the panel,ChipsTextBox and StatusLabel for every player
             for (int index = 0; index < players.Length; index++)
             {
                 players[index].Panel = playersPanels[index];
@@ -141,7 +143,9 @@ namespace Poker
 
                 players[index].ChipsTextBox = playersChipsTextBoxs[index];
                 players[index].ChipsTextBox.Enabled = false;
-                players[index].ChipsTextBox.Text = players[index].ChipsSet.ToString();             
+                players[index].ChipsTextBox.Text = players[index].ChipsSet.ToString();
+
+                this.players[index].StatusLabel = this.playersStatusLabel[index];
             }
 
             // give 2 cards to every player  --> the cards are taken from the deck;
@@ -556,7 +560,7 @@ namespace Poker
             {
                 if (Pturn)
                 {
-                    FixCall(pStatus, ref pCall, ref pRaise, 1);
+                    FixCall(this.players[0].StatusLabel, ref pCall, ref pRaise, 1);
                     //MessageBox.Show("Player's Turn");
                     pbTimer.Visible = true;
                     pbTimer.Value = 1000;
@@ -569,7 +573,7 @@ namespace Poker
                     bRaise.Enabled = true;
                     bFold.Enabled = true;
                     turnCount++;
-                    FixCall(pStatus, ref pCall, ref pRaise, 2);
+                    FixCall(this.players[0].StatusLabel, ref pCall, ref pRaise, 2);
                 }
             }
             if (PFturn || !Pturn)
@@ -598,11 +602,11 @@ namespace Poker
                 {
                     if (B1turn)
                     {
-                        FixCall(b1Status, ref b1Call, ref b1Raise, 1);
-                        FixCall(b1Status, ref b1Call, ref b1Raise, 2);
-                        AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        FixCall(this.players[1].StatusLabel, ref b1Call, ref b1Raise, 1);
+                        FixCall(this.players[1].StatusLabel, ref b1Call, ref b1Raise, 2);
+                        AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 1's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], ref B1turn, ref  B1Fturn, b1Status, 0,this.Holder,ref this.rounds,ref call,ref this.Raise,ref this.raising,this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], ref B1turn, ref  B1Fturn, this.players[1].StatusLabel, 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 1;
                         B1turn = false;
@@ -625,11 +629,11 @@ namespace Poker
                 {
                     if (B2turn)
                     {
-                        FixCall(b2Status, ref b2Call, ref b2Raise, 1);
-                        FixCall(b2Status, ref b2Call, ref b2Raise, 2);
-                        AllRules.Rules(4, 5, players[2], B2Fturn,Reserve,i,pStatus,Holder,Win, ref sorted,type);
+                        FixCall(this.players[2].StatusLabel, ref b2Call, ref b2Raise, 1);
+                        FixCall(this.players[2].StatusLabel, ref b2Call, ref b2Raise, 2);
+                        AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 2's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], ref B2turn, ref  B2Fturn, b2Status, 1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], ref B2turn, ref  B2Fturn, this.players[2].StatusLabel, 1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 2;
                         B2turn = false;
@@ -652,11 +656,11 @@ namespace Poker
                 {
                     if (B3turn)
                     {
-                        FixCall(b3Status, ref b3Call, ref b3Raise, 1);
-                        FixCall(b3Status, ref b3Call, ref b3Raise, 2);
-                        AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        FixCall(this.players[3].StatusLabel, ref b3Call, ref b3Raise, 1);
+                        FixCall(this.players[3].StatusLabel, ref b3Call, ref b3Raise, 2);
+                        AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 3's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], ref B3turn, ref  B3Fturn, b3Status, 2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], ref B3turn, ref  B3Fturn, this.players[3].StatusLabel, 2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 3;
                         B3turn = false;
@@ -679,11 +683,11 @@ namespace Poker
                 {
                     if (B4turn)
                     {
-                        FixCall(b4Status, ref b4Call, ref b4Raise, 1);
-                        FixCall(b4Status, ref b4Call, ref b4Raise, 2);
-                        AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        FixCall(this.players[4].StatusLabel, ref b4Call, ref b4Raise, 1);
+                        FixCall(this.players[4].StatusLabel, ref b4Call, ref b4Raise, 2);
+                        AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 4's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], ref B4turn, ref  B4Fturn, b4Status, 3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], ref B4turn, ref  B4Fturn, this.players[4].StatusLabel, 3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 4;
                         B4turn = false;
@@ -706,11 +710,11 @@ namespace Poker
                 {
                     if (B5turn)
                     {
-                        FixCall(b5Status, ref b5Call, ref b5Raise, 1);
-                        FixCall(b5Status, ref b5Call, ref b5Raise, 2);
-                        AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                        FixCall(this.players[5].StatusLabel, ref b5Call, ref b5Raise, 1);
+                        FixCall(this.players[5].StatusLabel, ref b5Call, ref b5Raise, 2);
+                        AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 5's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], ref B5turn, ref  B5Fturn, b5Status, 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], ref B5turn, ref  B5Fturn, this.players[5].StatusLabel, 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 5;
                         B5turn = false;
@@ -770,17 +774,17 @@ namespace Poker
                         raisedTurn = 123;
                         rounds++;
                         if (!PFturn)
-                            pStatus.Text = "";
+                            this.players[0].StatusLabel.Text = "";
                         if (!B1Fturn)
-                            b1Status.Text = "";
+                            this.players[1].StatusLabel.Text = "";
                         if (!B2Fturn)
-                            b2Status.Text = "";
+                            this.players[2].StatusLabel.Text = "";
                         if (!B3Fturn)
-                            b3Status.Text = "";
+                            this.players[3].StatusLabel.Text = "";
                         if (!B4Fturn)
-                            b4Status.Text = "";
+                            this.players[4].StatusLabel.Text = "";
                         if (!B5Fturn)
-                            b5Status.Text = "";
+                            this.players[5].StatusLabel.Text = "";
                     }
                 }
             }
@@ -835,35 +839,35 @@ namespace Poker
             if (rounds == End && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
-                if (!pStatus.Text.Contains("Fold"))
+                if (!this.players[0].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
-                    AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
-                if (!b1Status.Text.Contains("Fold"))
+                if (!this.players[1].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 1";
-                    AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
-                if (!b2Status.Text.Contains("Fold"))
+                if (!this.players[2].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 2";
-                    AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
-                if (!b3Status.Text.Contains("Fold"))
+                if (!this.players[3].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 3";
-                    AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
-                if (!b4Status.Text.Contains("Fold"))
+                if (!this.players[4].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 4";
-                    AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
-                if (!b5Status.Text.Contains("Fold"))
+                if (!this.players[5].StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 5";
-                    AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                    AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                 }
 
                 foreach (var player in players)
@@ -935,7 +939,7 @@ namespace Poker
                     Holder[os].Visible = false;
                 }
                 tbPot.Text = "0";
-                pStatus.Text = "";
+                this.players[0].StatusLabel.Text = "";
                 await Shuffle();
                 await Turns();
             }
@@ -990,12 +994,12 @@ namespace Poker
             #region All in
             if (players[0].ChipsSet.Amount <= 0 && !intsadded)
             {
-                if (pStatus.Text.Contains("Raise"))
+                if (this.players[0].StatusLabel.Text.Contains("Raise"))
                 {
                     ints.Add(players[0].ChipsSet.Amount);
                     intsadded = true;
                 }
-                if (pStatus.Text.Contains("Call"))
+                if (this.players[0].StatusLabel.Text.Contains("Call"))
                 {
                     ints.Add(players[0].ChipsSet.Amount);
                     intsadded = true;
@@ -1155,12 +1159,12 @@ namespace Poker
             sorted.Power = 0;
             tbPot.Text = "0";
             t = 60; up = 10000000; turnCount = 0;
-            pStatus.Text = "";
-            b1Status.Text = "";
-            b2Status.Text = "";
-            b3Status.Text = "";
-            b4Status.Text = "";
-            b5Status.Text = "";
+
+            foreach (var player in this.players)
+            {
+                player.StatusLabel.Text = "";
+            }
+           
             if (players[0].ChipsSet.Amount <= 0)
             {
                 AddChips f2 = new AddChips();
@@ -1198,35 +1202,35 @@ namespace Poker
             sorted.Current = 0;
             sorted.Power = 0;
             string fixedLast = "qwerty";
-            if (!pStatus.Text.Contains("Fold"))
+            if (!this.players[0].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
-                AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
-            if (!b1Status.Text.Contains("Fold"))
+            if (!this.players[1].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 1";
-                AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
-            if (!b2Status.Text.Contains("Fold"))
+            if (!this.players[2].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 2";
-                AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
-            if (!b3Status.Text.Contains("Fold"))
+            if (!this.players[3].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 3";
-                AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
-            if (!b4Status.Text.Contains("Fold"))
+            if (!this.players[4].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 4";
-                AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
-            if (!b5Status.Text.Contains("Fold"))
+            if (!this.players[5].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 5";
-                AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+                AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             }
 
             foreach (var player in players)
@@ -1257,7 +1261,7 @@ namespace Poker
             {
                 player.ChipsTextBox.Text = player.ChipsSet.Amount.ToString();
             }
-  
+
             if (players[0].ChipsSet.Amount <= 0)
             {
                 Pturn = false;
@@ -1314,7 +1318,7 @@ namespace Poker
         }
         private async void bFold_Click(object sender, EventArgs e)
         {
-            pStatus.Text = "Fold";
+            this.players[0].StatusLabel.Text = "Fold";
             Pturn = false;
             PFturn = true;
             await Turns();
@@ -1324,11 +1328,11 @@ namespace Poker
             if (call <= 0)
             {
                 Pturn = false;
-                pStatus.Text = "Check";
+                this.players[0].StatusLabel.Text = "Check";
             }
             else
             {
-                //pStatus.Text = "All in " + Chips;
+                //humanStatusLabel.Text = "All in " + Chips;
 
                 bCheck.Enabled = false;
             }
@@ -1336,7 +1340,7 @@ namespace Poker
         }
         private async void bCall_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
@@ -1352,13 +1356,13 @@ namespace Poker
                 }
 
                 Pturn = false;
-                pStatus.Text = "Call " + call;
+                this.players[0].StatusLabel.Text = "Call " + call;
                 pCall = call;
             }
             else if (players[0].ChipsSet.Amount <= call && call > 0)
             {
                 tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
-                pStatus.Text = "All in " + players[0].ChipsSet.Amount;
+                this.players[0].StatusLabel.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
                 players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
                 Pturn = false;
@@ -1369,7 +1373,7 @@ namespace Poker
         }
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, pStatus, Holder, Win, ref sorted, type);
+            AllRules.Rules(0, 1, players[0], PFturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
@@ -1387,7 +1391,7 @@ namespace Poker
                         {
                             call = int.Parse(tbRaise.Text);
                             Raise = int.Parse(tbRaise.Text);
-                            pStatus.Text = "Raise " + call.ToString();
+                            this.players[0].StatusLabel.Text = "Raise " + call.ToString();
                             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
                             bCall.Text = "Call";
                             players[0].ChipsSet.Amount -= int.Parse(tbRaise.Text);
@@ -1400,7 +1404,7 @@ namespace Poker
                             call = players[0].ChipsSet.Amount;
                             Raise = players[0].ChipsSet.Amount;
                             tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
-                            pStatus.Text = "Raise " + call.ToString();
+                            this.players[0].StatusLabel.Text = "Raise " + call.ToString();
                             players[0].ChipsSet.Amount = 0;
                             raising = true;
                             last = 0;
@@ -1536,6 +1540,16 @@ namespace Poker
                 this.bot3ChipsTextBox,
                 this.bot4ChipsTextBox,
                 this.bot5ChipsTextBox
+            };
+
+            this.playersStatusLabel = new List<Label>()
+            {
+                this.humanStatusLabel,
+                this.bot1StatusLabel,
+                this.bot2StatusLabel,
+                this.bot3StatusLabel,
+                this.bot4StatusLabel,
+                this.bot5StatusLabel
             };
         }
 

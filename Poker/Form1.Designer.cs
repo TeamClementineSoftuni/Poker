@@ -46,12 +46,12 @@ namespace Poker
             this.tbBB = new System.Windows.Forms.TextBox();
             this.tbSB = new System.Windows.Forms.TextBox();
             this.tbRaise = new System.Windows.Forms.TextBox();
-            this.b5Status = new System.Windows.Forms.Label();
-            this.b4Status = new System.Windows.Forms.Label();
-            this.b3Status = new System.Windows.Forms.Label();
-            this.b2Status = new System.Windows.Forms.Label();
-            this.b1Status = new System.Windows.Forms.Label();
-            this.pStatus = new System.Windows.Forms.Label();
+            this.bot5StatusLabel = new System.Windows.Forms.Label();
+            this.bot4StatusLabel = new System.Windows.Forms.Label();
+            this.bot3StatusLabel = new System.Windows.Forms.Label();
+            this.bot2StatusLabel = new System.Windows.Forms.Label();
+            this.bot1StatusLabel = new System.Windows.Forms.Label();
+            this.humanStatusLabel = new System.Windows.Forms.Label();
             this.bot5ChipsTextBox = new System.Windows.Forms.TextBox();
             this.bot4ChipsTextBox = new System.Windows.Forms.TextBox();
             this.bot3ChipsTextBox = new System.Windows.Forms.TextBox();
@@ -219,52 +219,52 @@ namespace Poker
             this.tbRaise.Size = new System.Drawing.Size(108, 20);
             this.tbRaise.TabIndex = 0;
             // 
-            // b5Status
+            // bot5StatusLabel
             // 
-            this.b5Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.b5Status.Location = new System.Drawing.Point(1012, 579);
-            this.b5Status.Name = "b5Status";
-            this.b5Status.Size = new System.Drawing.Size(152, 32);
-            this.b5Status.TabIndex = 26;
+            this.bot5StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bot5StatusLabel.Location = new System.Drawing.Point(1012, 579);
+            this.bot5StatusLabel.Name = "bot5StatusLabel";
+            this.bot5StatusLabel.Size = new System.Drawing.Size(152, 32);
+            this.bot5StatusLabel.TabIndex = 26;
             // 
-            // b4Status
+            // bot4StatusLabel
             // 
-            this.b4Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.b4Status.Location = new System.Drawing.Point(970, 107);
-            this.b4Status.Name = "b4Status";
-            this.b4Status.Size = new System.Drawing.Size(123, 32);
-            this.b4Status.TabIndex = 27;
+            this.bot4StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bot4StatusLabel.Location = new System.Drawing.Point(970, 107);
+            this.bot4StatusLabel.Name = "bot4StatusLabel";
+            this.bot4StatusLabel.Size = new System.Drawing.Size(123, 32);
+            this.bot4StatusLabel.TabIndex = 27;
             // 
-            // b3Status
+            // bot3StatusLabel
             // 
-            this.b3Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.b3Status.Location = new System.Drawing.Point(755, 107);
-            this.b3Status.Name = "b3Status";
-            this.b3Status.Size = new System.Drawing.Size(125, 32);
-            this.b3Status.TabIndex = 28;
+            this.bot3StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bot3StatusLabel.Location = new System.Drawing.Point(755, 107);
+            this.bot3StatusLabel.Name = "bot3StatusLabel";
+            this.bot3StatusLabel.Size = new System.Drawing.Size(125, 32);
+            this.bot3StatusLabel.TabIndex = 28;
             // 
-            // b2Status
+            // bot2StatusLabel
             // 
-            this.b2Status.Location = new System.Drawing.Point(276, 107);
-            this.b2Status.Name = "b2Status";
-            this.b2Status.Size = new System.Drawing.Size(133, 32);
-            this.b2Status.TabIndex = 31;
+            this.bot2StatusLabel.Location = new System.Drawing.Point(276, 107);
+            this.bot2StatusLabel.Name = "bot2StatusLabel";
+            this.bot2StatusLabel.Size = new System.Drawing.Size(133, 32);
+            this.bot2StatusLabel.TabIndex = 31;
             // 
-            // b1Status
+            // bot1StatusLabel
             // 
-            this.b1Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b1Status.Location = new System.Drawing.Point(181, 579);
-            this.b1Status.Name = "b1Status";
-            this.b1Status.Size = new System.Drawing.Size(142, 32);
-            this.b1Status.TabIndex = 29;
+            this.bot1StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bot1StatusLabel.Location = new System.Drawing.Point(181, 579);
+            this.bot1StatusLabel.Name = "bot1StatusLabel";
+            this.bot1StatusLabel.Size = new System.Drawing.Size(142, 32);
+            this.bot1StatusLabel.TabIndex = 29;
             // 
-            // pStatus
+            // humanStatusLabel
             // 
-            this.pStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.pStatus.Location = new System.Drawing.Point(755, 579);
-            this.pStatus.Name = "pStatus";
-            this.pStatus.Size = new System.Drawing.Size(163, 32);
-            this.pStatus.TabIndex = 30;
+            this.humanStatusLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.humanStatusLabel.Location = new System.Drawing.Point(755, 579);
+            this.humanStatusLabel.Name = "humanStatusLabel";
+            this.humanStatusLabel.Size = new System.Drawing.Size(163, 32);
+            this.humanStatusLabel.TabIndex = 30;
             // 
             // bot5ChipsTextBox
             // 
@@ -394,12 +394,12 @@ namespace Poker
             this.Controls.Add(this.bot1Panel);
             this.Controls.Add(this.tbRaise);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.b2Status);
-            this.Controls.Add(this.pStatus);
-            this.Controls.Add(this.b1Status);
-            this.Controls.Add(this.b3Status);
-            this.Controls.Add(this.b4Status);
-            this.Controls.Add(this.b5Status);
+            this.Controls.Add(this.bot2StatusLabel);
+            this.Controls.Add(this.humanStatusLabel);
+            this.Controls.Add(this.bot1StatusLabel);
+            this.Controls.Add(this.bot3StatusLabel);
+            this.Controls.Add(this.bot4StatusLabel);
+            this.Controls.Add(this.bot5StatusLabel);
             this.Controls.Add(this.tbBB);
             this.Controls.Add(this.bSB);
             this.Controls.Add(this.tbSB);
@@ -456,12 +456,12 @@ namespace Poker
         
         private Label label1;
         
-        private Label b5Status;
-        private Label b4Status;
-        private Label b3Status;
-        private Label b1Status;
-        private Label pStatus;
-        private Label b2Status;
+        private Label bot5StatusLabel;
+        private Label bot4StatusLabel;
+        private Label bot3StatusLabel;
+        private Label bot1StatusLabel;
+        private Label humanStatusLabel;
+        private Label bot2StatusLabel;
         
         private Panel humanPlayerPanel;
         private Panel bot1Panel;
