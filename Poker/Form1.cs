@@ -606,7 +606,7 @@ namespace Poker
                         FixCall(this.players[1].StatusLabel, ref b1Call, ref b1Raise, 2);
                         AllRules.Rules(2, 3, players[1], B1Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 1's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], ref B1turn, ref  B1Fturn, this.players[1].StatusLabel, 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], ref B1turn, ref  B1Fturn,  0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 1;
                         B1turn = false;
@@ -633,7 +633,7 @@ namespace Poker
                         FixCall(this.players[2].StatusLabel, ref b2Call, ref b2Raise, 2);
                         AllRules.Rules(4, 5, players[2], B2Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 2's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], ref B2turn, ref  B2Fturn, this.players[2].StatusLabel, 1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], ref B2turn, ref  B2Fturn,  1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 2;
                         B2turn = false;
@@ -660,7 +660,7 @@ namespace Poker
                         FixCall(this.players[3].StatusLabel, ref b3Call, ref b3Raise, 2);
                         AllRules.Rules(6, 7, players[3], B3Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 3's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], ref B3turn, ref  B3Fturn, this.players[3].StatusLabel, 2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], ref B3turn, ref  B3Fturn,  2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 3;
                         B3turn = false;
@@ -687,7 +687,7 @@ namespace Poker
                         FixCall(this.players[4].StatusLabel, ref b4Call, ref b4Raise, 2);
                         AllRules.Rules(8, 9, players[4], B4Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 4's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], ref B4turn, ref  B4Fturn, this.players[4].StatusLabel, 3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], ref B4turn, ref  B4Fturn,  3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 4;
                         B4turn = false;
@@ -714,7 +714,7 @@ namespace Poker
                         FixCall(this.players[5].StatusLabel, ref b5Call, ref b5Raise, 2);
                         AllRules.Rules(10, 11, players[5], B5Fturn, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                         MessageBox.Show("Bot 5's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], ref B5turn, ref  B5Fturn, this.players[5].StatusLabel, 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], ref B5turn, ref  B5Fturn, 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
                         turnCount++;
                         last = 5;
                         B5turn = false;
