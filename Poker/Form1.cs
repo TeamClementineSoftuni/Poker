@@ -171,7 +171,7 @@ namespace Poker
         private void ProcessHand()
         {
             int amountRaisedTo = 0;
-            int amountraisedToPrev = 0;
+            int prevAmountraisedTo = 0;
 
             for (int street = 0; street < 4; street++)
             {
@@ -181,38 +181,40 @@ namespace Poker
                 }
                 if (((street == 1) && amountRaisedTo>500)||street>1)
                 {
-                    amountRaisedTo -= amountraisedToPrev;
+                    amountRaisedTo -= prevAmountraisedTo;
                 }
 
                 for (int player = 1; player < players.Length; player++)
                 {
                     //activate next line when we run the game through this...
-                    //MessageBox.Show("Bot "+player+"'s Turn");
+                    MessageBox.Show("Bot "+player+"'s Turn");
                     if (!players[player].IsFolded || players[player].Chips > 0)
                     {
                         Actions act = ((Bot)players[player]).Act(street, amountRaisedTo, board);
                         switch (act)
                         {
                             case Actions.Fold:
-                                //set bot field for action text Fold
+                                //players[player].StatusLabel.Text = "Fold";
                                 break;
                             case Actions.Check:
                                 //set card if last player
-                                //set bot field for action text Check
+                                //players[player].StatusLabel.Text = "Check";
                                 break;
                             case Actions.Call:
+                                //players[player].StatusLabel.Text = "Call";
+                                //players[player].ChipsTextBox.Text = ""+players[player].Chips;
                                 this.pot += amountRaisedTo - players[player].PrevRaise;
-                                //set bot textfield for action text Call
-                                //set shown on table field of the pot to this.pot
                                 break;
                             case Actions.Raise:
                                 this.pot += amountRaisedTo - players[player].PrevRaise + players[player].Raise;
                                 amountRaisedTo += players[player].Raise;
                                 //set bot textfield for raise to players[player].Raise
                                 //set bot textfield for action text Raise
+                                //players[player].StatusLabel.Text = "Raise "+players[player].Raise;
                                 break;
                             case Actions.AllIn:
                                 this.pot += players[player].AllIn;
+                                //players[player].StatusLabel.Text = "All In";
                                 break;
                         }
                     }
@@ -221,7 +223,21 @@ namespace Poker
                 {
                     //show all bots cards which are not Fold
                 }
-                amountraisedToPrev = amountRaisedTo;
+                if (street == 1)
+                {
+                    board[0].Show();
+                    board[1].Show();
+                    board[2].Show();
+                }
+                if ((street == 2) && (prevAmountraisedTo == amountRaisedTo))
+                {
+                    board[3].Show();
+                }
+                if ((street == 3) && (prevAmountraisedTo == amountRaisedTo))
+                {
+                    board[4].Show();
+                }
+                prevAmountraisedTo = amountRaisedTo;
 
                 //while (playersLeftToAct.Count != 0)
                 //{
