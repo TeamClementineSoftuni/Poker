@@ -171,27 +171,76 @@ namespace Poker
         private void ProcessHand()
         {
             int amountRaisedTo = 0;
+            int amountraisedToPrev = 0;
 
             for (int street = 0; street < 4; street++)
             {
-                while (playersLeftToAct.Count != 0)
+                if (street==0)
                 {
-                    foreach (var player in playersLeftToAct)
+                    amountRaisedTo = 500;//or use BB or SB
+                }
+                if (((street == 1) && amountRaisedTo>500)||street>1)
+                {
+                    amountRaisedTo -= amountraisedToPrev;
+                }
+
+                for (int player = 1; player < players.Length; player++)
+                {
+                    //activate next line when we run the game through this...
+                    //MessageBox.Show("Bot "+player+"'s Turn");
+                    if (!players[player].IsFolded || players[player].Chips > 0)
                     {
-                        GameStatus currentGameStatus = player.Act(street, amountRaisedTo);
-
-                        if (currentGameStatus.Action == Actions.Fold)
+                        Actions act = ((Bot)players[player]).Act(street, amountRaisedTo, board);
+                        switch (act)
                         {
-                            this.playersLeftToAct.Remove(player);
+                            case Actions.Fold:
+                                //set bot field for action text Fold
+                                break;
+                            case Actions.Check:
+                                //set card if last player
+                                //set bot field for action text Check
+                                break;
+                            case Actions.Call:
+                                this.pot += amountRaisedTo - players[player].PrevRaise;
+                                //set bot textfield for action text Call
+                                //set shown on table field of the pot to this.pot
+                                break;
+                            case Actions.Raise:
+                                this.pot += amountRaisedTo - players[player].PrevRaise + players[player].Raise;
+                                amountRaisedTo += players[player].Raise;
+                                //set bot textfield for raise to players[player].Raise
+                                //set bot textfield for action text Raise
+                                break;
+                            case Actions.AllIn:
+                                this.pot += players[player].AllIn;
+                                break;
                         }
-                        else if (currentGameStatus.Action == Actions.Raise)
-                        {
-                            amountRaisedTo = currentGameStatus.AmountRaisedTo;
-                        }
-
-                        this.pot += currentGameStatus.ChipsAddedToPot;
                     }
                 }
+                if (street == 3)
+                {
+                    //show all bots cards which are not Fold
+                }
+                amountraisedToPrev = amountRaisedTo;
+
+                //while (playersLeftToAct.Count != 0)
+                //{
+                //    foreach (var player in playersLeftToAct)
+                //    {
+                //        GameStatus currentGameStatus = player.Act(street, amountRaisedTo);
+
+                //        if (currentGameStatus.Action == Actions.Fold)
+                //        {
+                //            this.playersLeftToAct.Remove(player);
+                //        }
+                //        else if (currentGameStatus.Action == Actions.Raise)
+                //        {
+                //            amountRaisedTo = currentGameStatus.AmountRaisedTo;
+                //        }
+
+                //        this.pot += currentGameStatus.ChipsAddedToPot;
+                //    }
+                //}
 
                 // TODO: figure out how to show common cards (board) after each street. Maybe solved?
                 // after the first street 3 cards are shown (flop)

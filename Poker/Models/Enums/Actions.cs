@@ -11,6 +11,7 @@ namespace Poker.Models
         Check,
         Fold,
         Call,
-        Raise
+        Raise,
+        AllIn
     }
 }
