@@ -54,6 +54,7 @@
     <Compile Include="ArtificialIntelligence\ArtificialIntelligence.cs" />
     <Compile Include="ArtificialIntelligence\HPAndPHAndSmooth.cs" />
     <Compile Include="ArtificialIntelligence\SomeMethods.cs" />
+    <Compile Include="Constants\Locations.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

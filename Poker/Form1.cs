@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.VisualStyles;
+using Poker.Constants;
 using Poker.Models;
 using Poker.Models.Players;
 
@@ -30,7 +31,6 @@ namespace Poker
         private List<Bot> playersNotFolded = new List<Bot>(); // Bot object should hava indicators for that(by Maria)
         private List<Bot> playersLeftToAct = new List<Bot>();
         private int pot = 0;
-        private List<Panel> playersPanels = new List<Panel>();
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private List<Player> listOfWinners = new List<Player>();
 
@@ -128,17 +128,18 @@ namespace Poker
         // parallel
         private void DealCards()
         {
-            players[0] = new Human();
+            Point humanLocation = Locations.PlayersLocations[0];
+            players[0] = new Human(humanLocation);
 
             for (int bot = 1; bot < players.Length; bot++)
             {
-                players[bot] = new Bot();
+                Point botLocation = Locations.PlayersLocations[bot];
+                players[bot] = new Bot(botLocation);
             }
 
             // Set the panel,ChipsTextBox and StatusLabel for every player
             for (int index = 0; index < players.Length; index++)
             {
-                players[index].Panel = playersPanels[index];
                 this.Controls.Add(players[index].Panel);
 
                 players[index].ChipsTextBox = playersChipsTextBoxs[index];
@@ -187,7 +188,7 @@ namespace Poker
                 for (int player = 1; player < players.Length; player++)
                 {
                     //activate next line when we run the game through this...
-                    MessageBox.Show("Bot "+player+"'s Turn");
+                   // MessageBox.Show("Bot "+player+"'s Turn");
                     if (!players[player].IsFolded || players[player].Chips > 0)
                     {
                         Actions act = ((Bot)players[player]).Act(street, amountRaisedTo, board);
@@ -1590,16 +1591,6 @@ namespace Poker
 
         private void InitializePlayersComponents()
         {
-            this.playersPanels = new List<Panel>()
-            {
-                this.humanPlayerPanel,
-                this.bot1Panel,
-                this.bot2Panel,
-                this.bot3Panel,
-                this.bot4Panel,
-                this.bot5Panel
-            };
-
             this.playersChipsTextBoxs = new List<TextBox>()
             {
                 this.humanChipsTextBox,

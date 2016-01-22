@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Poker.Models.Players;
+using System.Drawing;
 
 namespace Poker.Models
 {
@@ -12,8 +13,8 @@ namespace Poker.Models
 
         private string name;
 
-        public Bot()
-            : base(defaultBotName + instanceCounter)
+        public Bot(Point location)
+            : base(location, defaultBotName + instanceCounter)
         {
             instanceCounter++;
         }
@@ -24,16 +25,19 @@ namespace Poker.Models
             List<Card> cards = new List<Card>() { this.Hand.Card1, this.Hand.Card2 };
             switch (street)
             {
-                case 2: cards.Add(board[0]);
+                case 2:
+                    cards.Add(board[0]);
                     cards.Add(board[1]);
                     cards.Add(board[2]);
                     break;
-                case 3: cards.Add(board[0]);
+                case 3:
+                    cards.Add(board[0]);
                     cards.Add(board[1]);
                     cards.Add(board[2]);
                     cards.Add(board[3]);
                     break;
-                case 4: cards.Add(board[0]);
+                case 4:
+                    cards.Add(board[0]);
                     cards.Add(board[1]);
                     cards.Add(board[2]);
                     cards.Add(board[3]);
@@ -68,14 +72,14 @@ namespace Poker.Models
                     }
                     else
                     {
-                        if (this.Chips < raisedToAmount-this.PrevRaise + 1000)
+                        if (this.Chips < raisedToAmount - this.PrevRaise + 1000)
                         {
                             AllInWhenNotEnoughForTargetRaise(raisedToAmount);
                         }
                         else
                         {
                             this.Raise = 1000;
-                            this.Chips = this.Chips - (raisedToAmount-this.PrevRaise) - 1000;
+                            this.Chips = this.Chips - (raisedToAmount - this.PrevRaise) - 1000;
                         }
                     }
                     return Actions.Raise;

@@ -58,12 +58,6 @@ namespace Poker
             this.bot2ChipsTextBox = new System.Windows.Forms.TextBox();
             this.bot1ChipsTextBox = new System.Windows.Forms.TextBox();
             this.humanChipsTextBox = new System.Windows.Forms.TextBox();
-            this.humanPlayerPanel = new System.Windows.Forms.Panel();
-            this.bot1Panel = new System.Windows.Forms.Panel();
-            this.bot2Panel = new System.Windows.Forms.Panel();
-            this.bot3Panel = new System.Windows.Forms.Panel();
-            this.bot4Panel = new System.Windows.Forms.Panel();
-            this.bot5Panel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // bFold
@@ -325,60 +319,6 @@ namespace Poker
             this.humanChipsTextBox.TabIndex = 6;
             this.humanChipsTextBox.Text = "Chips : 0";
             // 
-            // humanPlayerPanel
-            // 
-            this.humanPlayerPanel.BackColor = System.Drawing.Color.DarkBlue;
-            this.humanPlayerPanel.Location = new System.Drawing.Point(569, 461);
-            this.humanPlayerPanel.Name = "humanPlayerPanel";
-            this.humanPlayerPanel.Size = new System.Drawing.Size(180, 150);
-            this.humanPlayerPanel.TabIndex = 33;
-            this.humanPlayerPanel.Visible = false;
-            // 
-            // bot1Panel
-            // 
-            this.bot1Panel.BackColor = System.Drawing.Color.DarkBlue;
-            this.bot1Panel.Location = new System.Drawing.Point(-5, 409);
-            this.bot1Panel.Name = "bot1Panel";
-            this.bot1Panel.Size = new System.Drawing.Size(180, 150);
-            this.bot1Panel.TabIndex = 32;
-            this.bot1Panel.Visible = false;
-            // 
-            // bot2Panel
-            // 
-            this.bot2Panel.BackColor = System.Drawing.Color.DarkBlue;
-            this.bot2Panel.Location = new System.Drawing.Point(73, 59);
-            this.bot2Panel.Name = "bot2Panel";
-            this.bot2Panel.Size = new System.Drawing.Size(180, 150);
-            this.bot2Panel.TabIndex = 35;
-            this.bot2Panel.Visible = false;
-            // 
-            // bot3Panel
-            // 
-            this.bot3Panel.BackColor = System.Drawing.Color.DarkBlue;
-            this.bot3Panel.Location = new System.Drawing.Point(569, 12);
-            this.bot3Panel.Name = "bot3Panel";
-            this.bot3Panel.Size = new System.Drawing.Size(180, 150);
-            this.bot3Panel.TabIndex = 36;
-            this.bot3Panel.Visible = false;
-            // 
-            // bot4Panel
-            // 
-            this.bot4Panel.BackColor = System.Drawing.Color.DarkBlue;
-            this.bot4Panel.Location = new System.Drawing.Point(1113, 59);
-            this.bot4Panel.Name = "bot4Panel";
-            this.bot4Panel.Size = new System.Drawing.Size(180, 150);
-            this.bot4Panel.TabIndex = 37;
-            this.bot4Panel.Visible = false;
-            // 
-            // bot5Panel
-            // 
-            this.bot5Panel.BackColor = System.Drawing.Color.DarkBlue;
-            this.bot5Panel.Location = new System.Drawing.Point(1158, 397);
-            this.bot5Panel.Name = "bot5Panel";
-            this.bot5Panel.Size = new System.Drawing.Size(180, 150);
-            this.bot5Panel.TabIndex = 34;
-            this.bot5Panel.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -386,12 +326,6 @@ namespace Poker
             this.BackgroundImage = global::Poker.Properties.Resources.poker_table___Copy;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1350, 729);
-            this.Controls.Add(this.bot4Panel);
-            this.Controls.Add(this.bot3Panel);
-            this.Controls.Add(this.bot2Panel);
-            this.Controls.Add(this.bot5Panel);
-            this.Controls.Add(this.humanPlayerPanel);
-            this.Controls.Add(this.bot1Panel);
             this.Controls.Add(this.tbRaise);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bot2StatusLabel);
@@ -462,13 +396,6 @@ namespace Poker
         private Label bot1StatusLabel;
         private Label humanStatusLabel;
         private Label bot2StatusLabel;
-        
-        private Panel humanPlayerPanel;
-        private Panel bot1Panel;
-        private Panel bot2Panel;
-        private Panel bot3Panel;
-        private Panel bot4Panel;
-        private Panel bot5Panel;
 
     }
 }
