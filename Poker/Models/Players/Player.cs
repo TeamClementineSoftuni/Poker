@@ -15,8 +15,6 @@ namespace Poker.Models.Players
 
         private double type = -1;
 
-        private bool turn = false;
-
         private bool isFolded;
 
         private int chips;
@@ -45,6 +43,7 @@ namespace Poker.Models.Players
             this.Name = name;
             this.Chips = chips;
             this.FoldedTurn = false;
+            this.Turn = false;
         }
 
         private void InitializePanel()

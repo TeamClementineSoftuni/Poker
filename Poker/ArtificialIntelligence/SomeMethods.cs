@@ -12,38 +12,38 @@ namespace Poker.ArtificialIntelligence
 
     public class SomeMethods
     {
-        public static void Check(Player player,ref bool cTurn, ref bool raising  )
+        public static void Check(Player player, ref bool raising  )
         {
             player.StatusLabel.Text = "Check";
-            cTurn = false;
+            player.Turn = false;
             raising = false;
         } 
 
-        public static void Call(Player player, ref bool sTurn, int call,ref  bool raising,TextBox tbPot)
+        public static void Call(Player player,  int call,ref  bool raising,TextBox tbPot)
         {
             raising = false;
-            sTurn = false;
+            player.Turn = false;
             player.ChipsSet.Amount -= call;
             player.StatusLabel.Text = "Call " + call;
             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
         }
 
-        public static void Fold(Player player ,ref bool sTurn,  ref bool raising)
+        public static void Fold(Player player ,  ref bool raising)
         {
             raising = false;
             player.StatusLabel.Text = "Fold";
-            sTurn = false;
+            player.Turn = false;
             player.FoldedTurn = true;
         }
 
-        public static void Raised(Player player, ref bool sTurn, ref int call, ref bool raising, TextBox tbPot,ref double Raise)
+        public static void Raised(Player player,  ref int call, ref bool raising, TextBox tbPot,ref double Raise)
         {
             player.ChipsSet.Amount -= Convert.ToInt32(Raise);
             player.StatusLabel.Text = "Raise " + Raise;
             tbPot.Text = (int.Parse(tbPot.Text) + Convert.ToInt32(Raise)).ToString();
             call = Convert.ToInt32(Raise);
             raising = true;
-            sTurn = false;
+            player.Turn = false;
         }
 
         public static double RoundN(int sChips, int n)
