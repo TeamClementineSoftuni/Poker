@@ -74,6 +74,7 @@
     <Compile Include="Models\Enums\Suits.cs" />
     <Compile Include="Models\Players\Human.cs" />
     <Compile Include="Models\Players\Player.cs" />
+    <Compile Include="Models\Pot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressBars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

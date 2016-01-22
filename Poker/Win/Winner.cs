@@ -1,4 +1,6 @@
-﻿namespace Poker.Win
+﻿using Poker.Models;
+
+namespace Poker.Win
 {
     using System.Collections.Generic;
     using System.Drawing;
@@ -73,8 +75,7 @@
             }
         }
 
-
-        public static void NumbersOfWinners(string lastly, List<Player> winners, TextBox tbPot)
+        public static void NumbersOfWinners(string lastly, List<Player> winners)
         {
             foreach (var winner in winners)
             {
@@ -82,15 +83,14 @@
                 {
                     if (winnersCounter == 1)
                     {
-                        winner.ChipsSet.Amount += int.Parse(tbPot.Text);
+                        winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     }
                     else if (winnersCounter > 1)
                     { 
-                        winner.ChipsSet.Amount += int.Parse(tbPot.Text) / winnersCounter;
+                        winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winnersCounter;
                         winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
                     }
                 }
-
             }
         }
     }

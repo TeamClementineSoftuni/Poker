@@ -8,12 +8,12 @@ namespace Poker.Models
 {
     public class ChipsSet
     {
-        private const int defaultChipsSetAmount = 10000;
+        private const int DefaultChipsSetAmount = 0;
         private int amount;
 
-        public ChipsSet(int amount = defaultChipsSetAmount)
+        public ChipsSet(int amount = DefaultChipsSetAmount)
         {
-            this.amount = amount;
+            this.Amount = amount;
         }
 
         public int Amount

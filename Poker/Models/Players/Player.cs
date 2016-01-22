@@ -10,14 +10,12 @@ namespace Poker.Models.Players
 {
     public abstract class Player
     {
-        private const int defaultStartingChips = 10000;
+        private const int defaultPlayerChipsSetAmount = 10000;
         private const string defaultPlayerName = "Player";
 
         private double type = -1;
 
         private bool isFolded;
-
-        private int chips;
 
         private int prevRaise = 0;
         private int allIn = 0;
@@ -26,7 +24,7 @@ namespace Poker.Models.Players
         private PictureBox card2PictureBox = new PictureBox();
 
 
-        protected Player(Point location, string name = defaultPlayerName, int chips = defaultStartingChips)
+        protected Player(Point location, string name = defaultPlayerName)
         {
             this.Location = location;
             InitializePanel();
@@ -35,10 +33,9 @@ namespace Poker.Models.Players
             Point point = new Point(this.Location.X + this.Card1PictureBox.Width, this.Location.Y);
             InitializeCardPictureBox(this.Card2PictureBox, new Point(this.Location.X + this.Card1PictureBox.Width, this.Location.Y));  //TODO: refactor 
             this.ChipsTextBox = new TextBox();
-            this.ChipsSet = new ChipsSet();
+            this.ChipsSet = new ChipsSet(defaultPlayerChipsSetAmount);
             this.Hand = new Hand();
             this.Name = name;
-            this.Chips = chips;
             this.FoldedTurn = false;
             this.Turn = false;
             this.Call = 0;
@@ -98,22 +95,6 @@ namespace Poker.Models.Players
         }
         public string Name { get; set; }
 
-        public int Chips
-        {
-            get { return this.chips; }
-            set
-            {
-                if (value < 1)
-                {
-                    this.chips = 0;
-                }
-                else
-                {
-                    this.chips = value;
-                }
-            }
-        }
-
         public Hand Hand { get; set; }
 
         public Panel Panel { get; set; }
@@ -137,6 +118,7 @@ namespace Poker.Models.Players
         public int Raise { get; set; }
 
         public int PrevRaise { get; set; }
+
         public int AllIn { get; set; }
 
         public bool FoldedTurn { get; set; }

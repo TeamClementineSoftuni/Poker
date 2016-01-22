@@ -30,10 +30,11 @@ namespace Poker
         private Player[] players = new Player[6];
         private List<Bot> playersNotFolded = new List<Bot>(); // Bot object should hava indicators for that(by Maria)
         private List<Bot> playersLeftToAct = new List<Bot>();
-        private int pot = 0;
+
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private List<Player> listOfWinners = new List<Player>();
         private List<Label> playersStatusLabel = new List<Label>();
+
 
 
         //TODO: initialize arrays and lists
@@ -92,14 +93,15 @@ namespace Poker
             //parallel branch
             InitializePlayersComponents();
             DealCards();
-            ProcessHand();
+            //ProcessHand();
             // parallel
 
             width = this.Width;
             height = this.Height;
             Shuffle();
 
-            tbPot.Enabled = false;
+            Pot.Instance.PotTextBox = potTextBox;
+            Pot.Instance.PotTextBox.Enabled = false;
 
             timer.Interval = (1 * 1 * 1000);
             timer.Tick += timer_Tick;
@@ -167,107 +169,107 @@ namespace Poker
 
         // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
         // and somehow getting rid of if-s with polymorphism i guess?
-        private void ProcessHand()
-        {
-            int amountRaisedTo = 0;
-            int prevAmountraisedTo = 0;
+        //private void ProcessHand()
+        //{
+        //    int amountRaisedTo = 0;
+        //    int prevAmountraisedTo = 0;
 
-            for (int street = 0; street < 4; street++)
-            {
-                if (street == 0)
-                {
-                    amountRaisedTo = 500;//or use BB or SB
-                }
-                if (((street == 1) && amountRaisedTo > 500) || street > 1)
-                {
-                    amountRaisedTo -= prevAmountraisedTo;
-                }
+        //    for (int street = 0; street < 4; street++)
+        //    {
+        //        if (street == 0)
+        //        {
+        //            amountRaisedTo = 500;//or use BB or SB
+        //        }
+        //        if (((street == 1) && amountRaisedTo > 500) || street > 1)
+        //        {
+        //            amountRaisedTo -= prevAmountraisedTo;
+        //        }
 
-                for (int player = 1; player < players.Length; player++)
-                {
-                    //activate next line when we run the game through this...
-                    // MessageBox.Show("Bot "+player+"'s Turn");
-                    if (!players[player].IsFolded || players[player].Chips > 0)
-                    {
-                        Actions act = ((Bot)players[player]).Act(street, amountRaisedTo, board);
-                        switch (act)
-                        {
-                            case Actions.Fold:
-                                //players[player].StatusLabel.Text = "Fold";
-                                break;
-                            case Actions.Check:
-                                //set card if last player
-                                //players[player].StatusLabel.Text = "Check";
-                                break;
-                            case Actions.Call:
-                                //players[player].StatusLabel.Text = "Call";
-                                //players[player].ChipsTextBox.Text = ""+players[player].Chips;
-                                this.pot += amountRaisedTo - players[player].PrevRaise;
-                                break;
-                            case Actions.Raise:
-                                this.pot += amountRaisedTo - players[player].PrevRaise + players[player].Raise;
-                                amountRaisedTo += players[player].Raise;
-                                //set bot textfield for raise to players[player].Raise
-                                //set bot textfield for action text Raise
-                                //players[player].StatusLabel.Text = "Raise "+players[player].Raise;
-                                break;
-                            case Actions.AllIn:
-                                this.pot += players[player].AllIn;
-                                //players[player].StatusLabel.Text = "All In";
-                                break;
-                        }
-                    }
-                }
-                if (street == 3)
-                {
-                    //show all bots cards which are not Fold
-                }
-                if (street == 1)
-                {
-                    board[0].Show();
-                    board[1].Show();
-                    board[2].Show();
-                }
-                if ((street == 2) && (prevAmountraisedTo == amountRaisedTo))
-                {
-                    board[3].Show();
-                }
-                if ((street == 3) && (prevAmountraisedTo == amountRaisedTo))
-                {
-                    board[4].Show();
-                }
-                prevAmountraisedTo = amountRaisedTo;
+        //        for (int player = 1; player < players.Length; player++)
+        //        {
+        //            //activate next line when we run the game through this...
+        //            // MessageBox.Show("Bot "+player+"'s Turn");
+        //            if (!players[player].IsFolded || players[player].ChipsSet.Amount > 0)
+        //            {
+        //                Actions act = ((Bot)players[player]).Act(street, amountRaisedTo, board);
+        //                switch (act)
+        //                {
+        //                    case Actions.Fold:
+        //                        //players[player].StatusLabel.Text = "Fold";
+        //                        break;
+        //                    case Actions.Check:
+        //                        //set card if last player
+        //                        //players[player].StatusLabel.Text = "Check";
+        //                        break;
+        //                    case Actions.Call:
+        //                        //players[player].StatusLabel.Text = "Call";
+        //                        //players[player].ChipsTextBox.Text = ""+players[player].Chips;
+        //                        //Pot.Instance.ChipsSet.Amount += amountRaisedTo - players[player].PrevRaise;
+        //                        break;
+        //                    case Actions.Raise:
+        //                        //Pot.Instance.ChipsSet.Amount += amountRaisedTo - players[player].PrevRaise + players[player].Raise;
+        //                        //amountRaisedTo += players[player].Raise;
+        //                        //set bot textfield for raise to players[player].Raise
+        //                        //set bot textfield for action text Raise
+        //                        //players[player].StatusLabel.Text = "Raise "+players[player].Raise;
+        //                        break;
+        //                    case Actions.AllIn:
+        //                        //Pot.Instance.ChipsSet.Amount += players[player].AllIn;
+        //                        //players[player].StatusLabel.Text = "All In";
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //        if (street == 3)
+        //        {
+        //            //show all bots cards which are not Fold
+        //        }
+        //        if (street == 1)
+        //        {
+        //            board[0].Show();
+        //            board[1].Show();
+        //            board[2].Show();
+        //        }
+        //        if ((street == 2) && (prevAmountraisedTo == amountRaisedTo))
+        //        {
+        //            board[3].Show();
+        //        }
+        //        if ((street == 3) && (prevAmountraisedTo == amountRaisedTo))
+        //        {
+        //            board[4].Show();
+        //        }
+        //        prevAmountraisedTo = amountRaisedTo;
 
-                //while (playersLeftToAct.Count != 0)
-                //{
-                //    foreach (var player in playersLeftToAct)
-                //    {
-                //        GameStatus currentGameStatus = player.Act(street, amountRaisedTo);
+        //        //while (playersLeftToAct.Count != 0)
+        //        //{
+        //        //    foreach (var player in playersLeftToAct)
+        //        //    {
+        //        //        GameStatus currentGameStatus = player.Act(street, amountRaisedTo);
 
-                //        if (currentGameStatus.Action == Actions.Fold)
-                //        {
-                //            this.playersLeftToAct.Remove(player);
-                //        }
-                //        else if (currentGameStatus.Action == Actions.Raise)
-                //        {
-                //            amountRaisedTo = currentGameStatus.AmountRaisedTo;
-                //        }
+        //        //        if (currentGameStatus.Action == Actions.Fold)
+        //        //        {
+        //        //            this.playersLeftToAct.Remove(player);
+        //        //        }
+        //        //        else if (currentGameStatus.Action == Actions.Raise)
+        //        //        {
+        //        //            amountRaisedTo = currentGameStatus.AmountRaisedTo;
+        //        //        }
 
-                //        this.pot += currentGameStatus.ChipsAddedToPot;
-                //    }
-                //}
+        //        //        this.pot += currentGameStatus.ChipsAddedToPot;
+        //        //    }
+        //        //}
 
-                // TODO: figure out how to show common cards (board) after each street. Maybe solved?
-                // after the first street 3 cards are shown (flop)
-                //after the last street, no more cards from the board are left to be shown. That's why
-                //there are 2 conditions in the loop
-                for (int boardCard = 0; boardCard < street + 3 && boardCard < board.Length; boardCard++)
-                {
-                    //Show() method is not implemented
-                    board[boardCard].Show();
-                }
-            }
-        }
+        //        // TODO: figure out how to show common cards (board) after each street. Maybe solved?
+        //        // after the first street 3 cards are shown (flop)
+        //        //after the last street, no more cards from the board are left to be shown. That's why
+        //        //there are 2 conditions in the loop
+        //        for (int boardCard = 0; boardCard < street + 3 && boardCard < board.Length; boardCard++)
+        //        {
+        //            //Show() method is not implemented
+        //            board[boardCard].Show();
+        //        }
+        //    }
+        //}
         //parallel
 
         async Task Shuffle()
@@ -680,7 +682,8 @@ namespace Poker
                                 FixCall(this.players[index], 2);
                                 AllRules.Rules(cardCount, cardCount + 1, players[index], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
                                 MessageBox.Show(players[index].Name + "'s Turn");
-                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising);
+                                Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
                                 turnCount++;
                                 last = index;
                                 this.players[index].Turn = false;
@@ -856,7 +859,7 @@ namespace Poker
                 foreach (var player in players)
                 {
                     Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
-                    Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners, this.tbPot);
+                    Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
                 }
 
                 restart = true;
@@ -921,7 +924,8 @@ namespace Poker
                     Holder[os].Invalidate();
                     Holder[os].Visible = false;
                 }
-                tbPot.Text = "0";
+
+                Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
                 this.players[0].StatusLabel.Text = "";
                 await Shuffle();
                 await Turns();
@@ -1030,46 +1034,49 @@ namespace Poker
                 int index = bools.IndexOf(false);
                 if (index == 0)
                 {
-                    players[0].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
                     this.players[0].Panel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
-                    players[1].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[1].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[1].ChipsSet.ToString();
                     this.players[1].Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
-                    players[2].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[2].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[2].ChipsSet.ToString();
                     this.players[2].Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
-                    players[3].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[3].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[3].ChipsSet.ToString();
                     this.players[3].Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
-                    players[4].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[4].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[4].ChipsSet.ToString();
                     this.players[4].Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
-                    players[5].ChipsSet.Amount += int.Parse(tbPot.Text);
+                    players[5].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     players[0].ChipsTextBox.Text = players[5].ChipsSet.ToString();
                     this.players[5].Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
                 }
+
+
+
                 for (int j = 0; j <= 16; j++)
                 {
                     Holder[j].Visible = false;
@@ -1133,7 +1140,8 @@ namespace Poker
             Win.Clear();
             sorted.Current = 0;
             sorted.Power = 0;
-            tbPot.Text = "0";
+
+            Pot.Instance.ChipsSet.Amount = 0;
             t = 60; up = 10000000; turnCount = 0;
 
             foreach (var player in this.players)
@@ -1220,7 +1228,7 @@ namespace Poker
             foreach (var player in players)
             {
                 Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
-                Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners, this.tbPot);
+                Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
             }
         }
 
@@ -1239,6 +1247,7 @@ namespace Poker
                 pbTimer.Value = (t / 6) * 100;
             }
         }
+
         private void Update_Tick(object sender, object e)
         {
             foreach (var player in players)
@@ -1300,6 +1309,7 @@ namespace Poker
                 bRaise.Enabled = false;
             }
         }
+
         private async void bFold_Click(object sender, EventArgs e)
         {
             this.players[0].StatusLabel.Text = "Fold";
@@ -1307,6 +1317,7 @@ namespace Poker
             this.players[0].FoldedTurn = true;
             await Turns();
         }
+
         private async void bCheck_Click(object sender, EventArgs e)
         {
             if (call <= 0)
@@ -1322,39 +1333,36 @@ namespace Poker
             }
             await Turns();
         }
+
         private async void bCall_Click(object sender, EventArgs e)
         {
             AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
-                players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
-
-                if (tbPot.Text != "")
-                {
-                    tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
-                }
-                else
-                {
-                    tbPot.Text = call.ToString();
-                }
-
-                this.players[0].Turn = false;
+                Pot.Instance.ChipsSet.Amount += call;
+               
                 this.players[0].StatusLabel.Text = "Call " + call;
                 players[0].Call = call;
             }
             else if (players[0].ChipsSet.Amount <= call && call > 0)
             {
-                tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
+                Pot.Instance.ChipsSet.Amount += players[0].ChipsSet.Amount;
+
                 this.players[0].StatusLabel.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
-                players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
-                this.players[0].Turn = false;
+                
                 bFold.Enabled = false;
                 players[0].Call = players[0].ChipsSet.Amount;
             }
+
+            players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
+            Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
+            this.players[0].Turn = false;
+
             await Turns();
         }
+
         private async void bRaise_Click(object sender, EventArgs e)
         {
             AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
@@ -1376,7 +1384,8 @@ namespace Poker
                             call = int.Parse(tbRaise.Text);
                             Raise = int.Parse(tbRaise.Text);
                             this.players[0].StatusLabel.Text = "Raise " + call.ToString();
-                            tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
+                            Pot.Instance.ChipsSet.Amount += call;
+
                             bCall.Text = "Call";
                             players[0].ChipsSet.Amount -= int.Parse(tbRaise.Text);
                             raising = true;
@@ -1387,7 +1396,8 @@ namespace Poker
                         {
                             call = players[0].ChipsSet.Amount;
                             Raise = players[0].ChipsSet.Amount;
-                            tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
+                            Pot.Instance.ChipsSet.Amount += players[0].ChipsSet.Amount;
+  
                             this.players[0].StatusLabel.Text = "Raise " + call.ToString();
                             players[0].ChipsSet.Amount = 0;
                             raising = true;
@@ -1403,6 +1413,8 @@ namespace Poker
                 return;
             }
             this.players[0].Turn = false;
+            Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
+
             await Turns();
         }
         private void bAdd_Click(object sender, EventArgs e)

@@ -42,7 +42,7 @@ namespace Poker
             this.pbTimer = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.tbAdd = new System.Windows.Forms.TextBox();
-            this.tbPot = new System.Windows.Forms.TextBox();
+            this.potTextBox = new System.Windows.Forms.TextBox();
             this.tbBB = new System.Windows.Forms.TextBox();
             this.tbSB = new System.Windows.Forms.TextBox();
             this.tbRaise = new System.Windows.Forms.TextBox();
@@ -179,15 +179,15 @@ namespace Poker
             this.tbAdd.Size = new System.Drawing.Size(125, 20);
             this.tbAdd.TabIndex = 8;
             // 
-            // tbPot
+            // potTextBox
             // 
-            this.tbPot.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tbPot.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbPot.Location = new System.Drawing.Point(606, 212);
-            this.tbPot.Name = "tbPot";
-            this.tbPot.Size = new System.Drawing.Size(125, 23);
-            this.tbPot.TabIndex = 14;
-            this.tbPot.Text = "0";
+            this.potTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.potTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.potTextBox.Location = new System.Drawing.Point(606, 212);
+            this.potTextBox.Name = "potTextBox";
+            this.potTextBox.Size = new System.Drawing.Size(125, 23);
+            this.potTextBox.TabIndex = 14;
+            this.potTextBox.Text = "0";
             // 
             // tbBB
             // 
@@ -339,7 +339,7 @@ namespace Poker
             this.Controls.Add(this.tbSB);
             this.Controls.Add(this.bBB);
             this.Controls.Add(this.bOptions);
-            this.Controls.Add(this.tbPot);
+            this.Controls.Add(this.potTextBox);
             this.Controls.Add(this.bot1ChipsTextBox);
             this.Controls.Add(this.bot2ChipsTextBox);
             this.Controls.Add(this.bot3ChipsTextBox);
@@ -386,7 +386,7 @@ namespace Poker
         private TextBox bot3ChipsTextBox;
         private TextBox bot2ChipsTextBox;
         private TextBox bot1ChipsTextBox;
-        private TextBox tbPot;
+        private TextBox potTextBox;
         
         private Label label1;
         

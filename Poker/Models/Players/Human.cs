@@ -9,7 +9,8 @@ namespace Poker.Models.Players
 {
     public class Human : Player
     {
-        public Human(Point location, string name = "Player", int chips = 10000) : base(location, name, chips)
+        public Human(Point location) 
+            : base(location)
         {
             this.Turn = true;
         }

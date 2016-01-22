@@ -12,20 +12,20 @@ namespace Poker.ArtificialIntelligence
 
     public class SomeMethods
     {
-        public static void Check(Player player, ref bool raising  )
+        public static void Check(Player player, ref bool raising)
         {
             player.StatusLabel.Text = "Check";
             player.Turn = false;
             raising = false;
         } 
 
-        public static void Call(Player player,  int call,ref  bool raising,TextBox tbPot)
+        public static void Call(Player player,  int call,ref  bool raising)
         {
             raising = false;
             player.Turn = false;
             player.ChipsSet.Amount -= call;
             player.StatusLabel.Text = "Call " + call;
-            tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
+            Pot.Instance.ChipsSet.Amount += call;
         }
 
         public static void Fold(Player player ,  ref bool raising)
@@ -36,11 +36,11 @@ namespace Poker.ArtificialIntelligence
             player.FoldedTurn = true;
         }
 
-        public static void Raised(Player player,  ref int call, ref bool raising, TextBox tbPot,ref double Raise)
+        public static void Raised(Player player,  ref int call, ref bool raising, ref double Raise)
         {
             player.ChipsSet.Amount -= Convert.ToInt32(Raise);
             player.StatusLabel.Text = "Raise " + Raise;
-            tbPot.Text = (int.Parse(tbPot.Text) + Convert.ToInt32(Raise)).ToString();
+            Pot.Instance.ChipsSet.Amount += Convert.ToInt32(Raise);
             call = Convert.ToInt32(Raise);
             raising = true;
             player.Turn = false;
@@ -51,9 +51,5 @@ namespace Poker.ArtificialIntelligence
             double a = Math.Round((sChips / n) / 100d, 0) * 100;
             return a;
         }
-
-      
     }
-
-   
 }
