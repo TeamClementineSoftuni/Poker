@@ -12,7 +12,7 @@ namespace Poker.ArtificialIntelligence
 
     public class HPAndPHAndSmooth
     {
-        public static void HP(Player player, ref bool sTurn, ref bool sFTurn, int n, int n1,ref int call, ref double Raise, ref bool raising, TextBox tbPod)
+        public static void HP(Player player, ref bool sTurn, int n, int n1,ref int call, ref double Raise, ref bool raising, TextBox tbPod)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 4);
@@ -30,7 +30,7 @@ namespace Poker.ArtificialIntelligence
                     }
                     else
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn, ref raising);
+                        SomeMethods.Fold(player,ref sTurn, ref raising);
                     }
                 }
                 if (rnd == 2)
@@ -41,7 +41,7 @@ namespace Poker.ArtificialIntelligence
                     }
                     else
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,   ref raising);
                     }
                 }
             }
@@ -61,18 +61,18 @@ namespace Poker.ArtificialIntelligence
                     }
                     else
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,   ref raising);
                     }
                 }
             }
             if (player.ChipsSet.Amount <= 0)
             {
-                sFTurn = true;
+                player.FoldedTurn = true;
             }
         }
 
 
-        public static void PH(Player player, ref bool sTurn, ref bool sFTurn, int n, int n1, int r, ref double rounds, ref int call, ref double Raise, ref bool raising, TextBox tbPot)
+        public static void PH(Player player, ref bool sTurn,  int n, int n1, int r, ref double rounds, ref int call, ref double Raise, ref bool raising, TextBox tbPot)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 3);
@@ -86,13 +86,13 @@ namespace Poker.ArtificialIntelligence
                 {
                     if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,   ref raising);
                     }
                     if (Raise > SomeMethods.RoundN(player.ChipsSet.Amount, n))
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,   ref raising);
                     }
-                    if (!sFTurn)
+                    if (!player.FoldedTurn)
                     {
                         if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n) && call <= SomeMethods.RoundN(player.ChipsSet.Amount, n))
                         {
@@ -125,13 +125,13 @@ namespace Poker.ArtificialIntelligence
                 {
                     if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n1 - rnd))
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,  ref raising);
                     }
                     if (Raise > SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd))
                     {
-                        SomeMethods.Fold(player,ref sTurn, ref sFTurn,  ref raising);
+                        SomeMethods.Fold(player,ref sTurn,   ref raising);
                     }
-                    if (!sFTurn)
+                    if (!player.FoldedTurn)
                     {
                         if (call >= SomeMethods.RoundN(player.ChipsSet.Amount, n - rnd) && call <= SomeMethods.RoundN(player.ChipsSet.Amount, n1 - rnd))
                         {
@@ -164,11 +164,11 @@ namespace Poker.ArtificialIntelligence
             }
             if (player.ChipsSet.Amount <= 0)
             {
-                sFTurn = true;
+                player.FoldedTurn = true;
             }
         }
        
-        public static void Smooth(Player player, ref bool botTurn, ref bool botFTurn, int name, int n, int r, ref int call, ref double Raise,ref bool raising, TextBox tbPot)
+        public static void Smooth(Player player, ref bool botTurn,  int name, int n, int r, ref int call, ref double Raise,ref bool raising, TextBox tbPot)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 3);
@@ -217,7 +217,7 @@ namespace Poker.ArtificialIntelligence
             }
             if (player.ChipsSet.Amount <= 0)
             {
-                botFTurn = true;
+                player.FoldedTurn = true;
             }
         }
     }

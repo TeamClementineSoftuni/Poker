@@ -28,12 +28,12 @@ namespace Poker.ArtificialIntelligence
             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
         }
 
-        public static void Fold(Player player ,ref bool sTurn, ref bool sFTurn, ref bool raising)
+        public static void Fold(Player player ,ref bool sTurn,  ref bool raising)
         {
             raising = false;
             player.StatusLabel.Text = "Fold";
             sTurn = false;
-            sFTurn = true;
+            player.FoldedTurn = true;
         }
 
         public static void Raised(Player player, ref bool sTurn, ref int call, ref bool raising, TextBox tbPot,ref double Raise)

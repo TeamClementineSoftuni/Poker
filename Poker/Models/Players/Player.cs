@@ -22,8 +22,11 @@ namespace Poker.Models.Players
         private int chips;
         private int call = 0;
         private int raise = 0;
+
+
         private int prevRaise = 0;
         private int allIn = 0;
+        
         private PictureBox card1PictureBox = new PictureBox();
         private PictureBox card2PictureBox = new PictureBox();
 
@@ -41,6 +44,7 @@ namespace Poker.Models.Players
             this.Hand = new Hand();
             this.Name = name;
             this.Chips = chips;
+            this.FoldedTurn = false;
         }
 
         private void InitializePanel()
@@ -134,6 +138,8 @@ namespace Poker.Models.Players
         public int Raise { get; set; }
         public int PrevRaise { get; set; }
         public int AllIn { get; set; }
+
+        public bool FoldedTurn { get; set; }
 
     }
 }

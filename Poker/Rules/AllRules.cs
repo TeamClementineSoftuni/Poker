@@ -10,13 +10,13 @@
 
     public class AllRules
     {
-        public static void Rules(int c1, int c2, Player player , bool foldedTurn, int[] Reserve, int i, Label pStatus, PictureBox[] Holder,
+        public static void Rules(int c1, int c2, Player player ,  int[] Reserve, int i, Label pStatus, PictureBox[] Holder,
             List<Type> Win, ref Type sorted, double type)
         {
             if (c1 == 0 && c2 == 1)
             {
             }
-            if (!foldedTurn || c1 == 0 && c2 == 1 && pStatus.Text.Contains("Fold") == false)
+            if (!player.FoldedTurn || c1 == 0 && c2 == 1 && pStatus.Text.Contains("Fold") == false)
             {
                 #region Variables
                 bool done = false, vf = false;
