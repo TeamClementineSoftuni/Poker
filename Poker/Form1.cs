@@ -48,11 +48,7 @@ namespace Poker
         private double type;
         double rounds = 0, Raise = 0;
 
-
-
-
-        bool pFolded, b1Folded, b2Folded, b3Folded, b4Folded, b5Folded, intsadded, changed;
-
+        bool intsadded, changed;
 
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         int last = 123, raisedTurn = 1;
@@ -650,14 +646,14 @@ namespace Poker
             if (this.players[0].FoldedTurn || !this.players[0].Turn)
             {
                 await AllIn();
-                if (this.players[0].FoldedTurn && !pFolded)
+                if (this.players[0].FoldedTurn && !players[0].IsFolded)
                 {
                     if (bCall.Text.Contains("All in") == false || bRaise.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        pFolded = true;
+                        players[0].IsFolded = true;
                     }
                 }
                 await CheckRaise(0, 0);
@@ -670,149 +666,67 @@ namespace Poker
                 timer.Stop();
                 this.players[1].Turn = true;
 
+                int cardCount = 2;
+                for (int index = 0; index < players.Length; index++)
+                {
+                    if (players[index] is Bot)
+                    {
+                        if (!this.players[index].FoldedTurn)
+                        {
+                            if (this.players[index].Turn)
+                            {
+                                FixCall(this.players[index], 1);
+                                FixCall(this.players[index], 2);
+                                AllRules.Rules(cardCount, cardCount + 1, players[index], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                                MessageBox.Show(players[index].Name + "'s Turn");
+                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
+                                turnCount++;
+                                last = index;
+                                this.players[index].Turn = false;
+                                if (index != players.Length - 1)
+                                {
+                                    this.players[index + 1].Turn = true;
+                                }
 
-                if (!this.players[1].FoldedTurn)
-                {
-                    if (this.players[1].Turn)
-                    {
-                        FixCall(this.players[1], 1);
-                        FixCall(this.players[1], 2);
-                        AllRules.Rules(2, 3, players[1], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                        MessageBox.Show("Bot 1's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(2, 3, players[1], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
-                        turnCount++;
-                        last = 1;
-                        this.players[1].Turn = false;
-                        this.players[2].Turn = true;
+                            }
+
+                        }
+
+                        if (this.players[index].FoldedTurn && !players[index].IsFolded)
+                        {
+                            bools.RemoveAt(index);
+                            bools.Insert(index, null);
+                            maxLeft--;
+                            players[index].IsFolded = true;
+                        }
+                        if (this.players[index].FoldedTurn || !this.players[index].Turn)
+                        {
+                            await CheckRaise(index, index);
+
+                            if (index != players.Length - 1)
+                            {
+                                this.players[index + 1].Turn = true;
+                            }
+                            else
+                            {
+                                players[0].Turn = true;
+                            }
+
+                        }
+
+                        cardCount += 2;
                     }
                 }
-                if (this.players[1].FoldedTurn && !b1Folded)
-                {
-                    bools.RemoveAt(1);
-                    bools.Insert(1, null);
-                    maxLeft--;
-                    b1Folded = true;
-                }
-                if (this.players[1].FoldedTurn || !this.players[1].Turn)
-                {
-                    await CheckRaise(1, 1);
-                    this.players[2].Turn = true;
-                }
-                if (!this.players[2].FoldedTurn)
-                {
-                    if (this.players[2].Turn)
-                    {
-                        FixCall(this.players[2], 1);
-                        FixCall(this.players[2], 2);
-                        AllRules.Rules(4, 5, players[2], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                        MessageBox.Show("Bot 2's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(4, 5, players[2], 1, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
-                        turnCount++;
-                        last = 2;
-                        this.players[2].Turn = false;
-                        this.players[3].Turn = true;
-                    }
-                }
-                if (this.players[2].FoldedTurn && !b2Folded)
-                {
-                    bools.RemoveAt(2);
-                    bools.Insert(2, null);
-                    maxLeft--;
-                    b2Folded = true;
-                }
-                if (this.players[2].FoldedTurn || !this.players[2].Turn)
-                {
-                    await CheckRaise(2, 2);
-                    this.players[3].Turn = true;
-                }
-                if (!this.players[3].FoldedTurn)
-                {
-                    if (this.players[3].Turn)
-                    {
-                        FixCall(this.players[3], 1);
-                        FixCall(this.players[3], 2);
-                        AllRules.Rules(6, 7, players[3], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                        MessageBox.Show("Bot 3's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(6, 7, players[3], 2, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
-                        turnCount++;
-                        last = 3;
-                        this.players[3].Turn = false;
-                        this.players[4].Turn = true;
-                    }
-                }
-                if (this.players[3].FoldedTurn && !b3Folded)
-                {
-                    bools.RemoveAt(3);
-                    bools.Insert(3, null);
-                    maxLeft--;
-                    b3Folded = true;
-                }
-                if (this.players[3].FoldedTurn || !this.players[3].Turn)
-                {
-                    await CheckRaise(3, 3);
-                    this.players[4].Turn = true;
-                }
-                if (!this.players[4].FoldedTurn)
-                {
-                    if (this.players[4].Turn)
-                    {
-                        FixCall(this.players[4], 1);
-                        FixCall(this.players[4], 2);
-                        AllRules.Rules(8, 9, players[4], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                        MessageBox.Show("Bot 4's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(8, 9, players[4], 3, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
-                        turnCount++;
-                        last = 4;
-                        this.players[4].Turn = false;
-                        this.players[5].Turn = true;
-                    }
-                }
-                if (this.players[4].FoldedTurn && !b4Folded)
-                {
-                    bools.RemoveAt(4);
-                    bools.Insert(4, null);
-                    maxLeft--;
-                    b4Folded = true;
-                }
-                if (this.players[4].FoldedTurn || !this.players[4].Turn)
-                {
-                    await CheckRaise(4, 4);
-                    this.players[5].Turn = true;
-                }
-                if (!this.players[5].FoldedTurn)
-                {
-                    if (this.players[5].Turn)
-                    {
-                        FixCall(this.players[5], 1);
-                        FixCall(this.players[5], 2);
-                        AllRules.Rules(10, 11, players[5], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                        MessageBox.Show("Bot 5's Turn");
-                        ArtificialIntelligence.ArtificialIntelligence.AI(10, 11, players[5], 4, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising, this.tbPot);
-                        turnCount++;
-                        last = 5;
-                        this.players[5].Turn = false;
-                    }
-                }
-                if (this.players[5].FoldedTurn && !b5Folded)
-                {
-                    bools.RemoveAt(5);
-                    bools.Insert(5, null);
-                    maxLeft--;
-                    b5Folded = true;
-                }
-                if (this.players[5].FoldedTurn || !this.players[5].Turn)
-                {
-                    await CheckRaise(5, 5);
-                    this.players[0].Turn = true;
-                }
-                if (this.players[0].FoldedTurn && !pFolded)
+
+
+                if (this.players[0].FoldedTurn && !players[0].IsFolded)
                 {
                     if (bCall.Text.Contains("All in") == false || bRaise.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        pFolded = true;
+                        players[0].IsFolded = true;
                     }
                 }
             #endregion
@@ -986,7 +900,7 @@ namespace Poker
                     player.Call = 0;
                     player.Raise = 0;
                 }
-               last = 0;
+                last = 0;
                 call = bb;
                 Raise = 0;
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
@@ -1196,6 +1110,9 @@ namespace Poker
             foreach (var player in this.players)
             {
                 player.FoldedTurn = false;
+                player.IsFolded = false;
+                player.Call = 0;
+                player.Raise = 0;
                 if (player is Bot)
                 {
                     player.Turn = false;
@@ -1206,16 +1123,8 @@ namespace Poker
                 }
             }
 
-            pFolded = false; b1Folded = false; b2Folded = false; b3Folded = false; b4Folded = false; b5Folded = false;
             restart = false; raising = false;
-
-            foreach (var player in this.players)
-            {
-                player.Call = 0;
-                player.Raise = 0;
-            }
-
-           height = 0; width = 0; winners = 0; Flop = 1; Turn = 2; River = 3; End = 4; maxLeft = 6;
+            height = 0; width = 0; winners = 0; Flop = 1; Turn = 2; River = 3; End = 4; maxLeft = 6;
             last = 123; raisedTurn = 1;
             bools.Clear();
             listOfWinners.Clear();
