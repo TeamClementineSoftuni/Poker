@@ -18,9 +18,6 @@ namespace Poker.Models.Players
         private bool isFolded;
 
         private int chips;
-        private int call = 0;
-        private int raise = 0;
-
 
         private int prevRaise = 0;
         private int allIn = 0;
@@ -44,6 +41,9 @@ namespace Poker.Models.Players
             this.Chips = chips;
             this.FoldedTurn = false;
             this.Turn = false;
+            this.Call = 0;
+            this.Raise = 0;
+
         }
 
         private void InitializePanel()
@@ -135,6 +135,7 @@ namespace Poker.Models.Players
         public int Call { get; set; }
 
         public int Raise { get; set; }
+
         public int PrevRaise { get; set; }
         public int AllIn { get; set; }
 

@@ -80,10 +80,13 @@
             {
                 if (winner.Name == lastly)//lastfixed 
                 {
-                    winner.ChipsSet.Amount += int.Parse(tbPot.Text) / winnersCounter;
-
-                    if (winnersCounter > 1)
+                    if (winnersCounter == 1)
                     {
+                        winner.ChipsSet.Amount += int.Parse(tbPot.Text);
+                    }
+                    else if (winnersCounter > 1)
+                    { 
+                        winner.ChipsSet.Amount += int.Parse(tbPot.Text) / winnersCounter;
                         winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
                     }
                 }
