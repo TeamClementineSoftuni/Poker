@@ -33,14 +33,13 @@ namespace Poker
         private int pot = 0;
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private List<Player> listOfWinners = new List<Player>();
-
         private List<Label> playersStatusLabel = new List<Label>();
+
 
         //TODO: initialize arrays and lists
         // parallel branch
 
         #region Variables
-        ProgressBar asd = new ProgressBar();
         public int Nm;
 
         int call = 500, foldedPlayers = 5;
@@ -55,10 +54,11 @@ namespace Poker
 
         List<bool?> bools = new List<bool?>();
         List<Type> Win = new List<Type>();
-
         List<int> ints = new List<int>();
+
         bool restart = false, raising = false;
         Poker.Type sorted;
+
         string[] ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] ImgLocation ={
                    "Assets\\Cards\\33.png","Assets\\Cards\\22.png",
@@ -71,6 +71,7 @@ namespace Poker
                     "Assets\\Cards\\12.png",
                     "Assets\\Cards\\8.png","Assets\\Cards\\18.png",
                     "Assets\\Cards\\15.png","Assets\\Cards\\27.png"};*/
+
         int[] Reserve = new int[17];
         Image[] Deck = new Image[52];
         PictureBox[] Holder = new PictureBox[52];
@@ -1030,42 +1031,42 @@ namespace Poker
                 if (index == 0)
                 {
                     players[0].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
                     this.players[0].Panel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
                     players[1].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[1].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[1].ChipsSet.ToString();
                     this.players[1].Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
                     players[2].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[2].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[2].ChipsSet.ToString();
                     this.players[2].Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
                     players[3].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[3].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[3].ChipsSet.ToString();
                     this.players[3].Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
                     players[4].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[4].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[4].ChipsSet.ToString();
                     this.players[4].Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
                     players[5].ChipsSet.Amount += int.Parse(tbPot.Text);
-                    players[0].ChipsTextBox.Text = players[5].ChipsSet.Amount.ToString();
+                    players[0].ChipsTextBox.Text = players[5].ChipsSet.ToString();
                     this.players[5].Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
                 }
@@ -1185,8 +1186,6 @@ namespace Poker
             sorted.Power = 0;
             string fixedLast = "qwerty";
 
-
-
             if (!this.players[0].StatusLabel.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
@@ -1244,7 +1243,7 @@ namespace Poker
         {
             foreach (var player in players)
             {
-                player.ChipsTextBox.Text = player.ChipsSet.Amount.ToString();
+                player.ChipsTextBox.Text = player.ChipsSet.ToString();
             }
 
             if (players[0].ChipsSet.Amount <= 0)
@@ -1329,7 +1328,7 @@ namespace Poker
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
-                players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
 
                 if (tbPot.Text != "")
                 {
@@ -1349,7 +1348,7 @@ namespace Poker
                 tbPot.Text = (int.Parse(tbPot.Text) + players[0].ChipsSet.Amount).ToString();
                 this.players[0].StatusLabel.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
-                players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+                players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
                 this.players[0].Turn = false;
                 bFold.Enabled = false;
                 players[0].Call = players[0].ChipsSet.Amount;
@@ -1527,6 +1526,5 @@ namespace Poker
                 this.bot5StatusLabel
             };
         }
-
     }
 }
