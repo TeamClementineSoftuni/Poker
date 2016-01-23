@@ -825,35 +825,15 @@ namespace Poker
             if (rounds == End && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
-                if (!this.players[0].StatusLabel.Text.Contains("Fold"))
+                int cardIndex = 0;
+                foreach (var player in players)
                 {
-                    fixedLast = "Player";
-                    AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                }
-                if (!this.players[1].StatusLabel.Text.Contains("Fold"))
-                {
-                    fixedLast = "Bot 1";
-                    AllRules.Rules(2, 3, players[1], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                }
-                if (!this.players[2].StatusLabel.Text.Contains("Fold"))
-                {
-                    fixedLast = "Bot 2";
-                    AllRules.Rules(4, 5, players[2], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                }
-                if (!this.players[3].StatusLabel.Text.Contains("Fold"))
-                {
-                    fixedLast = "Bot 3";
-                    AllRules.Rules(6, 7, players[3], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                }
-                if (!this.players[4].StatusLabel.Text.Contains("Fold"))
-                {
-                    fixedLast = "Bot 4";
-                    AllRules.Rules(8, 9, players[4], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-                }
-                if (!this.players[5].StatusLabel.Text.Contains("Fold"))
-                {
-                    fixedLast = "Bot 5";
-                    AllRules.Rules(10, 11, players[5], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                    if (!player.StatusLabel.Text.Contains("Fold"))
+                    {
+                        fixedLast = player.Name;
+                        AllRules.Rules(cardIndex, cardIndex + 1, player, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                    }
+                    cardIndex += 2;
                 }
 
                 foreach (var player in players)
@@ -1032,50 +1012,16 @@ namespace Poker
             if (abc == 1)
             {
                 int index = bools.IndexOf(false);
-                if (index == 0)
+                for (int playerNumber = 0; playerNumber < players.Length; playerNumber++)
                 {
-                    players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[0].ChipsSet.ToString();
-                    this.players[0].Panel.Visible = true;
-                    MessageBox.Show("Player Wins");
+                    if (index == playerNumber)
+                    {
+                        players[playerNumber].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
+                        players[0].ChipsTextBox.Text = players[playerNumber].ChipsSet.ToString();
+                        this.players[playerNumber].Panel.Visible = true;
+                        MessageBox.Show(players[playerNumber].Name + " Wins");
+                    }
                 }
-                if (index == 1)
-                {
-                    players[1].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[1].ChipsSet.ToString();
-                    this.players[1].Panel.Visible = true;
-                    MessageBox.Show("Bot 1 Wins");
-                }
-                if (index == 2)
-                {
-                    players[2].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[2].ChipsSet.ToString();
-                    this.players[2].Panel.Visible = true;
-                    MessageBox.Show("Bot 2 Wins");
-                }
-                if (index == 3)
-                {
-                    players[3].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[3].ChipsSet.ToString();
-                    this.players[3].Panel.Visible = true;
-                    MessageBox.Show("Bot 3 Wins");
-                }
-                if (index == 4)
-                {
-                    players[4].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[4].ChipsSet.ToString();
-                    this.players[4].Panel.Visible = true;
-                    MessageBox.Show("Bot 4 Wins");
-                }
-                if (index == 5)
-                {
-                    players[5].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    players[0].ChipsTextBox.Text = players[5].ChipsSet.ToString();
-                    this.players[5].Panel.Visible = true;
-                    MessageBox.Show("Bot 5 Wins");
-                }
-
-
 
                 for (int j = 0; j <= 16; j++)
                 {
@@ -1193,39 +1139,18 @@ namespace Poker
             sorted.Current = 0;
             sorted.Power = 0;
             string fixedLast = "qwerty";
-
-            if (!this.players[0].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Player";
-                AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-            if (!this.players[1].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Bot 1";
-                AllRules.Rules(2, 3, players[1], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-            if (!this.players[2].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Bot 2";
-                AllRules.Rules(4, 5, players[2], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-            if (!this.players[3].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Bot 3";
-                AllRules.Rules(6, 7, players[3], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-            if (!this.players[4].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Bot 4";
-                AllRules.Rules(8, 9, players[4], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-            if (!this.players[5].StatusLabel.Text.Contains("Fold"))
-            {
-                fixedLast = "Bot 5";
-                AllRules.Rules(10, 11, players[5], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
-            }
-
+            int cardIndex = 0;
             foreach (var player in players)
+            {
+                if (!player.StatusLabel.Text.Contains("Fold"))
+                {
+                    fixedLast = player.Name;
+                    AllRules.Rules(cardIndex, cardIndex + 1, player, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                }
+                cardIndex += 2;
+            }
+
+           foreach (var player in players)
             {
                 Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
                 Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
@@ -1341,7 +1266,7 @@ namespace Poker
             {
                 players[0].ChipsSet.Amount -= call;
                 Pot.Instance.ChipsSet.Amount += call;
-               
+
                 this.players[0].StatusLabel.Text = "Call " + call;
                 players[0].Call = call;
             }
@@ -1351,7 +1276,7 @@ namespace Poker
 
                 this.players[0].StatusLabel.Text = "All in " + players[0].ChipsSet.Amount;
                 players[0].ChipsSet.Amount = 0;
-                
+
                 bFold.Enabled = false;
                 players[0].Call = players[0].ChipsSet.Amount;
             }
@@ -1397,7 +1322,7 @@ namespace Poker
                             call = players[0].ChipsSet.Amount;
                             Raise = players[0].ChipsSet.Amount;
                             Pot.Instance.ChipsSet.Amount += players[0].ChipsSet.Amount;
-  
+
                             this.players[0].StatusLabel.Text = "Raise " + call.ToString();
                             players[0].ChipsSet.Amount = 0;
                             raising = true;
