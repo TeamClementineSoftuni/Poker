@@ -1,4 +1,5 @@
-﻿using Poker.Models;
+﻿using System.Linq;
+using Poker.Models;
 
 namespace Poker.Win
 {
@@ -11,7 +12,7 @@ namespace Poker.Win
     {
         private static int winnersCounter = 0;
 
-        public static void WinnerMessege(Player player, string lastly, Image[] Deck, PictureBox[] Holder, Poker.Type sorted, List<Player> winners)
+        public static void WinnerMessege(Player player, string lastly, Image[] Deck, PictureBox[] Holder, List<Type> winnersTypes, List<Player> winners)
         {
             if (lastly == " ")
             {
@@ -25,9 +26,11 @@ namespace Poker.Win
                     Holder[j].Image = Deck[j];
             }
 
-            if (player.Type == sorted.Current)
+            Type higherType = winnersTypes.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
+
+            if (player.Type == higherType.Current)
             {
-                if (player.Power == sorted.Power)
+                if (player.Power == higherType.Power)
                 {
                     winnersCounter++;
                     winners.Add(player);

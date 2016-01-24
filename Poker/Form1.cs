@@ -35,7 +35,7 @@ namespace Poker
         private List<Player> listOfWinners = new List<Player>();
         private List<Label> playersStatusLabel = new List<Label>();
 
-
+        private List<Type> winnersTypes = new List<Type>();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -54,11 +54,10 @@ namespace Poker
         int last = 123, raisedTurn = 1;
 
         List<bool?> bools = new List<bool?>();
-        List<Type> Win = new List<Type>();
+        
         List<int> ints = new List<int>();
 
         bool restart = false, raising = false;
-        Poker.Type sorted;
 
         string[] ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] ImgLocation ={
@@ -680,7 +679,7 @@ namespace Poker
                             {
                                 FixCall(this.players[index], 1);
                                 FixCall(this.players[index], 2);
-                                AllRules.Rules(cardCount, cardCount + 1, players[index], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                                AllRules.ApplyRules(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes, type);
                                 MessageBox.Show(players[index].Name + "'s Turn");
                                 ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising);
                                 Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
@@ -831,14 +830,14 @@ namespace Poker
                     if (!player.StatusLabel.Text.Contains("Fold"))
                     {
                         fixedLast = player.Name;
-                        AllRules.Rules(cardIndex, cardIndex + 1, player, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                        AllRules.ApplyRules(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
                     }
                     cardIndex += 2;
                 }
-
+                
                 foreach (var player in players)
                 {
-                    Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
+                    Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
                     Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
                 }
 
@@ -895,9 +894,8 @@ namespace Poker
                 ints.Clear();
                 listOfWinners.Clear();
                 winners = 0;
-                Win.Clear();
-                sorted.Current = 0;
-                sorted.Power = 0;
+                winnersTypes.Clear();
+
                 for (int os = 0; os < 17; os++)
                 {
                     Holder[os].Image = null;
@@ -1083,9 +1081,7 @@ namespace Poker
             bools.Clear();
             listOfWinners.Clear();
             ints.Clear();
-            Win.Clear();
-            sorted.Current = 0;
-            sorted.Power = 0;
+            winnersTypes.Clear();
 
             Pot.Instance.ChipsSet.Amount = 0;
             t = 60; up = 10000000; turnCount = 0;
@@ -1135,9 +1131,8 @@ namespace Poker
 
         void FixWinners()
         {
-            Win.Clear();
-            sorted.Current = 0;
-            sorted.Power = 0;
+            winnersTypes.Clear();
+
             string fixedLast = "qwerty";
             int cardIndex = 0;
             foreach (var player in players)
@@ -1145,14 +1140,14 @@ namespace Poker
                 if (!player.StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = player.Name;
-                    AllRules.Rules(cardIndex, cardIndex + 1, player, Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+                    AllRules.ApplyRules(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
                 }
                 cardIndex += 2;
             }
 
-           foreach (var player in players)
+            foreach (var player in players)
             {
-                Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, this.sorted, this.listOfWinners);
+                Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
                 Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
             }
         }
@@ -1261,7 +1256,7 @@ namespace Poker
 
         private async void bCall_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+            AllRules.ApplyRules(0, 1, players[0], Reserve, Holder, winnersTypes, type);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
@@ -1290,7 +1285,7 @@ namespace Poker
 
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            AllRules.Rules(0, 1, players[0], Reserve, i, this.players[0].StatusLabel, Holder, Win, ref sorted, type);
+            AllRules.ApplyRules(0, 1, players[0], Reserve, Holder, winnersTypes, type);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
