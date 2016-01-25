@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Poker
 {
-    public class Type
+    public class Result
     {
         public double Power { get; set; }
-        public double Current { get; set; }
+        public double Type { get; set; }
     }
 }

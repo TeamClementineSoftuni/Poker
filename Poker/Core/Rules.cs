@@ -6,12 +6,11 @@
     using System.Windows.Forms;
     using Models.Players;
 
-    using Type = Poker.Type;
+    using Poker.Models;
 
     public class Rules
     {
-        public static void Apply(int card1, int card2, Player player, int[] Reserve, PictureBox[] Holder,
-            List<Type> Win, double type)
+        public static void Apply(int card1, int card2, Player player, int[] Reserve, PictureBox[] Holder, List<Result> results)
         {
             if (!player.FoldedTurn)
             {
@@ -48,42 +47,42 @@
                     {
                         //Pair from Hand current = 1
 
-                        CheckPairFromHand(player, Win, Reserve,i);
+                        CheckPairFromHand(player, results, Reserve,i);
 
                         #region Pair or Two Pair from Table current = 2 || 0
-                        CheckPairTwoPair(player, Win, Reserve, i);
+                        CheckPairTwoPair(player, results, Reserve, i);
                         #endregion
 
                         #region Two Pair current = 2
-                        CheckTwoPair(player, Win, Reserve, i);
+                        CheckTwoPair(player, results, Reserve, i);
                         #endregion
 
                         #region Three of a kind current = 3
-                        CheckThreeOfAKind(player, Straight, Win);
+                        CheckThreeOfAKind(player, Straight, results);
                         #endregion
 
                         #region Straight current = 4
-                        CheckStraight(player, Straight, Win);
+                        CheckStraight(player, Straight, results);
                         #endregion
 
                         #region Flush current = 5 || 5.5
-                        CheckFlush(player, ref vf, Straight1, Win, Reserve, i);
+                        CheckFlush(player, ref vf, Straight1, results, Reserve, i);
                         #endregion
 
                         #region Full House current = 6
-                        CheckFullHouse(player, ref done, Straight, Win, type);
+                        CheckFullHouse(player, ref done, Straight, results);
                         #endregion
 
                         #region Four of a Kind current = 7
-                        CheckFourOfAKind(player, Straight, Win);
+                        CheckFourOfAKind(player, Straight, results);
                         #endregion
 
                         #region Straight Flush current = 8 || 9
-                        CheckStraightFlush(player, st1, st2, st3, st4, Win);
+                        CheckStraightFlush(player, st1, st2, st3, st4, results);
                         #endregion
 
                         #region High Card current = -1
-                        CheckHighCard(player, Win, Reserve, i);
+                        CheckHighCard(player, results, Reserve, i);
                         #endregion
 
                        
@@ -92,66 +91,65 @@
             }
         }
 
-        private static void CheckStraightFlush(Player player, int[] st1, int[] st2, int[] st3, int[] st4, List<Type> Win)
+        private static void CheckStraightFlush(Player player, int[] st1, int[] st2, int[] st3, int[] st4, List<Result> results)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
-                ProcessHandsArrays(player, st1, Win);
-                ProcessHandsArrays(player, st2, Win);
-                ProcessHandsArrays(player, st3, Win);
-                ProcessHandsArrays(player, st4, Win); 
+                ProcessHandsArrays(player, st1, results);
+                ProcessHandsArrays(player, st2, results);
+                ProcessHandsArrays(player, st3, results);
+                ProcessHandsArrays(player, st4, results); 
             }
         }
 
-        private static void ProcessHandsArrays(Player player, int[] handsArray, List<Type> Win)
+        private static void ProcessHandsArrays(Player player, int[] handsArray, List<Result> results)
         {
             if (handsArray.Length >= 5)
             {
                 if (handsArray[0] + 4 == handsArray[4])
                 {
-                    player.Type = 8;
-                    player.Power = handsArray.Max()/4 + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 8});
+                    player.Result.Type = 8;
+                    player.Result.Power = handsArray.Max()/4 + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 8});
                 }
 
                 if (handsArray[0] == 0 && handsArray[1] == 9 && handsArray[2] == 10 && handsArray[3] == 11 && handsArray[0] + 12 == handsArray[4])
                 {
-                    player.Type = 9;
-                    player.Power = handsArray.Max()/4 + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 9});
+                    player.Result.Type = 9;
+                    player.Result.Power = handsArray.Max()/4 + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 9});
                 }
             }
         }
 
-        private static void CheckFourOfAKind(Player player, int[] Straight, List<Type> Win)
+        private static void CheckFourOfAKind(Player player, int[] Straight, List<Result> results)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 for (int j = 0; j <= 3; j++)
                 {
                     if (Straight[j] / 4 == Straight[j + 1] / 4 && Straight[j] / 4 == Straight[j + 2] / 4 &&
                         Straight[j] / 4 == Straight[j + 3] / 4)
                     {
-                        player.Type = 7;
-                        player.Power = (Straight[j] / 4) * 4 + player.Type * 100;
-                        Win.Add(new Type() { Power = player.Power, Current = 7 });
+                        player.Result.Type = 7;
+                        player.Result.Power = (Straight[j] / 4) * 4 + player.Result.Type * 100;
+                        results.Add(new Result() { Power = player.Result.Power, Type = 7 });
                     }
 
                     if (Straight[j] / 4 == 0 && Straight[j + 1] / 4 == 0 && Straight[j + 2] / 4 == 0 && Straight[j + 3] / 4 == 0)
                     {
-                        player.Type = 7;
-                        player.Power = 13 * 4 + player.Type * 100;
-                        Win.Add(new Type() { Power = player.Power, Current = 7 });
+                        player.Result.Type = 7;
+                        player.Result.Power = 13 * 4 + player.Result.Type * 100;
+                        results.Add(new Result() { Power = player.Result.Power, Type = 7 });
                     }
                 }
             }
         }
 
-        private static void CheckFullHouse(Player player, ref bool done, int[] Straight, List<Type> Win, double type)
+        private static void CheckFullHouse(Player player, ref bool done, int[] Straight, List<Result> results)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
-                type = player.Power;
                 for (int j = 0; j <= 12; j++)
                 {
                     var fh = Straight.Where(o => o / 4 == j).ToArray();
@@ -161,17 +159,17 @@
                         {
                             if (fh.Max() / 4 == 0)
                             {
-                                player.Type = 6;
-                                player.Power = 13 * 2 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 6 });
+                                player.Result.Type = 6;
+                                player.Result.Power = 13 * 2 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 6 });
                                 break;
                             }
 
                             if (fh.Max() / 4 > 0)
                             {
-                                player.Type = 6;
-                                player.Power = fh.Max() / 4 * 2 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 6 });
+                                player.Result.Type = 6;
+                                player.Result.Power = fh.Max() / 4 * 2 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 6 });
                                 break;
                             }
                         }
@@ -180,44 +178,39 @@
                         {
                             if (fh.Max() / 4 == 0)
                             {
-                                player.Power = 13;
+                                player.Result.Power = 13;
                                 done = true;
                                 j = -1;
                             }
                             else
                             {
-                                player.Power = fh.Max() / 4;
+                                player.Result.Power = fh.Max() / 4;
                                 done = true;
                                 j = -1;
                             }
                         }
                     }
                 }
-
-                if (player.Type != 6)
-                {
-                    player.Power = type;
-                }
             }
         }
 
-        private static void CheckFlush(Player player, ref bool vf, int[] Straight1, List<Type> Win, int[] Reserve, int i)
+        private static void CheckFlush(Player player, ref bool vf, int[] Straight1, List<Result> results, int[] Reserve, int i)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 var f1 = Straight1.Where(o => o % 4 == 0).ToArray();
                 var f2 = Straight1.Where(o => o % 4 == 1).ToArray();
                 var f3 = Straight1.Where(o => o % 4 == 2).ToArray();
                 var f4 = Straight1.Where(o => o % 4 == 3).ToArray();
 
-                ProcessBoardHandArray(player, ref vf, Win, Reserve, i, f1);
-                ProcessBoardHandArray(player, ref vf, Win, Reserve, i, f2);
-                ProcessBoardHandArray(player, ref vf, Win, Reserve, i, f3);
-                ProcessBoardHandArray(player, ref vf, Win, Reserve, i, f4);
+                ProcessBoardHandArray(player, ref vf, results, Reserve, i, f1);
+                ProcessBoardHandArray(player, ref vf, results, Reserve, i, f2);
+                ProcessBoardHandArray(player, ref vf, results, Reserve, i, f3);
+                ProcessBoardHandArray(player, ref vf, results, Reserve, i, f4);
             }
         }
 
-        private static void ProcessBoardHandArray(Player player, ref bool vf, List<Type> Win, int[] Reserve, int index,
+        private static void ProcessBoardHandArray(Player player, ref bool vf, List<Result> results, int[] Reserve, int index,
             int[] handsArray)
         {
             if (handsArray.Length == 3 || handsArray.Length == 4)
@@ -226,23 +219,23 @@
                 {
                     if (Reserve[index] /4 > handsArray.Max()/4)
                     {
-                        player.Type = 5;
-                        player.Power = Reserve[index] + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = Reserve[index] + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                     if (Reserve[index + 1]/4 > handsArray.Max()/4)
                     {
-                        player.Type = 5;
-                        player.Power = Reserve[index + 1] + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = Reserve[index + 1] + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                     else if (Reserve[index] /4 < handsArray.Max()/4 && Reserve[index + 1]/4 < handsArray.Max()/4)
                     {
-                        player.Type = 5;
-                        player.Power = handsArray.Max() + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = handsArray.Max() + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                 }
@@ -254,16 +247,16 @@
                 {
                     if (Reserve[index] /4 > handsArray.Max()/4)
                     {
-                        player.Type = 5;
-                        player.Power = Reserve[index] + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = Reserve[index] + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                     else
                     {
-                        player.Type = 5;
-                        player.Power = handsArray.Max() + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = handsArray.Max() + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                 }
@@ -271,16 +264,16 @@
                 {
                     if (Reserve[index + 1]/4 > handsArray.Max()/4)
                     {
-                        player.Type = 5;
-                        player.Power = Reserve[index + 1] + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = Reserve[index + 1] + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                     else
                     {
-                        player.Type = 5;
-                        player.Power = handsArray.Max() + player.Type*100;
-                        Win.Add(new Type() {Power = player.Power, Current = 5});
+                        player.Result.Type = 5;
+                        player.Result.Power = handsArray.Max() + player.Result.Type * 100;
+                        results.Add(new Result() {Power = player.Result.Power, Type = 5});
                         vf = true;
                     }
                 }
@@ -290,23 +283,23 @@
             {
                 if (Reserve[index] %4 == handsArray[0]%4 && Reserve[index] /4 > handsArray.Min()/4)
                 {
-                    player.Type = 5;
-                    player.Power = Reserve[index] + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 5});
+                    player.Result.Type = 5;
+                    player.Result.Power = Reserve[index] + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 5});
                     vf = true;
                 }
                 if (Reserve[index + 1]%4 == handsArray[0]%4 && Reserve[index + 1]/4 > handsArray.Min()/4)
                 {
-                    player.Type = 5;
-                    player.Power = Reserve[index + 1] + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 5});
+                    player.Result.Type = 5;
+                    player.Result.Power = Reserve[index + 1] + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 5});
                     vf = true;
                 }
                 else if (Reserve[index] /4 < handsArray.Min()/4 && Reserve[index + 1]/4 < handsArray.Min())
                 {
-                    player.Type = 5;
-                    player.Power = handsArray.Max() + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 5});
+                    player.Result.Type = 5;
+                    player.Result.Power = handsArray.Max() + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 5});
                     vf = true;
                 }
             }
@@ -315,22 +308,22 @@
             {
                 if (Reserve[index] /4 == 0 && Reserve[index] %4 == handsArray[0]%4)
                 {
-                    player.Type = 5.5;
-                    player.Power = 13 + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 5.5});
+                    player.Result.Type = 5.5;
+                    player.Result.Power = 13 + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 5.5});
                 }
                 if (Reserve[index + 1]/4 == 0 && Reserve[index + 1]%4 == handsArray[0]%4)
                 {
-                    player.Type = 5.5;
-                    player.Power = 13 + player.Type*100;
-                    Win.Add(new Type() {Power = player.Power, Current = 5.5});
+                    player.Result.Type = 5.5;
+                    player.Result.Power = 13 + player.Result.Type * 100;
+                    results.Add(new Result() {Power = player.Result.Power, Type = 5.5});
                 }
             }
         }
 
-        private static void CheckStraight(Player player, int[] Straight, List<Type> Win)
+        private static void CheckStraight(Player player, int[] Straight, List<Result> results)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 var op = Straight.Select(o => o / 4).Distinct().ToArray();
                 for (int j = 0; j < op.Length - 4; j++)
@@ -340,30 +333,30 @@
                         if (op.Max() - 4 == op[j])
                         {
 
-                            player.Type = 4;
-                            player.Power = op.Max() + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 4 });
+                            player.Result.Type = 4;
+                            player.Result.Power = op.Max() + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 4 });
                         }
                         else
                         {
-                            player.Type = 4;
-                            player.Power = op[j + 4] + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 4 });
+                            player.Result.Type = 4;
+                            player.Result.Power = op[j + 4] + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 4 });
                         }
                     }
                     if (op[j] == 0 && op[j + 1] == 9 && op[j + 2] == 10 && op[j + 3] == 11 && op[j + 4] == 12)
                     {
-                        player.Type = 4;
-                        player.Power = 13 + player.Type * 100;
-                        Win.Add(new Type() { Power = player.Power, Current = 4 });
+                        player.Result.Type = 4;
+                        player.Result.Power = 13 + player.Result.Type * 100;
+                        results.Add(new Result() { Power = player.Result.Power, Type = 4 });
                     }
                 }
             }
         }
 
-        private static void CheckThreeOfAKind(Player player, int[] Straight, List<Type> Win)
+        private static void CheckThreeOfAKind(Player player, int[] Straight, List<Result> results)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 for (int j = 0; j <= 12; j++)
                 {
@@ -372,24 +365,24 @@
                     {
                         if (fh.Max() / 4 == 0)
                         {
-                            player.Type = 3;
-                            player.Power = 13 * 3 + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 3 });
+                            player.Result.Type = 3;
+                            player.Result.Power = 13 * 3 + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 3 });
                         }
                         else
                         {
-                            player.Type = 3;
-                            player.Power = fh[0] / 4 + fh[1] / 4 + fh[2] / 4 + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 3 });
+                            player.Result.Type = 3;
+                            player.Result.Power = fh[0] / 4 + fh[1] / 4 + fh[2] / 4 + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 3 });
                         }
                     }
                 }
             }
         }
 
-        private static void CheckTwoPair(Player player, List<Type> Win, int[] Reserve, int i)
+        private static void CheckTwoPair(Player player, List<Result> results, int[] Reserve, int i)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 bool msgbox = false;
                 for (int tc = 16; tc >= 12; tc--)
@@ -412,21 +405,21 @@
                                     {
                                         if (Reserve[i] / 4 == 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = 13 * 4 + (Reserve[i + 1] / 4) * 2 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = 13 * 4 + (Reserve[i + 1] / 4) * 2 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                         if (Reserve[i + 1] / 4 == 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = 13 * 4 + (Reserve[i] / 4) * 2 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = 13 * 4 + (Reserve[i] / 4) * 2 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                         else
                                         {
-                                            player.Type = 2;
-                                            player.Power = (Reserve[i] / 4) * 2 + (Reserve[i + 1] / 4) * 2 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = (Reserve[i] / 4) * 2 + (Reserve[i + 1] / 4) * 2 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                     }
                                     msgbox = true;
@@ -438,9 +431,9 @@
             }
         }
 
-        private static void CheckPairTwoPair(Player player, List<Type> Win, int[] Reserve, int i)
+        private static void CheckPairTwoPair(Player player, List<Result> results, int[] Reserve, int i)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 bool msgbox = false;
                 bool msgbox1 = false;
@@ -457,39 +450,39 @@
                         {
                             if (Reserve[tc] / 4 == Reserve[tc - k] / 4)
                             {
-                                if (Reserve[tc] / 4 != Reserve[i] / 4 && Reserve[tc] / 4 != Reserve[i + 1] / 4 && player.Type == 1)
+                                if (Reserve[tc] / 4 != Reserve[i] / 4 && Reserve[tc] / 4 != Reserve[i + 1] / 4 && player.Result.Power == 1)
                                 {
                                     if (!msgbox)
                                     {
                                         if (Reserve[i + 1] / 4 == 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = (Reserve[i] / 4) * 2 + 13 * 4 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = (Reserve[i] / 4) * 2 + 13 * 4 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                         if (Reserve[i] / 4 == 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = (Reserve[i + 1] / 4) * 2 + 13 * 4 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = (Reserve[i + 1] / 4) * 2 + 13 * 4 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                         if (Reserve[i + 1] / 4 != 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = (Reserve[tc] / 4) * 2 + (Reserve[i + 1] / 4) * 2 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = (Reserve[tc] / 4) * 2 + (Reserve[i + 1] / 4) * 2 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                         if (Reserve[i] / 4 != 0)
                                         {
-                                            player.Type = 2;
-                                            player.Power = (Reserve[tc] / 4) * 2 + (Reserve[i] / 4) * 2 + player.Type * 100;
-                                            Win.Add(new Type() { Power = player.Power, Current = 2 });
+                                            player.Result.Type = 2;
+                                            player.Result.Power = (Reserve[tc] / 4) * 2 + (Reserve[i] / 4) * 2 + player.Result.Type * 100;
+                                            results.Add(new Result() { Power = player.Result.Power, Type = 2 });
                                         }
                                     }
                                     msgbox = true;
                                 }
 
-                                if (player.Type == -1)
+                                if (player.Result.Type == -1)
                                 {
                                     if (!msgbox1)
                                     {
@@ -497,30 +490,30 @@
                                         {
                                             if (Reserve[tc] / 4 == 0)
                                             {
-                                                player.Type = 0;
-                                                player.Power = 13 + Reserve[i] / 4 + player.Type * 100;
-                                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                                player.Result.Type = 0;
+                                                player.Result.Power = 13 + Reserve[i] / 4 + player.Result.Type * 100;
+                                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                                             }
                                             else
                                             {
-                                                player.Type = 0;
-                                                player.Power = Reserve[tc] / 4 + Reserve[i] / 4 + player.Type * 100;
-                                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                                player.Result.Type = 0;
+                                                player.Result.Power = Reserve[tc] / 4 + Reserve[i] / 4 + player.Result.Power * 100;
+                                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                                             }
                                         }
                                         else
                                         {
                                             if (Reserve[tc] / 4 == 0)
                                             {
-                                                player.Type = 0;
-                                                player.Power = 13 + Reserve[i + 1] + player.Type * 100;
-                                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                                player.Result.Type = 0;
+                                                player.Result.Power = 13 + Reserve[i + 1] + player.Result.Type * 100;
+                                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                                             }
                                             else
                                             {
-                                                player.Type = 0;
-                                                player.Power = Reserve[tc] / 4 + Reserve[i + 1] / 4 + player.Type * 100;
-                                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                                player.Result.Type = 0;
+                                                player.Result.Power = Reserve[tc] / 4 + Reserve[i + 1] / 4 + player.Result.Type * 100;
+                                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                                             }
                                         }
                                     }
@@ -533,9 +526,9 @@
             }
         }
 
-        private static void CheckPairFromHand(Player player, List<Type> Win, int[] Reserve, int i)
+        private static void CheckPairFromHand(Player player, List<Result> results, int[] Reserve, int i)
         {
-            if (player.Type >= -1)
+            if (player.Result.Type >= -1)
             {
                 bool msgbox = false;
                 if (Reserve[i] / 4 == Reserve[i + 1] / 4)
@@ -544,15 +537,15 @@
                     {
                         if (Reserve[i] / 4 == 0)
                         {
-                            player.Type = 1;
-                            player.Power = 13 * 4 + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 1 });
+                            player.Result.Type = 1;
+                            player.Result.Power = 13 * 4 + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                         }
                         else
                         {
-                            player.Type = 1;
-                            player.Power = (Reserve[i + 1] / 4) * 4 + player.Type * 100;
-                            Win.Add(new Type() { Power = player.Power, Current = 1 });
+                            player.Result.Type = 1;
+                            player.Result.Power = (Reserve[i + 1] / 4) * 4 + player.Result.Type * 100;
+                            results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                         }
                     }
                     msgbox = true;
@@ -566,15 +559,15 @@
                         {
                             if (Reserve[i + 1] / 4 == 0)
                             {
-                                player.Type = 1;
-                                player.Power = 13 * 4 + Reserve[i] / 4 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                player.Result.Type = 1;
+                                player.Result.Power = 13 * 4 + Reserve[i] / 4 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                             }
                             else
                             {
-                                player.Type = 1;
-                                player.Power = (Reserve[i + 1] / 4) * 4 + Reserve[i] / 4 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                player.Result.Type = 1;
+                                player.Result.Power = (Reserve[i + 1] / 4) * 4 + Reserve[i] / 4 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                             }
                         }
                         msgbox = true;
@@ -586,15 +579,15 @@
                         {
                             if (Reserve[i] / 4 == 0)
                             {
-                                player.Type = 1;
-                                player.Power = 13 * 4 + Reserve[i + 1] / 4 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                player.Result.Type = 1;
+                                player.Result.Power = 13 * 4 + Reserve[i + 1] / 4 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                             }
                             else
                             {
-                                player.Type = 1;
-                                player.Power = (Reserve[tc] / 4) * 4 + Reserve[i + 1] / 4 + player.Type * 100;
-                                Win.Add(new Type() { Power = player.Power, Current = 1 });
+                                player.Result.Type = 1;
+                                player.Result.Power = (Reserve[tc] / 4) * 4 + Reserve[i + 1] / 4 + player.Result.Type * 100;
+                                results.Add(new Result() { Power = player.Result.Power, Type = 1 });
                             }
                         }
                         msgbox = true;
@@ -603,28 +596,28 @@
             }
         }
 
-        private static void CheckHighCard(Player player, List<Type> Win, int[] Reserve, int i)
+        private static void CheckHighCard(Player player, List<Result> results, int[] Reserve, int i)
         {
-            if (player.Type == -1)
+            if (player.Result.Type == -1)
             {
                 if (Reserve[i] / 4 > Reserve[i + 1] / 4)
                 {
-                    player.Type = -1;
-                    player.Power = Reserve[i] / 4;
-                    Win.Add(new Type() { Power = player.Power, Current = -1 });
+                    player.Result.Type = -1;
+                    player.Result.Power = Reserve[i] / 4;
+                    results.Add(new Result() { Power = player.Result.Power, Type = -1 });
                 }
                 else
                 {
-                    player.Type = -1;
-                    player.Power = Reserve[i + 1] / 4;
-                    Win.Add(new Type() { Power = player.Power, Current = -1 });
+                    player.Result.Type = -1;
+                    player.Result.Power = Reserve[i + 1] / 4;
+                    results.Add(new Result() { Power = player.Result.Power, Type = -1 });
                 }
 
                 if (Reserve[i] / 4 == 0 || Reserve[i + 1] / 4 == 0)
                 {
-                    player.Type = -1;
-                    player.Power = 13;
-                    Win.Add(new Type() { Power = player.Power, Current = -1 });
+                    player.Result.Type = -1;
+                    player.Result.Power = 13;
+                    results.Add(new Result() { Power = player.Result.Power, Type = -1 });
                 }
             }
         }

@@ -12,47 +12,48 @@ namespace Poker.ArtificialIntelligence
         {
             if (!player.FoldedTurn)
             {
-                if (player.Type == -1)
+                if (player.Result.Type == -1)
                 {
                     AIHands.HighCard(player, ref call,ref Raise,ref raising);
                 }
-                if (player.Type == 0)
+                if (player.Result.Type == 0)
                 {
                     AIHands.PairTable(player,  ref call, ref Raise,ref raising);
                 }
-                if (player.Type == 1)
+                if (player.Result.Type == 1)
                 {
                     AIHands.PairHand(player,  ref rounds ,ref call, ref Raise,ref raising);
                 }
-                if (player.Type == 2)
+                if (player.Result.Type == 2)
                 {
                     AIHands.TwoPair(player, ref rounds,ref call,ref Raise,ref raising);
                 }
-                if (player.Type == 3)
+                if (player.Result.Type == 3)
                 {
                     AIHands.ThreeOfAKind(player, name, ref rounds, ref call, ref Raise, ref raising);
                 }
-                if (player.Type == 4)
+                if (player.Result.Type == 4)
                 {
                     AIHands.Straight(player, name,  ref call, ref Raise, ref raising);
                 }
-                if (player.Type == 5 || player.Type == 5.5)
+                if (player.Result.Type == 5 || player.Result.Type == 5.5)
                 {
                     AIHands.Flush(player, name, ref call, ref Raise, ref raising);
                 }
-                if (player.Type == 6)
+                if (player.Result.Type == 6)
                 {
                     AIHands.FullHouse(player, name, ref call, ref Raise, ref raising);
                 }
-                if (player.Type == 7)
+                if (player.Result.Type == 7)
                 {
                     AIHands.FourOfAKind(player, name, ref call, ref Raise, ref raising);
                 }
-                if (player.Type == 8 || player.Type == 9)
+                if (player.Result.Type == 8 || player.Result.Type == 9)
                 {
                     AIHands.StraightFlush(player, name, ref call, ref Raise, ref raising);
                 }
             }
+
             if (player.FoldedTurn)
             {
                 Holder[c1].Visible = false;

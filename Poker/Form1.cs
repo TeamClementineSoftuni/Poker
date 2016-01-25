@@ -33,8 +33,7 @@ namespace Poker
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private List<Player> listOfWinners = new List<Player>();
         private List<Label> playersStatusLabel = new List<Label>();
-
-        private List<Type> winnersTypes = new List<Type>();
+        private List<Result> winnersTypes = new List<Result>();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -44,7 +43,7 @@ namespace Poker
 
         int call = 500, foldedPlayers = 5;
 
-        private double type;
+        
         double rounds = 0, Raise = 0;
 
         bool intsadded, changed;
@@ -678,7 +677,7 @@ namespace Poker
                             {
                                 FixCall(this.players[index], 1);
                                 FixCall(this.players[index], 2);
-                                Rules.Apply(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes, type);
+                                Rules.Apply(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes);
                                 MessageBox.Show(players[index].Name + "'s Turn");
                                 ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising);
                                 Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
@@ -829,7 +828,7 @@ namespace Poker
                     if (!player.StatusLabel.Text.Contains("Fold"))
                     {
                         fixedLast = player.Name;
-                        Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
+                        Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes);
                     }
                     cardIndex += 2;
                 }
@@ -874,8 +873,8 @@ namespace Poker
                 foreach (var player in this.players)
                 {
                     player.Panel.Visible = false;
-                    player.Power = 0;
-                    player.Type = -1;
+                    player.Result.Power = 0;
+                    player.Result.Type = -1;
                     player.Call = 0;
                     player.Raise = 0;
                 }
@@ -885,7 +884,6 @@ namespace Poker
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 bools.Clear();
                 rounds = 0;
-                type = 0;
 
                 ints.Clear();
                 listOfWinners.Clear();
@@ -1044,13 +1042,13 @@ namespace Poker
             foreach (var player in players)
             {
                 player.Panel.Visible = false;
-                player.Power = 0;
-                player.Type = -1;
+                player.Result.Power = 0;
+                player.Result.Type = -1;
             }
 
             call = bb; Raise = 0;
             foldedPlayers = 5;
-            type = 0; rounds = 0;
+            rounds = 0;
             Raise = 0;
 
 
@@ -1137,7 +1135,7 @@ namespace Poker
                 if (!player.StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = player.Name;
-                    Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
+                    Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes);
                 }
                 cardIndex += 2;
             }
@@ -1249,7 +1247,7 @@ namespace Poker
 
         private async void bCall_Click(object sender, EventArgs e)
         {
-            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes, type);
+            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
@@ -1278,7 +1276,7 @@ namespace Poker
 
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes, type);
+            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {

@@ -12,8 +12,7 @@ namespace Poker.Models.Players
     {
         private const int defaultPlayerChipsSetAmount = 10000;
         private const string defaultPlayerName = "Player";
-
-        private double type = -1;
+        private const double defaultHandType = -1;
 
         private bool isFolded;
 
@@ -38,6 +37,8 @@ namespace Poker.Models.Players
             this.Name = name;
             this.FoldedTurn = false;
             this.Turn = false;
+            this.Result = new Result();
+            this.Result.Type = defaultHandType;
             this.Call = 0;
             this.Raise = 0;
 
@@ -55,7 +56,6 @@ namespace Poker.Models.Players
 
         private void InitializeCardPictureBox(PictureBox pictureBox, Point location)
         {
-
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox.Width = 80;
             pictureBox.Height = 130;
@@ -105,11 +105,9 @@ namespace Poker.Models.Players
 
         public Label StatusLabel { get; set; }
 
+        public Result Result { get; set; }
+
         public bool IsFolded { get; set; }
-
-        public double Power { get; set; }
-
-        public double Type { get; set; }
 
         public bool Turn { get; set; }
 
@@ -122,6 +120,5 @@ namespace Poker.Models.Players
         public int AllIn { get; set; }
 
         public bool FoldedTurn { get; set; }
-
     }
 }
