@@ -1,4 +1,4 @@
-﻿namespace Poker.Rules
+﻿namespace Poker.Core
 {
     using System;
     using System.Collections.Generic;
@@ -8,9 +8,9 @@
 
     using Type = Poker.Type;
 
-    public class AllRules
+    public class Rules
     {
-        public static void ApplyRules(int card1, int card2, Player player, int[] Reserve, PictureBox[] Holder,
+        public static void Apply(int card1, int card2, Player player, int[] Reserve, PictureBox[] Holder,
             List<Type> Win, double type)
         {
             if (!player.FoldedTurn)

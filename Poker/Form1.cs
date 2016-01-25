@@ -19,8 +19,7 @@ using Poker.Models.Players;
 
 namespace Poker
 {
-    using Poker.Rules;
-    using Poker.Win;
+    using Poker.Core;
 
     public partial class Form1 : Form
     {
@@ -679,7 +678,7 @@ namespace Poker
                             {
                                 FixCall(this.players[index], 1);
                                 FixCall(this.players[index], 2);
-                                AllRules.ApplyRules(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes, type);
+                                Rules.Apply(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes, type);
                                 MessageBox.Show(players[index].Name + "'s Turn");
                                 ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising);
                                 Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
@@ -830,16 +829,13 @@ namespace Poker
                     if (!player.StatusLabel.Text.Contains("Fold"))
                     {
                         fixedLast = player.Name;
-                        AllRules.ApplyRules(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
+                        Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
                     }
                     cardIndex += 2;
                 }
                 
-                foreach (var player in players)
-                {
-                    Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
-                    Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
-                }
+                    Winner.CheckWinners(players, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
+                  
 
                 restart = true;
                 this.players[0].Turn = true;
@@ -1134,22 +1130,19 @@ namespace Poker
             winnersTypes.Clear();
 
             string fixedLast = "qwerty";
+
             int cardIndex = 0;
             foreach (var player in players)
             {
                 if (!player.StatusLabel.Text.Contains("Fold"))
                 {
                     fixedLast = player.Name;
-                    AllRules.ApplyRules(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
+                    Rules.Apply(cardIndex, cardIndex + 1, player, Reserve, Holder, winnersTypes, type);
                 }
                 cardIndex += 2;
             }
 
-            foreach (var player in players)
-            {
-                Poker.Win.Winner.WinnerMessege(player, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
-                Poker.Win.Winner.NumbersOfWinners(fixedLast, this.listOfWinners);
-            }
+                Winner.CheckWinners(players, fixedLast, this.Deck, this.Holder, winnersTypes, this.listOfWinners);
         }
 
         // ---> Events in separate folder
@@ -1256,7 +1249,7 @@ namespace Poker
 
         private async void bCall_Click(object sender, EventArgs e)
         {
-            AllRules.ApplyRules(0, 1, players[0], Reserve, Holder, winnersTypes, type);
+            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes, type);
             if (players[0].ChipsSet.Amount >= call)
             {
                 players[0].ChipsSet.Amount -= call;
@@ -1285,7 +1278,7 @@ namespace Poker
 
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            AllRules.ApplyRules(0, 1, players[0], Reserve, Holder, winnersTypes, type);
+            Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes, type);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
