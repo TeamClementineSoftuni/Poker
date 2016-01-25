@@ -12,37 +12,37 @@ namespace Poker.ArtificialIntelligence
 
     public class SomeMethods
     {
-        public static void Check(Player player, ref bool raising)
+        public static void Check(Player player, ActsOnTable onTable)
         {
             player.StatusLabel.Text = "Check";
             player.Turn = false;
-            raising = false;
+            onTable.Raising = false;
         } 
 
-        public static void Call(Player player,  int call,ref  bool raising)
+        public static void Call(Player player, ActsOnTable onTable)
         {
-            raising = false;
+            onTable.Raising = false;
             player.Turn = false;
-            player.ChipsSet.Amount -= call;
-            player.StatusLabel.Text = "Call " + call;
-            Pot.Instance.ChipsSet.Amount += call;
+            player.ChipsSet.Amount -= onTable.Call;
+            player.StatusLabel.Text = "Call " + onTable.Call;
+            Pot.Instance.ChipsSet.Amount += onTable.Call;
         }
 
-        public static void Fold(Player player ,  ref bool raising)
+        public static void Fold(Player player ,  ActsOnTable onTable)
         {
-            raising = false;
+            onTable.Raising = false;
             player.StatusLabel.Text = "Fold";
             player.Turn = false;
             player.FoldedTurn = true;
         }
 
-        public static void Raised(Player player,  ref int call, ref bool raising, ref double Raise)
+        public static void Raised(Player player, ActsOnTable onTable)
         {
-            player.ChipsSet.Amount -= Convert.ToInt32(Raise);
-            player.StatusLabel.Text = "Raise " + Raise;
-            Pot.Instance.ChipsSet.Amount += Convert.ToInt32(Raise);
-            call = Convert.ToInt32(Raise);
-            raising = true;
+            player.ChipsSet.Amount -= Convert.ToInt32(onTable.Raise);
+            player.StatusLabel.Text = "Raise " + onTable.Raise;
+            Pot.Instance.ChipsSet.Amount += Convert.ToInt32(onTable.Raise);
+            onTable.Call = Convert.ToInt32(onTable.Raise);
+            onTable.Raising = true;
             player.Turn = false;
         }
 

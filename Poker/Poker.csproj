@@ -50,7 +50,6 @@
     <Compile Include="AddChips.Designer.cs">
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
-    <Compile Include="ArtificialIntelligence\AIHands.cs" />
     <Compile Include="ArtificialIntelligence\ArtificialIntelligence.cs" />
     <Compile Include="ArtificialIntelligence\HPAndPHAndSmooth.cs" />
     <Compile Include="ArtificialIntelligence\SomeMethods.cs" />
@@ -64,6 +63,7 @@
     <Compile Include="Interfaces\ICard.cs" />
     <Compile Include="Interfaces\IDeck.cs" />
     <Compile Include="Models\Enums\Actions.cs" />
+    <Compile Include="Models\ActsOnTable.cs" />
     <Compile Include="Models\Players\Bot.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Enums\CardsRank.cs" />

@@ -34,6 +34,7 @@ namespace Poker
         private List<Player> listOfWinners = new List<Player>();
         private List<Label> playersStatusLabel = new List<Label>();
         private List<Result> winnersTypes = new List<Result>();
+        private ActsOnTable onTableActs = new ActsOnTable(); 
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -41,10 +42,7 @@ namespace Poker
         #region Variables
         public int Nm;
 
-        int call = 500, foldedPlayers = 5;
-
-        
-        double rounds = 0, Raise = 0;
+        int foldedPlayers = 5;
 
         bool intsadded, changed;
 
@@ -55,7 +53,7 @@ namespace Poker
         
         List<int> ints = new List<int>();
 
-        bool restart = false, raising = false;
+        bool restart = false;
 
         string[] ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] ImgLocation ={
@@ -82,7 +80,7 @@ namespace Poker
         public Form1()
         {
             //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
-            call = bb;
+            this.onTableActs.Call = bb;
             MaximizeBox = false;
             MinimizeBox = false;
             Updates.Start();
@@ -679,7 +677,7 @@ namespace Poker
                                 FixCall(this.players[index], 2);
                                 Rules.Apply(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes);
                                 MessageBox.Show(players[index].Name + "'s Turn");
-                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], 0, this.Holder, ref this.rounds, ref call, ref this.Raise, ref this.raising);
+                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], this.onTableActs, index - 1, this.Holder);
                                 Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
                                 turnCount++;
                                 last = index;
@@ -742,10 +740,10 @@ namespace Poker
 
         async Task CheckRaise(int currentTurn, int raiseTurn)
         {
-            if (raising)
+            if (this.onTableActs.Raising)
             {
                 turnCount = 0;
-                raising = false;
+                this.onTableActs.Raising = false;
                 raisedTurn = currentTurn;
                 changed = true;
             }
@@ -757,10 +755,10 @@ namespace Poker
                     {
                         changed = false;
                         turnCount = 0;
-                        Raise = 0;
-                        call = 0;
+                        this.onTableActs.Raise = 0;
+                        this.onTableActs.Call = 0;
                         raisedTurn = 123;
-                        rounds++;
+                        this.onTableActs.Rounds++;
                         foreach (var player in players)
                         {
                             if (!player.FoldedTurn)
@@ -772,7 +770,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == Flop)
+            if (this.onTableActs.Rounds == Flop)
             {
                 for (int j = 12; j <= 14; j++)
                 {
@@ -788,7 +786,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == Turn)
+            if (this.onTableActs.Rounds == Turn)
             {
                 for (int j = 14; j <= 15; j++)
                 {
@@ -804,7 +802,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == River)
+            if (this.onTableActs.Rounds == River)
             {
                 for (int j = 15; j <= 16; j++)
                 {
@@ -819,7 +817,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == End && maxLeft == 6)
+            if (this.onTableActs.Rounds == End && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
                 int cardIndex = 0;
@@ -879,11 +877,11 @@ namespace Poker
                     player.Raise = 0;
                 }
                 last = 0;
-                call = bb;
-                Raise = 0;
+                this.onTableActs.Call = bb;
+                this.onTableActs.Raise = 0;
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 bools.Clear();
-                rounds = 0;
+                this.onTableActs.Rounds = 0;
 
                 ints.Clear();
                 listOfWinners.Clear();
@@ -907,7 +905,7 @@ namespace Poker
 
         void FixCall(Player player, int options)
         {
-            if (rounds != 4)
+            if (this.onTableActs.Rounds != 4)
             {
                 if (options == 1)
                 {
@@ -929,17 +927,17 @@ namespace Poker
                 }
                 if (options == 2)
                 {
-                    if (player.Raise != Raise && player.Raise <= Raise)
+                    if (player.Raise != this.onTableActs.Raise && player.Raise <= this.onTableActs.Raise)
                     {
-                        call = Convert.ToInt32(Raise) - player.Raise;
+                        this.onTableActs.Call = Convert.ToInt32(this.onTableActs.Raise) - player.Raise;
                     }
-                    if (player.Call != call || player.Call <= call)
+                    if (player.Call != this.onTableActs.Call || player.Call <= this.onTableActs.Call)
                     {
-                        call = call - player.Call;
+                        this.onTableActs.Call = this.onTableActs.Call - player.Call;
                     }
-                    if (player.Raise == Raise && Raise > 0)
+                    if (player.Raise == this.onTableActs.Raise && this.onTableActs.Raise > 0)
                     {
-                        call = 0;
+                        this.onTableActs.Call = 0;
                         bCall.Enabled = false;
                         bCall.Text = "Callisfuckedup";
                     }
@@ -1025,7 +1023,7 @@ namespace Poker
             #endregion
 
             #region FiveOrLessLeft
-            if (abc < 6 && abc > 1 && rounds >= End)
+            if (abc < 6 && abc > 1 && this.onTableActs.Rounds >= End)
             {
                 await Finish(2);
             }
@@ -1046,10 +1044,10 @@ namespace Poker
                 player.Result.Type = -1;
             }
 
-            call = bb; Raise = 0;
+            this.onTableActs.Call = bb; this.onTableActs.Raise = 0;
             foldedPlayers = 5;
-            rounds = 0;
-            Raise = 0;
+            this.onTableActs.Rounds = 0;
+            this.onTableActs.Raise = 0;
 
 
 
@@ -1069,7 +1067,8 @@ namespace Poker
                 }
             }
 
-            restart = false; raising = false;
+            restart = false;
+            this.onTableActs.Raising = false;
             height = 0; width = 0; winners = 0; Flop = 1; Turn = 2; River = 3; End = 4; maxLeft = 6;
             last = 123; raisedTurn = 1;
             bools.Clear();
@@ -1179,20 +1178,20 @@ namespace Poker
             {
                 up--;
             }
-            if (players[0].ChipsSet.Amount >= call)
+            if (players[0].ChipsSet.Amount >= this.onTableActs.Call)
             {
-                bCall.Text = "Call " + call.ToString();
+                bCall.Text = "Call " + this.onTableActs.Call.ToString();
             }
             else
             {
                 bCall.Text = "All in";
                 bRaise.Enabled = false;
             }
-            if (call > 0)
+            if (this.onTableActs.Call > 0)
             {
                 bCheck.Enabled = false;
             }
-            if (call <= 0)
+            if (this.onTableActs.Call <= 0)
             {
                 bCheck.Enabled = true;
                 bCall.Text = "Call";
@@ -1215,7 +1214,7 @@ namespace Poker
                     bRaise.Text = "Raise";
                 }
             }
-            if (players[0].ChipsSet.Amount < call)
+            if (players[0].ChipsSet.Amount < this.onTableActs.Call)
             {
                 bRaise.Enabled = false;
             }
@@ -1231,7 +1230,7 @@ namespace Poker
 
         private async void bCheck_Click(object sender, EventArgs e)
         {
-            if (call <= 0)
+            if (this.onTableActs.Call <= 0)
             {
                 this.players[0].Turn = false;
                 this.players[0].StatusLabel.Text = "Check";
@@ -1248,15 +1247,15 @@ namespace Poker
         private async void bCall_Click(object sender, EventArgs e)
         {
             Rules.Apply(0, 1, players[0], Reserve, Holder, winnersTypes);
-            if (players[0].ChipsSet.Amount >= call)
+            if (players[0].ChipsSet.Amount >= this.onTableActs.Call)
             {
-                players[0].ChipsSet.Amount -= call;
-                Pot.Instance.ChipsSet.Amount += call;
+                players[0].ChipsSet.Amount -= this.onTableActs.Call;
+                Pot.Instance.ChipsSet.Amount += this.onTableActs.Call;
 
-                this.players[0].StatusLabel.Text = "Call " + call;
-                players[0].Call = call;
+                this.players[0].StatusLabel.Text = "Call " + this.onTableActs.Call;
+                players[0].Call = this.onTableActs.Call;
             }
-            else if (players[0].ChipsSet.Amount <= call && call > 0)
+            else if (players[0].ChipsSet.Amount <= this.onTableActs.Call && this.onTableActs.Call > 0)
             {
                 Pot.Instance.ChipsSet.Amount += players[0].ChipsSet.Amount;
 
@@ -1280,11 +1279,11 @@ namespace Poker
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
-                if (players[0].ChipsSet.Amount > call)
+                if (players[0].ChipsSet.Amount > this.onTableActs.Call)
                 {
-                    if (Raise * 2 > int.Parse(tbRaise.Text))
+                    if (this.onTableActs.Raise * 2 > int.Parse(tbRaise.Text))
                     {
-                        tbRaise.Text = (Raise * 2).ToString();
+                        tbRaise.Text = (this.onTableActs.Raise * 2).ToString();
                         MessageBox.Show("You must raise atleast twice as the current raise !");
                         return;
                     }
@@ -1292,28 +1291,28 @@ namespace Poker
                     {
                         if (players[0].ChipsSet.Amount >= int.Parse(tbRaise.Text))
                         {
-                            call = int.Parse(tbRaise.Text);
-                            Raise = int.Parse(tbRaise.Text);
-                            this.players[0].StatusLabel.Text = "Raise " + call.ToString();
-                            Pot.Instance.ChipsSet.Amount += call;
+                            this.onTableActs.Call = int.Parse(tbRaise.Text);
+                            this.onTableActs.Raise = int.Parse(tbRaise.Text);
+                            this.players[0].StatusLabel.Text = "Raise " + this.onTableActs.Call.ToString();
+                            Pot.Instance.ChipsSet.Amount += this.onTableActs.Call;
 
                             bCall.Text = "Call";
                             players[0].ChipsSet.Amount -= int.Parse(tbRaise.Text);
-                            raising = true;
+                            this.onTableActs.Raising = true;
                             last = 0;
-                            this.players[0].Raise = Convert.ToInt32(Raise);
+                            this.players[0].Raise = Convert.ToInt32(this.onTableActs.Raise);
                         }
                         else
                         {
-                            call = players[0].ChipsSet.Amount;
-                            Raise = players[0].ChipsSet.Amount;
+                            this.onTableActs.Call = players[0].ChipsSet.Amount;
+                            this.onTableActs.Raise = players[0].ChipsSet.Amount;
                             Pot.Instance.ChipsSet.Amount += players[0].ChipsSet.Amount;
 
-                            this.players[0].StatusLabel.Text = "Raise " + call.ToString();
+                            this.players[0].StatusLabel.Text = "Raise " + this.onTableActs.Call.ToString();
                             players[0].ChipsSet.Amount = 0;
-                            raising = true;
+                            this.onTableActs.Raising = true;
                             last = 0;
-                            this.players[0].Raise = Convert.ToInt32(Raise);
+                            this.players[0].Raise = Convert.ToInt32(this.onTableActs.Raise);
                         }
                     }
                 }
