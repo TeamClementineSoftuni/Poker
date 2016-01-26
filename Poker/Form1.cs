@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Windows.Forms.VisualStyles;
-using Poker.Constants;
-using Poker.Models;
-using Poker.Models.Players;
-
-
-namespace Poker
+﻿namespace Poker
 {
-    using Poker.Core;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using Constants;
+    using Models;
+    using Models.Players;
+    using Core;
 
     public partial class Form1 : Form
     {
@@ -678,7 +669,7 @@ namespace Poker
                                 FixCall(this.players[index], 2);
                                 Rules.Apply(cardCount, cardCount + 1, players[index], Reserve, Holder, winnersTypes);
                                 MessageBox.Show(players[index].Name + "'s Turn");
-                                ArtificialIntelligence.ArtificialIntelligence.AI(cardCount, cardCount + 1, players[index], this.actsOnTable, index - 1, this.Holder);
+                                ArtificialIntelligence.Apply(cardCount, cardCount + 1, players[index], this.actsOnTable, index - 1, this.Holder);
                                 Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
                                 turnCount++;
                                 last = index;
