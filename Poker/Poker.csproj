@@ -59,8 +59,15 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IActsOnTable.cs" />
     <Compile Include="Interfaces\ICard.cs" />
+    <Compile Include="Interfaces\IChipsSet.cs" />
     <Compile Include="Interfaces\IDeck.cs" />
+    <Compile Include="Interfaces\IGameStatus.cs" />
+    <Compile Include="Interfaces\IHand.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Interfaces\IPot.cs" />
+    <Compile Include="Interfaces\IResult.cs" />
     <Compile Include="Models\Enums\Actions.cs" />
     <Compile Include="Models\ActsOnTable.cs" />
     <Compile Include="Models\Players\Bot.cs" />

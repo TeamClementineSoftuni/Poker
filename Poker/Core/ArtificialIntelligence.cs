@@ -1,13 +1,14 @@
 ﻿namespace Poker.Core
 {
     using Models;
-    using Models.Players;
     using System;
     using System.Windows.Forms;
 
+    using Poker.Interfaces;
+
     public class ArtificialIntelligence
     {
-        public static void Apply(int c1, int c2, Player player, ActsOnTable actsOnTable, int name, PictureBox[] Holder)
+        public static void Apply(int c1, int c2, IPlayer player, IActsOnTable actsOnTable, int name, PictureBox[] Holder)
         {
             if (!player.FoldedTurn)
             {
@@ -62,7 +63,7 @@
             }
         }
 
-      private static void ActPairHand(Player player, ActsOnTable actsOnTable)
+      private static void ActPairHand(IPlayer player, IActsOnTable actsOnTable)
         {
             Random rPair = new Random();
             int rCall = rPair.Next(10, 16);
@@ -81,7 +82,7 @@
             }
         }
 
-        private static void ActTwoPair(Player player, ActsOnTable actsOnTable)
+        private static void ActTwoPair(IPlayer player, IActsOnTable actsOnTable)
         {
             Random rPair = new Random();
             int rCall = rPair.Next(6, 11);
@@ -100,7 +101,7 @@
             }
         }
 
-        private static void ActThreeOfAKind(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActThreeOfAKind(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random tk = new Random();
             int tCall = tk.Next(3, 7);
@@ -119,7 +120,7 @@
             }
         }
 
-        private static void ActStraight(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActStraight(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random str = new Random();
             int sCall = str.Next(3, 6);
@@ -138,7 +139,7 @@
             }
         }
 
-        private static void ActFlush(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActFlush(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random fsh = new Random();
             int fCall = fsh.Next(2, 6);
@@ -146,7 +147,7 @@
             Smooth(player, actsOnTable, name, fCall, fRaise);
         }
 
-        private static void ActFullHouse(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActFullHouse(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random flh = new Random();
             int fhCall = flh.Next(1, 5);
@@ -161,7 +162,7 @@
             }
         }
 
-        private static void ActFourOfAKind(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActFourOfAKind(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random fk = new Random();
             int fkCall = fk.Next(1, 4);
@@ -172,7 +173,7 @@
             }
         }
 
-        private static void ActStraightFlush(Player player, ActsOnTable actsOnTable, int name)
+        private static void ActStraightFlush(IPlayer player, IActsOnTable actsOnTable, int name)
         {
             Random sf = new Random();
             int sfCall = sf.Next(1, 3);
@@ -184,7 +185,7 @@
         }
 
 
-        private static void ActHighCard(Player player, ActsOnTable actsOnTable, int n, int n1)
+        private static void ActHighCard(IPlayer player, IActsOnTable actsOnTable, int n, int n1)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 4);
@@ -249,7 +250,7 @@
         }
 
 
-        private static void PH(Player player, ActsOnTable actsOnTable, int n, int n1, int r)
+        private static void PH(IPlayer player, IActsOnTable actsOnTable, int n, int n1, int r)
         {
             Random rand = new Random();
             int rnd = rand.Next(1, 3);
@@ -352,7 +353,7 @@
             }
         }
 
-        private static void Smooth(Player player, ActsOnTable actsOnTable, int name, int n, int r)
+        private static void Smooth(IPlayer player, IActsOnTable actsOnTable, int name, int n, int r)
         {
             if (actsOnTable.CallAmount <= 0)
             {
@@ -403,14 +404,14 @@
             }
         }
 
-        private static void Check(Player player, ActsOnTable actsOnTable)
+        private static void Check(IPlayer player, IActsOnTable actsOnTable)
         {
             player.StatusLabel.Text = "Check";
             player.Turn = false;
             actsOnTable.IsRaised = false;
         }
 
-        private static void Call(Player player, ActsOnTable actsOnTable)
+        private static void Call(IPlayer player, IActsOnTable actsOnTable)
         {
             actsOnTable.IsRaised = false;
             player.Turn = false;
@@ -419,7 +420,7 @@
             Pot.Instance.ChipsSet.Amount += actsOnTable.CallAmount;
         }
 
-        private static void Fold(Player player, ActsOnTable actsOnTable)
+        private static void Fold(IPlayer player, IActsOnTable actsOnTable)
         {
             actsOnTable.IsRaised = false;
             player.StatusLabel.Text = "Fold";
@@ -427,7 +428,7 @@
             player.FoldedTurn = true;
         }
 
-        private static void Raised(Player player, ActsOnTable actsOnTable)
+        private static void Raised(IPlayer player, IActsOnTable actsOnTable)
         {
             player.ChipsSet.Amount -= Convert.ToInt32(actsOnTable.RaiseAmount);
             player.StatusLabel.Text = "Raise " + actsOnTable.RaiseAmount;

@@ -12,23 +12,25 @@
     using Models.Players;
     using Core;
 
+    using Poker.Interfaces;
+
     public partial class Form1 : Form
     {
         // parallel branch
-        private Card[] board = new Card[5];
-        private Deck deck = new Deck("Assets\\Cards\\RenamedCards\\");
-        private Player[] players = new Player[6];
+        private ICard[] board = new Card[5];
+        private IDeck deck = new Deck("Assets\\Cards\\RenamedCards\\");
+        private IPlayer[] players = new Player[6];
         private List<Bot> playersNotFolded = new List<Bot>(); // Bot object should hava indicators for that(by Maria)
         private List<Bot> playersLeftToAct = new List<Bot>();
 
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
-        private List<Player> listOfWinners = new List<Player>();
+        private List<IPlayer> listOfWinners = new List<IPlayer>();
         private List<Label> playersStatusLabel = new List<Label>();
-        private List<Result> winnersTypes = new List<Result>();
-        private ActsOnTable actsOnTable = new ActsOnTable();
-
+        private List<IResult> winnersTypes = new List<IResult>();
+        private IActsOnTable actsOnTable = new ActsOnTable();
+        
         private double bigBlindAmount = Common.InitialCallAmount;
-
+        
         //TODO: initialize arrays and lists
         // parallel branch
 
@@ -895,7 +897,7 @@
         }
 
 
-        void FixCall(Player player, int options)
+        void FixCall(IPlayer player, int options)
         {
             if (this.actsOnTable.RoundsPassed != 4)
             {

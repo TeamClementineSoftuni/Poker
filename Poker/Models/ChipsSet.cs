@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
-    public class ChipsSet
+    using Poker.Interfaces;
+    public class ChipsSet : IChipsSet
     {
         private const int DefaultChipsSetAmount = 0;
         private int amount;

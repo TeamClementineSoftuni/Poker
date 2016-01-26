@@ -4,13 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
-    using Models.Players;
-
-    using Poker.Models;
-
+    using Poker.Interfaces;
+    
     public class Rules
     {
-        public static void Apply(int card1, int card2, Player player, int[] Reserve, PictureBox[] Holder, List<Result> results)
+        public static void Apply(int card1, int card2, IPlayer player, int[] Reserve, PictureBox[] Holder, List<IResult> results)
         {
             if (!player.FoldedTurn)
             {
@@ -91,7 +89,7 @@
             }
         }
 
-        private static void CheckStraightFlush(Player player, int[] st1, int[] st2, int[] st3, int[] st4, List<Result> results)
+        private static void CheckStraightFlush(IPlayer player, int[] st1, int[] st2, int[] st3, int[] st4, List<IResult> results)
         {
             if (player.Result.Type >= -1)
             {
@@ -102,7 +100,7 @@
             }
         }
 
-        private static void ProcessHandsArrays(Player player, int[] handsArray, List<Result> results)
+        private static void ProcessHandsArrays(IPlayer player, int[] handsArray, List<IResult> results)
         {
             if (handsArray.Length >= 5)
             {
@@ -122,7 +120,7 @@
             }
         }
 
-        private static void CheckFourOfAKind(Player player, int[] Straight, List<Result> results)
+        private static void CheckFourOfAKind(IPlayer player, int[] Straight, List<IResult> results)
         {
             if (player.Result.Type >= -1)
             {
@@ -146,7 +144,7 @@
             }
         }
 
-        private static void CheckFullHouse(Player player, ref bool done, int[] Straight, List<Result> results)
+        private static void CheckFullHouse(IPlayer player, ref bool done, int[] Straight, List<IResult> results)
         {
             if (player.Result.Type >= -1)
             {
@@ -194,7 +192,7 @@
             }
         }
 
-        private static void CheckFlush(Player player, ref bool vf, int[] Straight1, List<Result> results, int[] Reserve, int i)
+        private static void CheckFlush(IPlayer player, ref bool vf, int[] Straight1, List<IResult> results, int[] Reserve, int i)
         {
             if (player.Result.Type >= -1)
             {
@@ -210,7 +208,7 @@
             }
         }
 
-        private static void ProcessBoardHandArray(Player player, ref bool vf, List<Result> results, int[] Reserve, int index,
+        private static void ProcessBoardHandArray(IPlayer player, ref bool vf, List<IResult> results, int[] Reserve, int index,
             int[] handsArray)
         {
             if (handsArray.Length == 3 || handsArray.Length == 4)
@@ -321,7 +319,7 @@
             }
         }
 
-        private static void CheckStraight(Player player, int[] Straight, List<Result> results)
+        private static void CheckStraight(IPlayer player, int[] Straight, List<IResult> results)
         {
             if (player.Result.Type >= -1)
             {
@@ -354,7 +352,7 @@
             }
         }
 
-        private static void CheckThreeOfAKind(Player player, int[] Straight, List<Result> results)
+        private static void CheckThreeOfAKind(IPlayer player, int[] Straight, List<IResult> results)
         {
             if (player.Result.Type >= -1)
             {
@@ -380,7 +378,7 @@
             }
         }
 
-        private static void CheckTwoPair(Player player, List<Result> results, int[] Reserve, int i)
+        private static void CheckTwoPair(IPlayer player, List<IResult> results, int[] Reserve, int i)
         {
             if (player.Result.Type >= -1)
             {
@@ -431,7 +429,7 @@
             }
         }
 
-        private static void CheckPairTwoPair(Player player, List<Result> results, int[] Reserve, int i)
+        private static void CheckPairTwoPair(IPlayer player, List<IResult> results, int[] Reserve, int i)
         {
             if (player.Result.Type >= -1)
             {
@@ -526,7 +524,7 @@
             }
         }
 
-        private static void CheckPairFromHand(Player player, List<Result> results, int[] Reserve, int i)
+        private static void CheckPairFromHand(IPlayer player, List<IResult> results, int[] Reserve, int i)
         {
             if (player.Result.Type >= -1)
             {
@@ -596,7 +594,7 @@
             }
         }
 
-        private static void CheckHighCard(Player player, List<Result> results, int[] Reserve, int i)
+        private static void CheckHighCard(IPlayer player, List<IResult> results, int[] Reserve, int i)
         {
             if (player.Result.Type == -1)
             {

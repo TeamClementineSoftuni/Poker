@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Poker.Models.Players
+﻿namespace Poker.Models.Players
 {
-    public abstract class Player
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
+    using Poker.Interfaces;
+    public abstract class Player : IPlayer
     {
         private const int defaultPlayerChipsSetAmount = 10000;
         private const string defaultPlayerName = "Player";
@@ -18,7 +15,7 @@ namespace Poker.Models.Players
 
         private int prevRaise = 0;
         private int allIn = 0;
-        
+
         private PictureBox card1PictureBox = new PictureBox();
         private PictureBox card2PictureBox = new PictureBox();
 
@@ -95,7 +92,7 @@ namespace Poker.Models.Players
         }
         public string Name { get; set; }
 
-        public Hand Hand { get; set; }
+        public IHand Hand { get; set; }
 
         public Panel Panel { get; set; }
 
@@ -105,7 +102,7 @@ namespace Poker.Models.Players
 
         public Label StatusLabel { get; set; }
 
-        public Result Result { get; set; }
+        public IResult Result { get; set; }
 
         public bool IsFolded { get; set; }
 

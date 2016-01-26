@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker
+﻿namespace Poker
 {
-    public class Result
+    using Poker.Interfaces;
+    public class Result : IResult
     {
         public double Power { get; set; }
         public double Type { get; set; }

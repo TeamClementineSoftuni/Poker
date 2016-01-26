@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
-    public class GameStatus
+    using Poker.Interfaces;
+    public class GameStatus : IGameStatus
     {
         public GameStatus(Actions action, int chipsAddedToPot, int amountRaisedTo)
         {

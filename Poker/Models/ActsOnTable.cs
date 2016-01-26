@@ -2,7 +2,9 @@
 {
     using Constants;
 
-    public class ActsOnTable
+    using Poker.Interfaces;
+
+    public class ActsOnTable : IActsOnTable
     {
         public ActsOnTable()
         {

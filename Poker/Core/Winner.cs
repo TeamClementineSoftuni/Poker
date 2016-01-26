@@ -1,16 +1,16 @@
-﻿using System.Linq;
-using Poker.Models;
-
-namespace Poker.Core
+﻿namespace Poker.Core
 {
     using System.Collections.Generic;
     using System.Drawing;
     using System.Windows.Forms;
-    using Models.Players;
+    using System.Linq;
+    using Poker.Models;
+
+    using Poker.Interfaces;
 
     public class Winner
     {
-        public static void CheckWinners(Player[] players, string lastly, Image[] Deck, PictureBox[] Holder, List<Result> winnersTypes, List<Player> winners)
+        public static void CheckWinners(IPlayer[] players, string lastly, Image[] Deck, PictureBox[] Holder, List<IResult> winnersTypes, List<IPlayer> winners)
         {
             if (lastly == " ")
             {
@@ -24,7 +24,7 @@ namespace Poker.Core
                     Holder[j].Image = Deck[j];
             }
 
-            Result higherType = winnersTypes.OrderByDescending(op1 => op1.Type).ThenByDescending(op1 => op1.Power).First();
+            IResult higherType = winnersTypes.OrderByDescending(op1 => op1.Type).ThenByDescending(op1 => op1.Power).First();
 
             foreach (var player in players)
             {
@@ -82,7 +82,7 @@ namespace Poker.Core
                 if (winner.Name == lastly)//lastfixed 
                 {
                     if (winners.Count >= 1)
-                    { 
+                    {
                         winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winners.Count;
                         winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
                         Pot.Instance.ChipsSet.Amount -= winner.ChipsSet.Amount;

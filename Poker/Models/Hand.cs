@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
-    public class Hand
+    using System;
+
+    using Poker.Interfaces;
+    public class Hand : IHand
     {
 
-        public Card Card1 { get; set; }
-        public Card Card2 { get; set; }
+        public ICard Card1 { get; set; }
+        public ICard Card2 { get; set; }
 
         public int HandPower()
         {

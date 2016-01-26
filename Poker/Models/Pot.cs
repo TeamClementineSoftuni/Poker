@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
-    public class Pot
+    using System.Windows.Forms;
+
+    using Poker.Interfaces;
+    public class Pot : IPot
     {
         private static Pot instance;
 
@@ -31,7 +27,7 @@ namespace Poker.Models
 
         public TextBox PotTextBox { get; set; }
 
-        public ChipsSet ChipsSet { get; set; }
+        public IChipsSet ChipsSet { get; set; }
 
         public override string ToString()
         {

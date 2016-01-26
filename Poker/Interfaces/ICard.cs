@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Poker.Models;
-
-namespace Poker.Interfaces
+﻿namespace Poker.Interfaces
 {
+    using System.Drawing;
+    using Poker.Models;
     public interface ICard
     {
+        /// <summary>
+        /// Takes the card suit.
+        /// </summary>
         Suits Suit { get; }
+
+        /// <summary>
+        /// Takes the card rank.
+        /// </summary>
         CardsRank Rank { get; }
+
+        /// <summary>
+        /// Load card image.
+        /// </summary>
         Image CardImage { get; }
     }
 }
