@@ -23,7 +23,6 @@ D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\D
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\bin\Debug\Poker.exe
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\bin\Debug\Poker.pdb
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
-D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.AddChips.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.Form1.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
@@ -61,3 +60,4 @@ D:\Git_Root\Poker\Poker\obj\Debug\Poker.Form1.resources
 D:\Git_Root\Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
 D:\Git_Root\Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 D:\Poker\Poker\Poker\obj\Debug\Poker.AddChipsForm.resources
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.AddChipsForm.resources

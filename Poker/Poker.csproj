@@ -65,6 +65,7 @@
     <Compile Include="Interfaces\IDeck.cs" />
     <Compile Include="Interfaces\IGameStatus.cs" />
     <Compile Include="Interfaces\IHand.cs" />
+    <Compile Include="Interfaces\IMessagePrintable.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IPot.cs" />
     <Compile Include="Interfaces\IResult.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Core\Rules.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Core\Winner.cs" />
+    <Compile Include="UI\WindowsFormsUserInterface.cs" />
     <EmbeddedResource Include="AddChipsForm.resx">
       <DependentUpon>AddChipsForm.cs</DependentUpon>
     </EmbeddedResource>
