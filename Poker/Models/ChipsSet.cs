@@ -1,12 +1,12 @@
 ﻿namespace Poker.Models
 {
-    using Poker.Interfaces;
+    using Constants;
+    using Interfaces;
     public class ChipsSet : IChipsSet
     {
-        private const int DefaultChipsSetAmount = 0;
         private int amount;
 
-        public ChipsSet(int amount = DefaultChipsSetAmount)
+        public ChipsSet(int amount = Common.DefaultChipsSetAmount)
         {
             this.Amount = amount;
         }
@@ -22,7 +22,7 @@
 
         public override string ToString()
         {
-            return string.Format("Chips : {0}", Amount);
+            return $"Chips : {this.Amount}";
         }
     }
 }

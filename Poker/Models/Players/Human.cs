@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Models.Players
+﻿namespace Poker.Models.Players
 {
+    using System.Drawing;
+
     public class Human : Player
     {
         public Human(Point location) 

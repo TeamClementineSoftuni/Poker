@@ -7,26 +7,24 @@ namespace Poker
     using System.Drawing;
     using System.IO;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using Constants;
     using Models;
     using Models.Players;
-    using Core;
-
-    using Poker.Interfaces;
+    using Interfaces;
 
     public partial class Form1 : Form
     {
         // parallel branch
-        private ICard[] board = new Card[5];
+        private ICard[] board = new Card[Common.NumberOfBoardCards];
         private IDeck deck = new Deck("Assets\\Cards\\RenamedCards\\");
-        private IPlayer[] players = new Player[6];
+        private IPlayer[] players = new Player[Common.NumberOfPlayers];
         private List<IPlayer> playersNotFolded = new List<IPlayer>(); // Bot object should hava indicators for that(by Maria)
         private List<IPlayer> playersLeftToAct = new List<IPlayer>();
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
-        private PictureBox[] boardPictureBoxes = new PictureBox[5];
-        private int pot = 0;
+        private PictureBox[] boardPictureBoxes = new PictureBox[Common.NumberOfBoardCards];
         private int amountRaisedTo = 0;
         private SemaphoreSlim signal = new SemaphoreSlim(0, 1);
 
@@ -47,7 +45,6 @@ namespace Poker
 
         public Form1()
         {
-           
             InitializeComponent();
             //parallel branch
             InitializePlayersComponents();
@@ -159,11 +156,10 @@ namespace Poker
         async Task ProcessHand()
         {
             this.amountRaisedTo = 0;
-            this.pot = 0;
 
             for (int street = 0; street < 4; street++)
             {
-                DisableButtons(this.bFold, this.bCheck, this.bCall, this.bRaise);
+                DisableButtons(this.buttonFold, this.buttonCheck, this.buttonCall, this.buttonRaise);
                 amountRaisedTo = 0;
                 playersLeftToAct = new List<IPlayer>();
                 playersLeftToAct = players.Where(player => player.ChipsSet.Amount > 0 && player.IsFolded == false).ToList();
@@ -181,7 +177,7 @@ namespace Poker
                     amountRaisedTo = 500;//or use BB or SB
                 }
 
-                this.bCall.Text = "Call " + amountRaisedTo;
+                this.buttonCall.Text = "Call " + amountRaisedTo;
 
                 while (playersLeftToAct.Count != 0 && moreThanOnePlayerLeftInTheHand)
                 {
@@ -204,12 +200,12 @@ namespace Poker
                                     playersLeftToAct[playerIndex].StatusLabel.Text = "Check";
                                     break;
                                 case Actions.Call:
-                                    this.pot += amountRaisedTo - playersLeftToAct[playerIndex].PrevRaise;
+                                    Pot.Instance.ChipsSet.Amount += amountRaisedTo - playersLeftToAct[playerIndex].PrevRaise;
                                     break;
                                 case Actions.Raise:
-                                    this.pot += playersLeftToAct[playerIndex].RaiseAmount - playersLeftToAct[playerIndex].PrevRaise;
+                                    Pot.Instance.ChipsSet.Amount += playersLeftToAct[playerIndex].RaiseAmount - playersLeftToAct[playerIndex].PrevRaise;
                                     amountRaisedTo = playersLeftToAct[playerIndex].RaiseAmount;
-                                    this.bCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
+                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
                                     this.playersLeftToAct.AddRange(playersLeftToAct.GetRange(0, playerIndex));
                                     this.playersLeftToAct.RemoveRange(0, playerIndex);
                                     this.playersLeftToAct =
@@ -220,14 +216,14 @@ namespace Poker
                                     MessageBox.Show(playersLeftToAct.Count().ToString());
                                     break;
                                 case Actions.AllIn:
-                                    this.pot += playersLeftToAct[playerIndex].AllInAmount;
+                                    Pot.Instance.ChipsSet.Amount += playersLeftToAct[playerIndex].AllInAmount;
 
                                     if (amountRaisedTo < playersLeftToAct[playerIndex].RaiseAmount)
                                     {
                                         amountRaisedTo = playersLeftToAct[playerIndex].RaiseAmount;
                                     }
 
-                                    this.bCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
+                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
                                     this.playersLeftToAct.AddRange(playersLeftToAct.GetRange(0, playerIndex));
                                     this.playersLeftToAct.RemoveRange(0, playerIndex);
                                     playerIndex = -1;
@@ -239,29 +235,29 @@ namespace Poker
                         }
                         else if (!players[0].IsFolded && players[0].ChipsSet.Amount > 0)
                         {
-                            EnableButtons(this.bFold);
+                            EnableButtons(this.buttonFold);
 
                             if (this.amountRaisedTo > this.players[0].RaiseAmount)
                             {
-                                EnableButtons(this.bCall);
+                                EnableButtons(this.buttonCall);
                             }
                             else
                             {
-                                EnableButtons(this.bCheck);
+                                EnableButtons(this.buttonCheck);
                             }
 
                             if (this.amountRaisedTo - this.players[0].RaiseAmount < this.players[0].ChipsSet.Amount)
                             {
-                                EnableButtons(this.bRaise);
+                                EnableButtons(this.buttonRaise);
                             }
 
                             MessageBox.Show(playersLeftToAct.Count().ToString());
 
                             await signal.WaitAsync();
-                            DisableButtons(this.bFold, this.bCheck, this.bCall, this.bRaise);
+                            DisableButtons(this.buttonFold, this.buttonCheck, this.buttonCall, this.buttonRaise);
                         }
 
-                        this.potTextBox.Text = this.pot.ToString();
+                        this.potTextBox.Text = Pot.Instance.ToString();
                     }
 
                     playersLeftToAct.Clear();
@@ -323,7 +319,7 @@ namespace Poker
                     await Task.Delay(1000);
 
                     // TODO: Implement winning hand algo
-                    this.players[0].ChipsSet.Amount += this.pot;
+                    this.players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
                     this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
 
                     await Task.Delay(1000);
@@ -363,7 +359,7 @@ namespace Poker
             }
         }
 
-        private async void bFold_Click(object sender, EventArgs e)
+        private async void ButtonFold_Click(object sender, EventArgs e)
         {
             this.players[0].StatusLabel.Text = "Fold";
             this.players[0].IsFolded = true;
@@ -371,27 +367,27 @@ namespace Poker
             signal.Release();
         }
 
-        private async void bCheck_Click(object sender, EventArgs e)
+        private async void ButtonCheck_Click(object sender, EventArgs e)
         {
             this.players[0].StatusLabel.Text = "Check";
             signal.Release();
         }
-        private async void bCall_Click(object sender, EventArgs e)
+        private async void ButtonCall_Click(object sender, EventArgs e)
         {
-            string amountToCallAsString = this.bCall.Text.Remove(0, 5);
+            string amountToCallAsString = this.buttonCall.Text.Remove(0, 5);
             int amountToCall = int.Parse(amountToCallAsString);
-            this.pot += amountToCall;
+            Pot.Instance.ChipsSet.Amount += amountToCall;
             this.players[0].ChipsSet.Amount = this.players[0].ChipsSet.Amount - amountToCall;
             this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
             this.players[0].PrevRaise = this.players[0].RaiseAmount;
             this.players[0].RaiseAmount = amountToCall;
-            this.bCall.Enabled = false;
+            this.buttonCall.Enabled = false;
             this.players[0].StatusLabel.Text = "Call";
 
             signal.Release();
         }
 
-        private async void bRaise_Click(object sender, EventArgs e)
+        private async void ButtonRaise_Click(object sender, EventArgs e)
         {
             this.players[0].PrevRaise = this.players[0].RaiseAmount;
             this.players[0].RaiseAmount = this.players[0].RaiseAmount + (int)this.numericUpDown1.Value;
@@ -399,101 +395,102 @@ namespace Poker
             this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
             this.players[0].StatusLabel.Text = "Raised to " + this.players[0].RaiseAmount;
 
-            this.pot += (int)this.numericUpDown1.Value;
+            Pot.Instance.ChipsSet.Amount += (int)this.numericUpDown1.Value;
             this.amountRaisedTo = this.players[0].RaiseAmount;
 
             signal.Release();
         }
 
-        private void bAdd_Click(object sender, EventArgs e)
+        private void ButtonAddChips_Click(object sender, EventArgs e)
         {
-            if (tbAdd.Text == "") { }
+            if (addChipsTextBox.Text == "") { }
             else
             {
                 foreach (var player in players)
                 {
-                    player.ChipsSet.Amount += int.Parse(tbAdd.Text);
+                    // TODO: unhandled exception when put string instead integer
+                    player.ChipsSet.Amount += int.Parse(addChipsTextBox.Text);  
                 }
             }
 
             players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
         }
-        private void bOptions_Click(object sender, EventArgs e)
+        private void ButtonOptions_Click(object sender, EventArgs e)
         {
-            tbBB.Text = bigBlindAmount.ToString();
-            tbSB.Text = sb.ToString();
-            if (tbBB.Visible == false)
+            bigBlindTextBox.Text = bigBlindAmount.ToString();
+            smallBlindTextBox.Text = sb.ToString();
+            if (bigBlindTextBox.Visible == false)
             {
-                tbBB.Visible = true;
-                tbSB.Visible = true;
-                bBB.Visible = true;
-                bSB.Visible = true;
+                bigBlindTextBox.Visible = true;
+                smallBlindTextBox.Visible = true;
+                buttonBigBlind.Visible = true;
+                buttonSmallBlind.Visible = true;
             }
             else
             {
-                tbBB.Visible = false;
-                tbSB.Visible = false;
-                bBB.Visible = false;
-                bSB.Visible = false;
+                bigBlindTextBox.Visible = false;
+                smallBlindTextBox.Visible = false;
+                buttonBigBlind.Visible = false;
+                buttonSmallBlind.Visible = false;
             }
         }
-        private void bSB_Click(object sender, EventArgs e)
+        private void ButtonSmallBlind_Click(object sender, EventArgs e)
         {
             int parsedValue;
-            if (tbSB.Text.Contains(",") || tbSB.Text.Contains("."))
+            if (smallBlindTextBox.Text.Contains(",") || smallBlindTextBox.Text.Contains("."))
             {
                 MessageBox.Show("The Small Blind can be only round number !");
-                tbSB.Text = sb.ToString();
+                smallBlindTextBox.Text = sb.ToString();
                 return;
             }
-            if (!int.TryParse(tbSB.Text, out parsedValue))
+            if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
-                tbSB.Text = sb.ToString();
+                smallBlindTextBox.Text = sb.ToString();
                 return;
             }
-            if (int.Parse(tbSB.Text) > 100000)
+            if (int.Parse(smallBlindTextBox.Text) > 100000)
             {
                 MessageBox.Show("The maximum of the Small Blind is 100 000 $");
-                tbSB.Text = sb.ToString();
+                smallBlindTextBox.Text = sb.ToString();
             }
-            if (int.Parse(tbSB.Text) < 250)
+            if (int.Parse(smallBlindTextBox.Text) < 250)
             {
                 MessageBox.Show("The minimum of the Small Blind is 250 $");
             }
-            if (int.Parse(tbSB.Text) >= 250 && int.Parse(tbSB.Text) <= 100000)
+            if (int.Parse(smallBlindTextBox.Text) >= 250 && int.Parse(smallBlindTextBox.Text) <= 100000)
             {
-                sb = int.Parse(tbSB.Text);
+                sb = int.Parse(smallBlindTextBox.Text);
                 MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
-        private void bBB_Click(object sender, EventArgs e)
+        private void ButtonBigBlind_Click(object sender, EventArgs e)
         {
             int parsedValue;
-            if (tbBB.Text.Contains(",") || tbBB.Text.Contains("."))
+            if (bigBlindTextBox.Text.Contains(",") || bigBlindTextBox.Text.Contains("."))
             {
                 MessageBox.Show("The Big Blind can be only round number !");
-                tbBB.Text = bigBlindAmount.ToString();
+                bigBlindTextBox.Text = bigBlindAmount.ToString();
                 return;
             }
-            if (!int.TryParse(tbSB.Text, out parsedValue))
+            if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
-                tbSB.Text = bigBlindAmount.ToString();
+                smallBlindTextBox.Text = bigBlindAmount.ToString();
                 return;
             }
-            if (int.Parse(tbBB.Text) > 200000)
+            if (int.Parse(bigBlindTextBox.Text) > 200000)
             {
                 MessageBox.Show("The maximum of the Big Blind is 200 000");
-                tbBB.Text = bigBlindAmount.ToString();
+                bigBlindTextBox.Text = bigBlindAmount.ToString();
             }
-            if (int.Parse(tbBB.Text) < 500)
+            if (int.Parse(bigBlindTextBox.Text) < 500)
             {
                 MessageBox.Show("The minimum of the Big Blind is 500 $");
             }
-            if (int.Parse(tbBB.Text) >= 500 && int.Parse(tbBB.Text) <= 200000)
+            if (int.Parse(bigBlindTextBox.Text) >= 500 && int.Parse(bigBlindTextBox.Text) <= 200000)
             {
-                bigBlindAmount = int.Parse(tbBB.Text);
+                bigBlindAmount = int.Parse(bigBlindTextBox.Text);
                 MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
@@ -502,6 +499,7 @@ namespace Poker
             width = this.Width;
             height = this.Height;
         }
+
         //#endregion
 
         private void InitializePlayersComponents()

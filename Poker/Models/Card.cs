@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using Poker.Interfaces;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
+    using System.Drawing;
+    using Interfaces;
+
     public class Card : ICard
     {
         public Card(Suits suit, CardsRank rank, Image cardImage)
@@ -18,7 +13,9 @@ namespace Poker.Models
         }
 
         public Suits Suit { get; private set; }
+
         public CardsRank Rank { get; private set; }
+
         public Image CardImage { get; private set; }
 
         public void Show()

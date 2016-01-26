@@ -1,16 +1,16 @@
 ﻿namespace Poker.Interfaces
 {
-    using Poker.Models;
+    using Models;
 
     public interface IGameStatus
     {
         /// <summary>
-        /// Gets and set the action.
+        /// Gets and sets the action.
         /// </summary>
         Actions Action { get; set; }
 
         /// <summary>
-        /// Gets and set the chips in pot.
+        /// Gets and sets the chips in the pot.
         /// </summary>
         int ChipsAddedToPot { get; set; }
 

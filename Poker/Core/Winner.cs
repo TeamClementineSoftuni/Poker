@@ -86,7 +86,7 @@
                         winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winners.Count;
                         winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
                         Pot.Instance.ChipsSet.Amount -= winner.ChipsSet.Amount;
-                        Pot.Instance.PotTextBox.Text = Pot.Instance.ChipsSet.Amount.ToString();
+                        //Pot.Instance.PotTextBox.Text = Pot.Instance.ChipsSet.Amount.ToString(); //if its necessary TextBox will be added as property in Pot or update TextBox outside the method
                     }
                 }
             }

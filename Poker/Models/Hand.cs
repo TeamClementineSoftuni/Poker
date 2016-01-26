@@ -1,12 +1,12 @@
 ﻿namespace Poker.Models
 {
     using System;
+    using Interfaces;
 
-    using Poker.Interfaces;
     public class Hand : IHand
     {
-
         public ICard Card1 { get; set; }
+
         public ICard Card2 { get; set; }
 
         public int HandPower()
@@ -22,6 +22,5 @@
 
             throw new NotImplementedException();
         }
-
     }
 }

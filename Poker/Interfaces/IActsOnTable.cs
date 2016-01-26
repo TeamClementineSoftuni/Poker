@@ -3,23 +3,23 @@
     public interface IActsOnTable
     {
         /// <summary>
-        /// Gets and set the raise of the player.
+        /// Gets and sets the raise amount.
         /// </summary>
         double RaiseAmount { get; set; }
 
         /// <summary>
-        /// Show is it raised.
+        /// Show if it was raised.
         /// </summary>
         bool IsRaised { get; set; }
 
         /// <summary>
-        /// Gets and set with how much the player should call.
+        /// Gets and sets the call amount.
         /// </summary>
         int CallAmount { get; set; }
 
         /// <summary>
-        /// Hold how much rounds are passed.
+        /// Holds how many rounds are passed.
         /// </summary>
-        double RoundsPassed { get; set; }
+        double RoundsPassed { get; }
     }
 }

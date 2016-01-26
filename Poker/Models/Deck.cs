@@ -3,14 +3,13 @@
     using System;
     using System.Diagnostics;
     using System.Drawing;
+    using Constants;
+    using Interfaces;
 
-    using Poker.Interfaces;
     public class Deck : IDeck
     {
         //TODO: rename cards images files to fit the format --> example: AceSpades.png
-        private const int SuitsCount = 4;
-        private const int CardsRanksCount = 12;
-        private readonly ICard[] cards = new Card[52];
+        private readonly ICard[] cards = new Card[Common.NumberOfPlayingCards];
         private string cardsImagesLocation;
 
         public Deck(string cardsImagesLocation)
@@ -18,6 +17,11 @@
             this.CardsImagesLocation = cardsImagesLocation;
             this.PopulateWithCards();
             this.Shuffle();
+        }
+
+        public ICard[] Cards
+        {
+            get { return this.cards; }
         }
 
         public string CardsImagesLocation
@@ -38,9 +42,9 @@
         {
             int currentIndexOfDeck = 0;
 
-            for (int suit = 0; suit < 4; suit++)
+            for (int suit = 0; suit < Common.NumberOfSuits; suit++)
             {
-                for (int rank = 0; rank < 13; rank++)
+                for (int rank = 0; rank < Common.NumberOfCardsRanks; rank++)
                 {
                     Suits cardSuit = (Suits)suit;
                     CardsRank cardRank = (CardsRank)rank;
@@ -62,18 +66,11 @@
             Random random = new Random();
             for (int currentIndex = cards.Length; currentIndex > 0; currentIndex--)
             {
-                int RandomIndex = random.Next(currentIndex);
-                ICard randomCard = cards[RandomIndex];
-                cards[RandomIndex] = cards[currentIndex - 1];
+                int randomIndex = random.Next(currentIndex);
+                ICard randomCard = cards[randomIndex];
+                cards[randomIndex] = cards[currentIndex - 1];
                 cards[currentIndex - 1] = randomCard;
             }
-        }
-
-        public ICard[] Cards
-        {
-            get { return this.cards; }
-        }
-
-
+        }   
     }
 }

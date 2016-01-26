@@ -3,34 +3,29 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
+    using Constants;
+    using Interfaces;
 
-    using Poker.Interfaces;
     public abstract class Player : IPlayer
     {
-        private const int defaultPlayerChipsSetAmount = 10000;
-        private const string defaultPlayerName = "Player";
         private const double defaultHandType = -1;
 
         private bool isFolded;
-
         private int prevRaise = 0;
         private int allIn = 0;
-
         private PictureBox card1PictureBox = new PictureBox();
         private PictureBox card2PictureBox = new PictureBox();
 
-
-        protected Player(Point location, string name = defaultPlayerName, int chips = defaultPlayerChipsSetAmount)
+        protected Player(Point location, string name = Common.DefaultPlayerName)
         {
             this.Location = location;
             InitializePanel();
             InitializeCardPictureBox(this.Card1PictureBox, new Point(0, 0));
             InitializeCardPictureBox(this.Card2PictureBox, new Point(0 + this.Card1PictureBox.Width, 0));  //TODO: refactor 
             this.ChipsTextBox = new TextBox();
-            this.ChipsSet = new ChipsSet();
+            this.ChipsSet = new ChipsSet(Common.DefaultPlayerChipsSetAmount);
             this.Hand = new Hand();
             this.Name = name;
-            this.ChipsSet.Amount = chips;
             this.FoldedTurn = false;
             this.Turn = false;
             this.CallAmount = 0;
@@ -38,29 +33,8 @@
             this.PrevRaise = 0;
         }
 
-        private void InitializePanel()
-        {
-            this.Panel = new Panel();
-            this.Panel.Location = this.Location;
-            this.Panel.BackColor = System.Drawing.Color.Transparent;
-            this.Panel.Name = "PlayerPanel";
-            this.Panel.Size = new System.Drawing.Size(180, 150);
-            this.Panel.Visible = true;
-        }
-
-        private void InitializeCardPictureBox(PictureBox pictureBox, Point location)
-        {
-
-            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox.Width = 80;
-            pictureBox.Height = 130;
-            pictureBox.Visible = true;
-            this.Panel.Controls.Add(pictureBox);
-            // pictureBox.Anchor = (AnchorStyles.Bottom);
-            pictureBox.Location = location;
-        }
-
         public Point Location { get; set; }
+
         public PictureBox Card1PictureBox
         {
             get { return this.card1PictureBox; }
@@ -88,6 +62,7 @@
                 this.card2PictureBox = value;
             }
         }
+
         public string Name { get; set; }
 
         public IHand Hand { get; set; }
@@ -115,5 +90,27 @@
         public int AllInAmount { get; set; }
 
         public bool FoldedTurn { get; set; }
+
+        private void InitializePanel()
+        {
+            this.Panel = new Panel();
+            this.Panel.Location = this.Location;
+            this.Panel.BackColor = System.Drawing.Color.Transparent;
+            this.Panel.Name = "PlayerPanel";
+            this.Panel.Size = new System.Drawing.Size(180, 150);
+            this.Panel.Visible = true;
+        }
+
+        private void InitializeCardPictureBox(PictureBox pictureBox, Point location)
+        {
+
+            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox.Width = 80;
+            pictureBox.Height = 130;
+            pictureBox.Visible = true;
+            this.Panel.Controls.Add(pictureBox);
+            // pictureBox.Anchor = (AnchorStyles.Bottom);
+            pictureBox.Location = location;
+        }
     }
 }

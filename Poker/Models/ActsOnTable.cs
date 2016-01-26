@@ -1,8 +1,7 @@
 ﻿namespace Poker.Models
 {
     using Constants;
-
-    using Poker.Interfaces;
+    using Interfaces;
 
     public class ActsOnTable : IActsOnTable
     {
@@ -13,12 +12,13 @@
             this.CallAmount = Common.InitialCallAmount;
             this.IsRaised = false;
         }
+
         public double RaiseAmount { get; set; }
 
         public bool IsRaised { get; set; }
 
         public int CallAmount { get; set; }
 
-        public double RoundsPassed { get; set; }
+        public double RoundsPassed { get; }
     }
 }

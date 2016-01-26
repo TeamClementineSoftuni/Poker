@@ -3,12 +3,12 @@
     public interface IHand
     {
         /// <summary>
-        /// First card in the hand.
+        /// First card in a hand.
         /// </summary>
         ICard Card1 { get; set; }
 
         /// <summary>
-        /// Second card in the hand.
+        /// Second card in a hand.
         /// </summary>
         ICard Card2 { get; set; }
 
@@ -19,7 +19,7 @@
         int HandPower();
 
         /// <summary>
-        /// Shows faces on the cards in hand.
+        /// Shows faces on the cards in a hand.
         /// </summary>
         void ShowHand();
     }

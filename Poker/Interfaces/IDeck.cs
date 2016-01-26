@@ -8,13 +8,13 @@
         string CardsImagesLocation { get; }
 
         /// <summary>
-        /// Shuffle the deck.
-        /// </summary>
-        void Shuffle();
-
-        /// <summary>
-        /// Gets all cards.
+        /// Gets the array of cards in a deck.
         /// </summary>
         ICard[] Cards { get; }
+
+        /// <summary>
+        /// Shuffled the deck.
+        /// </summary>
+        void Shuffle();       
     }
 }

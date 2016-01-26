@@ -2,83 +2,82 @@
 {
     using System.Drawing;
     using System.Windows.Forms;
-
-    using Poker.Models;
+    using Models;
 
     public interface IPlayer
     {
         /// <summary>
-        /// Get and set player location on screen. 
+        /// Gets and sets player location on screen. 
         /// </summary>
        Point Location { get; set; }
 
         /// <summary>
-        /// Gets and set first card.
+        /// Gets and sets the picture box of the first card.
         /// </summary>
         PictureBox Card1PictureBox{ get; set; }
 
         /// <summary>
-        /// Gets and set second card.
+        /// Gets and sets the picture box of the second card.
         /// </summary>
-        PictureBox Card2PictureBox{ get; set; }
+        PictureBox Card2PictureBox { get; set; }
 
         /// <summary>
-        /// Gets and set name of the player.
+        /// Gets and sets the name of the player.
         /// </summary>
         string Name { get; set; }
 
         /// <summary>
-        /// Gets and sets hand of the player.
+        /// Gets and sets the hand of the player.
         /// </summary>
         IHand Hand { get; set; }
 
         /// <summary>
-        /// Gets and set the panel.
+        /// Gets and sets the panel of the player.
         /// </summary>
         Panel Panel { get; set; }
 
         /// <summary>
-        /// Gets and set textbox for chips.
+        /// Gets and sets the textbox for the player's chips.
         /// </summary>
         TextBox ChipsTextBox { get; set; }
 
         /// <summary>
-        /// Gets and set player chips.
+        /// Gets and sets player's chips set .
         /// </summary>
         ChipsSet ChipsSet { get; set; }
 
         /// <summary>
-        /// Gets and set player status.
+        /// Gets and set player's status in label.
         /// </summary>
         Label StatusLabel { get; set; }
 
         /// <summary>
-        /// Get and set player result.
+        /// Gets and sets player's result.
         /// </summary>
         IResult Result { get; set; }
 
         /// <summary>
-        /// Show is player folded.
+        /// Shows if the player is folded.
         /// </summary>
         bool IsFolded { get; set; }
 
         /// <summary>
-        /// Gets and set player turn.
+        /// Gets and sets if it is player's turn.
         /// </summary>
         bool Turn { get; set; }
 
         /// <summary>
-        ///  Holds call amount of player.
+        ///  Holds player's called amount.
         /// </summary>
         int CallAmount { get; set; }
 
         /// <summary>
-        /// Holds raise amount of player.
+        /// Holds player's raised amount.
         /// </summary>
         int RaiseAmount { get; set; }
 
         /// <summary>
-        /// Show previous raise of the player.
+        /// Shows player's previous raised amount.
         /// </summary>
         int PrevRaise { get; set; }
 
@@ -88,10 +87,8 @@
         int AllInAmount { get; set; }
 
         /// <summary>
-        /// Show is player turn is folded.
+        /// Shows if player's turn is folded.
         /// </summary>
         bool FoldedTurn { get; set; }
-
-
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Poker.Models
 {
     using System.Windows.Forms;
+    using Interfaces;
 
-    using Poker.Interfaces;
     public class Pot : IPot
     {
         private static Pot instance;
@@ -10,7 +10,6 @@
         private Pot()
         { 
             ChipsSet  = new ChipsSet();
-            this.PotTextBox = new TextBox();
         }
 
         public static Pot Instance
@@ -24,8 +23,6 @@
                 return instance;
             }
         }
-
-        public TextBox PotTextBox { get; set; }
 
         public IChipsSet ChipsSet { get; set; }
 

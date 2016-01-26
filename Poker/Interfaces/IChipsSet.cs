@@ -3,7 +3,7 @@
     public interface IChipsSet
     {
         /// <summary>
-        /// Gets and set the chips amount.
+        /// Gets and sets the chips amount.
         /// </summary>
         int Amount { get; set; }
     }

@@ -1,7 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
     using System.Drawing;
-    using Poker.Models;
+    using Models;
+
     public interface ICard
     {
         /// <summary>
@@ -15,7 +16,7 @@
         CardsRank Rank { get; }
 
         /// <summary>
-        /// Load card image.
+        /// Loads card image.
         /// </summary>
         Image CardImage { get; }
     }

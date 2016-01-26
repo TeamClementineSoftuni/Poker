@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Poker.Models.Players;
-using System.Drawing;
-using Poker.Interfaces;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using Players;
+    using System.Drawing;
+    using Interfaces;
+    using Constants;
+
     public class Bot : Player
     {
         private static int instanceCounter = 1;
-        private const string DefaultBotName = "Bot ";
 
         public Bot(Point location)
-            : base(location, DefaultBotName + instanceCounter)
+            : base(location, Common.DefaultBotName + instanceCounter)
         {
             instanceCounter++;
         }
@@ -123,17 +122,20 @@ namespace Poker.Models
                     return Actions.Fold;
             }
         }
+
         private int CalcPower(List<ICard> cards)
         {
             //bluffing bot :)
             return new Random().Next(0, 10);
         }
+
         private void AllInWhenNotEnough()
         {
             this.AllInAmount = this.ChipsSet.Amount;
             this.ChipsSet.Amount = 0;
             this.RaiseAmount = 0;
         }
+
         private void AllInWhenNotEnoughForTargetRaise(int raisedTo)
         {
             this.RaiseAmount = this.ChipsSet.Amount - this.PrevRaise - raisedTo;
@@ -159,7 +161,6 @@ namespace Poker.Models
 
         private void ApplyRaiseEffects(int amountRaisedTo, int raiseAmount)
         {
-
             this.ChipsSet.Amount = this.ChipsSet.Amount - ((amountRaisedTo + raiseAmount) - this.RaiseAmount);
             this.PrevRaise = this.RaiseAmount;
             this.RaiseAmount = amountRaisedTo + raiseAmount;
@@ -188,6 +189,5 @@ namespace Poker.Models
 
             return true;
         }
-
     }
 }
