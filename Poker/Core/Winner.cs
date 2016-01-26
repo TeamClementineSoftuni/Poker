@@ -85,6 +85,8 @@ namespace Poker.Core
                     { 
                         winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winners.Count;
                         winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
+                        Pot.Instance.ChipsSet.Amount -= winner.ChipsSet.Amount;
+                        Pot.Instance.PotTextBox.Text = Pot.Instance.ChipsSet.Amount.ToString();
                     }
                 }
             }

@@ -12,37 +12,37 @@ namespace Poker.ArtificialIntelligence
 
     public class SomeMethods
     {
-        public static void Check(Player player, ActsOnTable onTable)
+        public static void Check(Player player, ActsOnTable actsOnTable)
         {
             player.StatusLabel.Text = "Check";
             player.Turn = false;
-            onTable.Raising = false;
+            actsOnTable.IsRaised = false;
         } 
 
-        public static void Call(Player player, ActsOnTable onTable)
+        public static void Call(Player player, ActsOnTable actsOnTable)
         {
-            onTable.Raising = false;
+            actsOnTable.IsRaised = false;
             player.Turn = false;
-            player.ChipsSet.Amount -= onTable.Call;
-            player.StatusLabel.Text = "Call " + onTable.Call;
-            Pot.Instance.ChipsSet.Amount += onTable.Call;
+            player.ChipsSet.Amount -= actsOnTable.CallAmount;
+            player.StatusLabel.Text = "Call " + actsOnTable.CallAmount;
+            Pot.Instance.ChipsSet.Amount += actsOnTable.CallAmount;
         }
 
-        public static void Fold(Player player ,  ActsOnTable onTable)
+        public static void Fold(Player player ,  ActsOnTable actsOnTable)
         {
-            onTable.Raising = false;
+            actsOnTable.IsRaised = false;
             player.StatusLabel.Text = "Fold";
             player.Turn = false;
             player.FoldedTurn = true;
         }
 
-        public static void Raised(Player player, ActsOnTable onTable)
+        public static void Raised(Player player, ActsOnTable actsOnTable)
         {
-            player.ChipsSet.Amount -= Convert.ToInt32(onTable.Raise);
-            player.StatusLabel.Text = "Raise " + onTable.Raise;
-            Pot.Instance.ChipsSet.Amount += Convert.ToInt32(onTable.Raise);
-            onTable.Call = Convert.ToInt32(onTable.Raise);
-            onTable.Raising = true;
+            player.ChipsSet.Amount -= Convert.ToInt32(actsOnTable.RaiseAmount);
+            player.StatusLabel.Text = "Raise " + actsOnTable.RaiseAmount;
+            Pot.Instance.ChipsSet.Amount += Convert.ToInt32(actsOnTable.RaiseAmount);
+            actsOnTable.CallAmount = Convert.ToInt32(actsOnTable.RaiseAmount);
+            actsOnTable.IsRaised = true;
             player.Turn = false;
         }
 

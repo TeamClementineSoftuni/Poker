@@ -142,14 +142,14 @@ namespace Poker.Models
 
         private void AllInWhenNotEnough()
         {
-            this.AllIn = this.ChipsSet.Amount;
+            this.AllInAmount = this.ChipsSet.Amount;
             this.ChipsSet.Amount = 0;
-            this.Raise = 0;
+            this.RaiseAmount = 0;
         }
 
         private void AllInWhenNotEnoughForTargetRaise(int raisedTo)
         {
-            this.Raise = this.ChipsSet.Amount - this.PrevRaise - raisedTo;
+            this.RaiseAmount = this.ChipsSet.Amount - this.PrevRaise - raisedTo;
             this.ChipsSet.Amount = 0;
         }
     }

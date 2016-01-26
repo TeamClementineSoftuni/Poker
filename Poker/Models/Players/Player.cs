@@ -39,8 +39,8 @@ namespace Poker.Models.Players
             this.Turn = false;
             this.Result = new Result();
             this.Result.Type = defaultHandType;
-            this.Call = 0;
-            this.Raise = 0;
+            this.CallAmount = 0;
+            this.RaiseAmount = 0;
 
         }
 
@@ -111,13 +111,13 @@ namespace Poker.Models.Players
 
         public bool Turn { get; set; }
 
-        public int Call { get; set; }
+        public int CallAmount { get; set; }
 
-        public int Raise { get; set; }
+        public int RaiseAmount { get; set; }
 
         public int PrevRaise { get; set; }
 
-        public int AllIn { get; set; }
+        public int AllInAmount { get; set; }
 
         public bool FoldedTurn { get; set; }
     }

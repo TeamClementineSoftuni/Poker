@@ -1,22 +1,22 @@
 ﻿namespace Poker.Models
 {
-    using System.Windows.Forms;
+    using Constants;
 
     public class ActsOnTable
     {
         public ActsOnTable()
         {
-            this.Raise = 0;
-            this.Rounds = 0;
-            this.Call = 500;
-            this.Raising = false;
+            this.RaiseAmount = 0;
+            this.RoundsPassed = 0;
+            this.CallAmount = Common.InitialCallAmount;
+            this.IsRaised = false;
         }
-        public double Raise { get; set; }
+        public double RaiseAmount { get; set; }
 
-        public bool Raising { get; set; }
+        public bool IsRaised { get; set; }
 
-        public int Call { get; set; }
+        public int CallAmount { get; set; }
 
-        public double Rounds { get; set; }
+        public double RoundsPassed { get; set; }
     }
 }
