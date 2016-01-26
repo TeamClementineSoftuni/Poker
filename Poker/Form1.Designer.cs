@@ -58,6 +58,8 @@ namespace Poker
             this.bot2ChipsTextBox = new System.Windows.Forms.TextBox();
             this.bot1ChipsTextBox = new System.Windows.Forms.TextBox();
             this.humanChipsTextBox = new System.Windows.Forms.TextBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // bFold
@@ -185,6 +187,7 @@ namespace Poker
             this.potTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.potTextBox.Location = new System.Drawing.Point(606, 212);
             this.potTextBox.Name = "potTextBox";
+            this.potTextBox.ReadOnly = true;
             this.potTextBox.Size = new System.Drawing.Size(125, 23);
             this.potTextBox.TabIndex = 14;
             this.potTextBox.Text = "0";
@@ -319,6 +322,19 @@ namespace Poker
             this.humanChipsTextBox.TabIndex = 6;
             this.humanChipsTextBox.Text = "Chips : 0";
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(965, 677);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 32;
+            this.numericUpDown1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.numericUpDown1_KeyUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,6 +342,7 @@ namespace Poker
             this.BackgroundImage = global::Poker.Properties.Resources.poker_table___Copy;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1350, 729);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.tbRaise);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bot2StatusLabel);
@@ -357,6 +374,7 @@ namespace Poker
             this.Name = "Form1";
             this.Text = "GLS Texas Poker";
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout_Change);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -396,7 +414,7 @@ namespace Poker
         private Label bot1StatusLabel;
         private Label humanStatusLabel;
         private Label bot2StatusLabel;
-
+        private NumericUpDown numericUpDown1;
     }
 }
 

@@ -20,39 +20,37 @@
         private PictureBox card2PictureBox = new PictureBox();
 
 
-        protected Player(Point location, string name = defaultPlayerName)
+        protected Player(Point location, string name = defaultPlayerName, int chips = defaultPlayerChipsSetAmount)
         {
             this.Location = location;
             InitializePanel();
-            InitializeCardPictureBox(this.Card1PictureBox, this.Location);
-            int a = this.Location.X + this.Card1PictureBox.Width;
-            Point point = new Point(this.Location.X + this.Card1PictureBox.Width, this.Location.Y);
-            InitializeCardPictureBox(this.Card2PictureBox, new Point(this.Location.X + this.Card1PictureBox.Width, this.Location.Y));  //TODO: refactor 
+            InitializeCardPictureBox(this.Card1PictureBox, new Point(0, 0));
+            InitializeCardPictureBox(this.Card2PictureBox, new Point(0 + this.Card1PictureBox.Width, 0));  //TODO: refactor 
             this.ChipsTextBox = new TextBox();
-            this.ChipsSet = new ChipsSet(defaultPlayerChipsSetAmount);
+            this.ChipsSet = new ChipsSet();
             this.Hand = new Hand();
             this.Name = name;
+            this.ChipsSet.Amount = chips;
             this.FoldedTurn = false;
             this.Turn = false;
-            this.Result = new Result();
-            this.Result.Type = defaultHandType;
             this.CallAmount = 0;
             this.RaiseAmount = 0;
-
+            this.PrevRaise = 0;
         }
 
         private void InitializePanel()
         {
             this.Panel = new Panel();
             this.Panel.Location = this.Location;
-            this.Panel.BackColor = System.Drawing.Color.DarkBlue;
+            this.Panel.BackColor = System.Drawing.Color.Transparent;
             this.Panel.Name = "PlayerPanel";
             this.Panel.Size = new System.Drawing.Size(180, 150);
-            this.Panel.Visible = false;
+            this.Panel.Visible = true;
         }
 
         private void InitializeCardPictureBox(PictureBox pictureBox, Point location)
         {
+
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox.Width = 80;
             pictureBox.Height = 130;

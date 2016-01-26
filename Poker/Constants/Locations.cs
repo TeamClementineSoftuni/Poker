@@ -23,6 +23,8 @@ namespace Poker.Constants
         private const int Bot5LocationHeight = 397;
         private const int BoardLocationWidth = 410;
         private const int BoardLocationHeigt = 265;
+        private const int cardWidth = 90;
+
         private static readonly List<Point> playersLocations = new List<Point>()
         {
             new Point(HumanPlayerLocationWidth, HumanPlayerLocationHeight),
@@ -39,12 +41,10 @@ namespace Poker.Constants
             get { return playersLocations; }
         }
 
-        public static Point BoardLocation
+        public static Point BoardCardsLocations(int cardIndex)
         {
-            get
-            {
-                return new Point(BoardLocationWidth, BoardLocationHeigt);
-            }
+            Point cardLocation = new Point(BoardLocationWidth + cardIndex * cardWidth, BoardLocationHeigt);
+            return cardLocation;
         }
 
     }

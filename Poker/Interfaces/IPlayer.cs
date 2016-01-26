@@ -91,5 +91,7 @@
         /// Show is player turn is folded.
         /// </summary>
         bool FoldedTurn { get; set; }
+
+
     }
 }
