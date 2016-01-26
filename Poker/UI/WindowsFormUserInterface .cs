@@ -3,7 +3,8 @@
     using System.Windows.Forms;
 
     using Poker.Interfaces;
-    public class WindowsFormsUserInterface : IMessagePrintable
+
+    public class WindowsForms : IUserInterface
     {
         public void PrintMessage(string message)
         {

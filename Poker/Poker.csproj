@@ -69,6 +69,7 @@
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IPot.cs" />
     <Compile Include="Interfaces\IResult.cs" />
+    <Compile Include="Interfaces\IUserInterface.cs" />
     <Compile Include="Models\Enums\Actions.cs" />
     <Compile Include="Models\ActsOnTable.cs" />
     <Compile Include="Models\Players\Bot.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Core\Rules.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Core\Winner.cs" />
-    <Compile Include="UI\WindowsFormsUserInterface.cs" />
+    <Compile Include="UI\WindowsFormUserInterface .cs" />
     <EmbeddedResource Include="AddChipsForm.resx">
       <DependentUpon>AddChipsForm.cs</DependentUpon>
     </EmbeddedResource>
