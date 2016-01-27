@@ -525,6 +525,8 @@ namespace Poker
                 this.bot4StatusLabel,
                 this.bot5StatusLabel
             };
+
+            ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
         }
     }
 }

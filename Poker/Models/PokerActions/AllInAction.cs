@@ -1,8 +1,11 @@
 ﻿namespace Poker.Models.PokerActions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Interfaces;
+
+    using Poker.Models.Players;
 
     public class AllInAction : Action
     {
@@ -32,9 +35,12 @@
                 Pot.Instance.AmountRaisedTo = this.Player.RaiseAmount;
             }
 
-            // TODO:
-            // // Human should have button for CAll + If ()
-            //this.buttonCall.Text = "Call " + Math.Min(Pot.Instance.AmountRaisedTo - this.Player.RaiseAmount, this.Player.ChipsSet.Amount);
+            if (this.Player is Human)
+            {
+                var newCallAmount = Math.Min(Pot.Instance.AmountRaisedTo - this.Player.RaiseAmount, this.Player.ChipsSet.Amount);
+                ((Human)Player).CallButton.Text = string.Format("{0} {1}", Actions.Call, newCallAmount);
+            }
+
             this.Players.AddRange(Players.GetRange(0, this.PlayerIndex));
             this.Players.RemoveRange(0, this.PlayerIndex);
             this.PlayerIndex = -1;

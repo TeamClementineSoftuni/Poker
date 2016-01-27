@@ -1,6 +1,7 @@
 ﻿namespace Poker.Models.Players
 {
     using System.Drawing;
+    using System.Windows.Forms;
 
     public class Human : Player
     {
@@ -9,5 +10,7 @@
         {
             this.Turn = true;
         }
+
+        public Button CallButton { get; set; }
     }
 }
