@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// Interface for deck.
+    /// </summary>
     public interface IDeck
     {
         /// <summary>

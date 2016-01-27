@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// All acts which are happened on table.
+    /// </summary>
     public interface IActsOnTable
     {
         /// <summary>

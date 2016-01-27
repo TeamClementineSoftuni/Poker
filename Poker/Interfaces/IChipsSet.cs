@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// Interface for chips
+    /// </summary>
     public interface IChipsSet
     {
         /// <summary>

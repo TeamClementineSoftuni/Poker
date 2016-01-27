@@ -2,6 +2,9 @@
 {
     using Models;
 
+    /// <summary>
+    /// Interface
+    /// </summary>
     public interface IGameStatus
     {
         /// <summary>

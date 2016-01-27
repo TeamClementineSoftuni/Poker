@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// Interface for pot in the game.
+    /// </summary>
     public interface IPot
     {
         /// <summary>

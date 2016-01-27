@@ -3,8 +3,11 @@
     using System.Drawing;
     using System.Windows.Forms;
     using Models;
-
-    public interface IPlayer
+    
+    /// <summary>
+    /// Interface for player in the game.
+    /// </summary>
+   public interface IPlayer
     {
         /// <summary>
         /// Gets and sets player location on screen. 
@@ -14,7 +17,7 @@
         /// <summary>
         /// Gets and sets the picture box of the first card.
         /// </summary>
-        PictureBox Card1PictureBox{ get; set; }
+        PictureBox Card1PictureBox { get; set; }
 
         /// <summary>
         /// Gets and sets the picture box of the second card.

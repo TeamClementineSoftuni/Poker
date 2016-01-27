@@ -3,6 +3,9 @@
     using System.Drawing;
     using Models;
 
+    /// <summary>
+    /// Interface for card. 
+    /// </summary>
     public interface ICard
     {
         /// <summary>

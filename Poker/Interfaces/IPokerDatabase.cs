@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Interfaces
+﻿namespace Poker.Interfaces
 {
-    using System.Windows.Forms;
-
+    /// <summary>
+    /// Interface for poker database.
+    /// </summary>
     public interface IPokerDatabase
     {
+        /// <summary>
+        /// Holds all players.
+        /// </summary>
         IPlayer[] Players { get; }
 
+        /// <summary>
+        /// Add player.
+        /// </summary>
+        /// <param name="player">Player to add.</param>
         void AddPlayer(IPlayer player);
     }
 }

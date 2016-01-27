@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// Interface for hand in the game.
+    /// </summary>
     public interface IHand
     {
         /// <summary>

@@ -1,5 +1,8 @@
 ﻿namespace Poker.Interfaces
 {
+    /// <summary>
+    /// Interface for hand result.
+    /// </summary>
     public interface IResult
     {
         /// <summary>
