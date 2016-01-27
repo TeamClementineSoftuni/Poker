@@ -77,6 +77,8 @@ namespace Poker
 
                 this.pokerDatabase.Players[index].StatusLabel = this.playersStatusLabel[index];
             }
+
+            ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
         }
 
         // parallel
@@ -524,9 +526,7 @@ namespace Poker
                 this.bot3StatusLabel,
                 this.bot4StatusLabel,
                 this.bot5StatusLabel
-            };
-
-            ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
+            }; 
         }
     }
 }
