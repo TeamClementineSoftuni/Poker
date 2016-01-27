@@ -71,6 +71,7 @@
     <Compile Include="Interfaces\IMessagePrintable.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IPlayerFactory.cs" />
+    <Compile Include="Interfaces\IPokerAction.cs" />
     <Compile Include="Interfaces\IPokerDatabase.cs" />
     <Compile Include="Interfaces\IPot.cs" />
     <Compile Include="Interfaces\IResult.cs" />
@@ -87,6 +88,12 @@
     <Compile Include="Models\Enums\Suits.cs" />
     <Compile Include="Models\Players\Human.cs" />
     <Compile Include="Models\Players\Player.cs" />
+    <Compile Include="Models\PokerActions\Action.cs" />
+    <Compile Include="Models\PokerActions\AllInAction.cs" />
+    <Compile Include="Models\PokerActions\CallAction.cs" />
+    <Compile Include="Models\PokerActions\CheckAction.cs" />
+    <Compile Include="Models\PokerActions\FoldAction.cs" />
+    <Compile Include="Models\PokerActions\RaiseAction.cs" />
     <Compile Include="Models\Pot.cs" />
     <Compile Include="PokerGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

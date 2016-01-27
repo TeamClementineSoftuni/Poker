@@ -26,6 +26,8 @@
 
         public IChipsSet ChipsSet { get; set; }
 
+        public int AmountRaisedTo { get; set; }
+
         public override string ToString()
         {
             string potChipSetToString = this.ChipsSet.Amount.ToString();
