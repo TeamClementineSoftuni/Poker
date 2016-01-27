@@ -55,7 +55,9 @@
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Constants\Locations.cs" />
     <Compile Include="Core\Database\PokerDatabase.cs" />
+    <Compile Include="Core\Dealer.cs" />
     <Compile Include="Core\Factories\PlayerFactory.cs" />
+    <Compile Include="Core\HandEvaluator.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,9 +99,7 @@
     <Compile Include="Models\Pot.cs" />
     <Compile Include="PokerGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Rules.cs" />
     <Compile Include="Models\Result.cs" />
-    <Compile Include="Core\Winner.cs" />
     <Compile Include="UI\WindowsFormUserInterface .cs" />
     <EmbeddedResource Include="AddChipsForm.resx">
       <DependentUpon>AddChipsForm.cs</DependentUpon>

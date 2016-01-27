@@ -44,7 +44,7 @@
 
             for (int suit = 0; suit < Common.NumberOfSuits; suit++)
             {
-                for (int rank = 0; rank < Common.NumberOfCardsRanks; rank++)
+                for (int rank = 2; rank < Common.NumberOfCardsRanks + 2; rank++)
                 {
                     Suits cardSuit = (Suits)suit;
                     CardsRank cardRank = (CardsRank)rank;

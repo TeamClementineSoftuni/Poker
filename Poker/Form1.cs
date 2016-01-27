@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Poker.Core;
 
 namespace Poker
 {
@@ -39,6 +40,8 @@ namespace Poker
         private IUserInterface userInterface = new WindowsFormUserInterface();
 
         private double bigBlindAmount = Common.InitialCallAmount;
+        private Dealer dealer = new Dealer();
+        private HandEvaluator handEvaluator = new HandEvaluator();
 
         //TODO: initialize arrays and lists
         // parallel branch
@@ -217,7 +220,6 @@ namespace Poker
                                             player => (player.IsFolded == false) && player.ChipsSet.Amount > 0).ToList();
                                     playerIndex = 0;
 
-                                    MessageBox.Show(playersLeftToAct.Count().ToString());
                                     break;
                                 case Actions.AllIn:
                                     Pot.Instance.ChipsSet.Amount += playersLeftToAct[playerIndex].AllInAmount;
@@ -254,8 +256,6 @@ namespace Poker
                             {
                                 EnableButtons(this.buttonRaise);
                             }
-
-                            MessageBox.Show(playersLeftToAct.Count().ToString());
 
                             await signal.WaitAsync();
                             DisableButtons(this.buttonFold, this.buttonCheck, this.buttonCall, this.buttonRaise);
@@ -323,8 +323,18 @@ namespace Poker
                     await Task.Delay(1000);
 
                     // TODO: Implement winning hand algo
-                    this.pokerDatabase.Players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
+                    //this.pokerDatabase.Players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
+                    //this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
+
+                    IList<IPlayer> playersToShowDown = this.pokerDatabase.Players.Where(player => player.IsFolded == false).ToList();
+
+                    foreach (var player in playersToShowDown)
+                    {
+                        player.Result = this.handEvaluator.Apply(player.Hand, this.board);
+                    }
+
+                    this.dealer.CheckWinners(playersToShowDown);
+                    this.dealer.DistributePot();
 
                     await Task.Delay(1000);
 

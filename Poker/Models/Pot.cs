@@ -10,6 +10,7 @@
         private Pot()
         { 
             ChipsSet  = new ChipsSet();
+            this.PotTextBox = new TextBox();
         }
 
         public static Pot Instance
@@ -23,6 +24,8 @@
                 return instance;
             }
         }
+
+        public TextBox PotTextBox { get; set; }
 
         public IChipsSet ChipsSet { get; set; }
 
