@@ -15,26 +15,31 @@ namespace Poker
     using Models.Players;
     using Interfaces;
 
+    using Poker.Core.Database;
+    using Poker.Core.Factories;
+    using Poker.UI;
+
     public partial class Form1 : Form
     {
         // parallel branch
+        private IPlayerFactory playerFactory = new PlayerFactory();
+        private IPokerDatabase pokerDatabase = new PokerDatabase();
         private ICard[] board = new Card[Common.NumberOfBoardCards];
         private IDeck deck = new Deck("Assets\\Cards\\RenamedCards\\");
-        private IPlayer[] players = new Player[Common.NumberOfPlayers];
-        private List<IPlayer> playersNotFolded = new List<IPlayer>(); // Bot object should hava indicators for that(by Maria)
         private List<IPlayer> playersLeftToAct = new List<IPlayer>();
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
         private PictureBox[] boardPictureBoxes = new PictureBox[Common.NumberOfBoardCards];
         private int amountRaisedTo = 0;
         private SemaphoreSlim signal = new SemaphoreSlim(0, 1);
-
+        
         private List<IPlayer> listOfWinners = new List<IPlayer>();
         private List<Label> playersStatusLabel = new List<Label>();
         private List<IResult> winnersTypes = new List<IResult>();
         private IActsOnTable actsOnTable = new ActsOnTable();
-        
+        private IUserInterface userInterface = new WindowsFormUserInterface();
+
         private double bigBlindAmount = Common.InitialCallAmount;
-        
+
         //TODO: initialize arrays and lists
         // parallel branch
 
@@ -55,25 +60,22 @@ namespace Poker
 
         private void InitializePlayers()
         {
-            Point humanLocation = Locations.PlayersLocations[0];
-            players[0] = new Human(humanLocation);
-
-            for (int bot = 1; bot < players.Length; bot++)
+            for (int index = 0; index < Common.NumberOfPlayers; index++)
             {
-                Point botLocation = Locations.PlayersLocations[bot];
-                players[bot] = new Bot(botLocation);
+                var player = this.playerFactory.CreatePlayer();
+                this.pokerDatabase.AddPlayer(player);
             }
 
             // Set the panel,ChipsTextBox and StatusLabel for every player
-            for (int index = 0; index < players.Length; index++)
+            for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
             {
-                this.Controls.Add(players[index].Panel);
+                this.Controls.Add(this.pokerDatabase.Players[index].Panel);
 
-                players[index].ChipsTextBox = playersChipsTextBoxs[index];
-                players[index].ChipsTextBox.Enabled = false;
-                players[index].ChipsTextBox.Text = players[index].ChipsSet.ToString();
+                this.pokerDatabase.Players[index].ChipsTextBox = playersChipsTextBoxs[index];
+                this.pokerDatabase.Players[index].ChipsTextBox.Enabled = false;
+                this.pokerDatabase.Players[index].ChipsTextBox.Text = this.pokerDatabase.Players[index].ChipsSet.ToString();
 
-                this.players[index].StatusLabel = this.playersStatusLabel[index];
+                this.pokerDatabase.Players[index].StatusLabel = this.playersStatusLabel[index];
             }
         }
 
@@ -82,38 +84,38 @@ namespace Poker
         {
             deck.Shuffle();
             // give 2 cards to every player  --> the cards are taken from the deck;
-            for (int index = 0; index < players.Length; index++)
+            for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
             {
-                if (players[index].ChipsSet.Amount > 0)
+                if (this.pokerDatabase.Players[index].ChipsSet.Amount > 0)
                 {
-                    players[index].Hand.Card1 = deck.Cards[2 * index];
-                    players[index].Hand.Card2 = deck.Cards[2 * index + 1];
-                    this.players[index].IsFolded = false;
-                    this.players[index].AllInAmount = 0;
-                    this.players[index].RaiseAmount = 0;
-                    this.players[index].PrevRaise = 0;
-                    this.players[index].Card1PictureBox.Visible = true;
-                    this.players[index].Card2PictureBox.Visible = true;
+                    this.pokerDatabase.Players[index].Hand.Card1 = deck.Cards[2 * index];
+                    this.pokerDatabase.Players[index].Hand.Card2 = deck.Cards[2 * index + 1];
+                    this.pokerDatabase.Players[index].IsFolded = false;
+                    this.pokerDatabase.Players[index].AllInAmount = 0;
+                    this.pokerDatabase.Players[index].RaiseAmount = 0;
+                    this.pokerDatabase.Players[index].PrevRaise = 0;
+                    this.pokerDatabase.Players[index].Card1PictureBox.Visible = true;
+                    this.pokerDatabase.Players[index].Card2PictureBox.Visible = true;
                 }
                 else
                 {
-                    this.players[index].IsFolded = true;
+                    this.pokerDatabase.Players[index].IsFolded = true;
                 }
             }
 
             // TODO: refactor
-            players[0].Card1PictureBox.Image = players[0].Hand.Card1.CardImage;
+            this.pokerDatabase.Players[0].Card1PictureBox.Image = this.pokerDatabase.Players[0].Hand.Card1.CardImage;
             await Task.Delay(150);
-            players[0].Card2PictureBox.Image = players[0].Hand.Card2.CardImage;
+            this.pokerDatabase.Players[0].Card2PictureBox.Image = this.pokerDatabase.Players[0].Hand.Card2.CardImage;
             await Task.Delay(150);
 
-            for (int botIndex = 1; botIndex < players.Length; botIndex++)
+            for (int botIndex = 1; botIndex < this.pokerDatabase.Players.Length; botIndex++)
             {
-                players[botIndex].Card1PictureBox.Image = Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
+                this.pokerDatabase.Players[botIndex].Card1PictureBox.Image = Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
                 await Task.Delay(150);
                 // TODO: currently it gives a player 2 cards and then moves to next player. If you want to make
                 // it like in real game, it should first give every player 1 card, and only when all players are dealt 1 card, deal them another one.
-                players[botIndex].Card2PictureBox.Image = Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
+                this.pokerDatabase.Players[botIndex].Card2PictureBox.Image = Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
                 await Task.Delay(150);
             }
             // we have given every player 2 cards ( 6 * 2 = 12), so the first 12 cards from the deck are already reserved. 
@@ -143,7 +145,7 @@ namespace Poker
 
         private void numericUpDown1_KeyUp(object sender, KeyEventArgs e)
         {
-            this.numericUpDown1.Maximum = this.players[0].ChipsSet.Amount;
+            this.numericUpDown1.Maximum = this.pokerDatabase.Players[0].ChipsSet.Amount;
 
             if (this.numericUpDown1.Value > this.numericUpDown1.Maximum)
             {
@@ -162,7 +164,7 @@ namespace Poker
                 DisableButtons(this.buttonFold, this.buttonCheck, this.buttonCall, this.buttonRaise);
                 amountRaisedTo = 0;
                 playersLeftToAct = new List<IPlayer>();
-                playersLeftToAct = players.Where(player => player.ChipsSet.Amount > 0 && player.IsFolded == false).ToList();
+                playersLeftToAct = this.pokerDatabase.Players.Where(player => player.ChipsSet.Amount > 0 && player.IsFolded == false).ToList();
                 bool moreThanOnePlayerLeftInTheHand = this.playersLeftToAct.Count > 1;
 
                 for (int player = 0; player < playersLeftToAct.Count; player++)
@@ -205,7 +207,7 @@ namespace Poker
                                 case Actions.Raise:
                                     Pot.Instance.ChipsSet.Amount += playersLeftToAct[playerIndex].RaiseAmount - playersLeftToAct[playerIndex].PrevRaise;
                                     amountRaisedTo = playersLeftToAct[playerIndex].RaiseAmount;
-                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
+                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - this.pokerDatabase.Players[0].RaiseAmount, this.pokerDatabase.Players[0].ChipsSet.Amount);
                                     this.playersLeftToAct.AddRange(playersLeftToAct.GetRange(0, playerIndex));
                                     this.playersLeftToAct.RemoveRange(0, playerIndex);
                                     this.playersLeftToAct =
@@ -223,7 +225,7 @@ namespace Poker
                                         amountRaisedTo = playersLeftToAct[playerIndex].RaiseAmount;
                                     }
 
-                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - players[0].RaiseAmount, this.players[0].ChipsSet.Amount);
+                                    this.buttonCall.Text = "Call " + Math.Min(amountRaisedTo - this.pokerDatabase.Players[0].RaiseAmount, this.pokerDatabase.Players[0].ChipsSet.Amount);
                                     this.playersLeftToAct.AddRange(playersLeftToAct.GetRange(0, playerIndex));
                                     this.playersLeftToAct.RemoveRange(0, playerIndex);
                                     playerIndex = -1;
@@ -233,11 +235,11 @@ namespace Poker
                                     break;
                             }
                         }
-                        else if (!players[0].IsFolded && players[0].ChipsSet.Amount > 0)
+                        else if (!this.pokerDatabase.Players[0].IsFolded && this.pokerDatabase.Players[0].ChipsSet.Amount > 0)
                         {
                             EnableButtons(this.buttonFold);
 
-                            if (this.amountRaisedTo > this.players[0].RaiseAmount)
+                            if (this.amountRaisedTo > this.pokerDatabase.Players[0].RaiseAmount)
                             {
                                 EnableButtons(this.buttonCall);
                             }
@@ -246,7 +248,7 @@ namespace Poker
                                 EnableButtons(this.buttonCheck);
                             }
 
-                            if (this.amountRaisedTo - this.players[0].RaiseAmount < this.players[0].ChipsSet.Amount)
+                            if (this.amountRaisedTo - this.pokerDatabase.Players[0].RaiseAmount < this.pokerDatabase.Players[0].ChipsSet.Amount)
                             {
                                 EnableButtons(this.buttonRaise);
                             }
@@ -266,7 +268,7 @@ namespace Poker
 
                 await Task.Delay(1000);
 
-                if (players.Where(p => p.IsFolded == false).Count() <= 1)
+                if (this.pokerDatabase.Players.Where(p => p.IsFolded == false).Count() <= 1)
                 {
                     await Task.Delay(1000);
                     for (int boardCardIndex = 0; boardCardIndex < boardPictureBoxes.Length; boardCardIndex++)
@@ -274,9 +276,9 @@ namespace Poker
                         boardPictureBoxes[boardCardIndex].Visible = false;
                     }
 
-                    for (int player = 0; player < players.Length; player++)
+                    for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
                     {
-                        this.players[player].StatusLabel.Text = "";
+                        this.pokerDatabase.Players[index].StatusLabel.Text = "";
                     }
 
                     this.playersLeftToAct.Clear();
@@ -305,22 +307,22 @@ namespace Poker
                 {
                     await Task.Delay(1000);
 
-                    for (int player = 0; player < players.Length; player++)
+                    for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
                     {
-                        if (!players[player].IsFolded)
+                        if (!this.pokerDatabase.Players[index].IsFolded)
                         {
-                            players[player].Card1PictureBox.Image = players[player].Hand.Card1.CardImage;
-                            players[player].Card2PictureBox.Image = players[player].Hand.Card2.CardImage;
+                            this.pokerDatabase.Players[index].Card1PictureBox.Image = this.pokerDatabase.Players[index].Hand.Card1.CardImage;
+                            this.pokerDatabase.Players[index].Card2PictureBox.Image = this.pokerDatabase.Players[index].Hand.Card2.CardImage;
                         }
 
-                        this.players[player].StatusLabel.Text = "";
+                        this.pokerDatabase.Players[index].StatusLabel.Text = "";
                     }
 
                     await Task.Delay(1000);
 
                     // TODO: Implement winning hand algo
-                    this.players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
+                    this.pokerDatabase.Players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
+                    this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
 
                     await Task.Delay(1000);
 
@@ -359,44 +361,44 @@ namespace Poker
             }
         }
 
-        private async void ButtonFold_Click(object sender, EventArgs e)
+        private void ButtonFold_Click(object sender, EventArgs e)
         {
-            this.players[0].StatusLabel.Text = "Fold";
-            this.players[0].IsFolded = true;
+            this.pokerDatabase.Players[0].StatusLabel.Text = "Fold";
+            this.pokerDatabase.Players[0].IsFolded = true;
 
             signal.Release();
         }
 
-        private async void ButtonCheck_Click(object sender, EventArgs e)
+        private void ButtonCheck_Click(object sender, EventArgs e)
         {
-            this.players[0].StatusLabel.Text = "Check";
+            this.pokerDatabase.Players[0].StatusLabel.Text = "Check";
             signal.Release();
         }
-        private async void ButtonCall_Click(object sender, EventArgs e)
+        private void ButtonCall_Click(object sender, EventArgs e)
         {
             string amountToCallAsString = this.buttonCall.Text.Remove(0, 5);
             int amountToCall = int.Parse(amountToCallAsString);
             Pot.Instance.ChipsSet.Amount += amountToCall;
-            this.players[0].ChipsSet.Amount = this.players[0].ChipsSet.Amount - amountToCall;
-            this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
-            this.players[0].PrevRaise = this.players[0].RaiseAmount;
-            this.players[0].RaiseAmount = amountToCall;
+            this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount - amountToCall;
+            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
+            this.pokerDatabase.Players[0].PrevRaise = this.pokerDatabase.Players[0].RaiseAmount;
+            this.pokerDatabase.Players[0].RaiseAmount = amountToCall;
             this.buttonCall.Enabled = false;
-            this.players[0].StatusLabel.Text = "Call";
+            this.pokerDatabase.Players[0].StatusLabel.Text = "Call";
 
             signal.Release();
         }
 
-        private async void ButtonRaise_Click(object sender, EventArgs e)
+        private void ButtonRaise_Click(object sender, EventArgs e)
         {
-            this.players[0].PrevRaise = this.players[0].RaiseAmount;
-            this.players[0].RaiseAmount = this.players[0].RaiseAmount + (int)this.numericUpDown1.Value;
-            this.players[0].ChipsSet.Amount = this.players[0].ChipsSet.Amount - (int)this.numericUpDown1.Value;
-            this.players[0].ChipsTextBox.Text = this.players[0].ChipsSet.Amount.ToString();
-            this.players[0].StatusLabel.Text = "Raised to " + this.players[0].RaiseAmount;
+            this.pokerDatabase.Players[0].PrevRaise = this.pokerDatabase.Players[0].RaiseAmount;
+            this.pokerDatabase.Players[0].RaiseAmount = this.pokerDatabase.Players[0].RaiseAmount + (int)this.numericUpDown1.Value;
+            this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount - (int)this.numericUpDown1.Value;
+            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
+            this.pokerDatabase.Players[0].StatusLabel.Text = "Raised to " + this.pokerDatabase.Players[0].RaiseAmount;
 
             Pot.Instance.ChipsSet.Amount += (int)this.numericUpDown1.Value;
-            this.amountRaisedTo = this.players[0].RaiseAmount;
+            this.amountRaisedTo = this.pokerDatabase.Players[0].RaiseAmount;
 
             signal.Release();
         }
@@ -406,14 +408,14 @@ namespace Poker
             if (addChipsTextBox.Text == "") { }
             else
             {
-                foreach (var player in players)
+                foreach (var player in this.pokerDatabase.Players)
                 {
                     // TODO: unhandled exception when put string instead integer
-                    player.ChipsSet.Amount += int.Parse(addChipsTextBox.Text);  
+                    player.ChipsSet.Amount += int.Parse(addChipsTextBox.Text);
                 }
             }
 
-            players[0].ChipsTextBox.Text = players[0].ChipsSet.Amount.ToString();
+            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
         }
         private void ButtonOptions_Click(object sender, EventArgs e)
         {
@@ -439,29 +441,29 @@ namespace Poker
             int parsedValue;
             if (smallBlindTextBox.Text.Contains(",") || smallBlindTextBox.Text.Contains("."))
             {
-                MessageBox.Show("The Small Blind can be only round number !");
+                this.userInterface.PrintMessage(Messages.SmallBlindRoundNumber);
                 smallBlindTextBox.Text = sb.ToString();
                 return;
             }
             if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
             {
-                MessageBox.Show("This is a number only field");
+                this.userInterface.PrintMessage(Messages.OnlyNumbers);
                 smallBlindTextBox.Text = sb.ToString();
                 return;
             }
             if (int.Parse(smallBlindTextBox.Text) > 100000)
             {
-                MessageBox.Show("The maximum of the Small Blind is 100 000 $");
+                this.userInterface.PrintMessage(Messages.MaxSmallBlind);
                 smallBlindTextBox.Text = sb.ToString();
             }
             if (int.Parse(smallBlindTextBox.Text) < 250)
             {
-                MessageBox.Show("The minimum of the Small Blind is 250 $");
+                this.userInterface.PrintMessage(Messages.MinSmallBlind);
             }
             if (int.Parse(smallBlindTextBox.Text) >= 250 && int.Parse(smallBlindTextBox.Text) <= 100000)
             {
                 sb = int.Parse(smallBlindTextBox.Text);
-                MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
+                this.userInterface.PrintMessage(Messages.ChangesSave);
             }
         }
         private void ButtonBigBlind_Click(object sender, EventArgs e)
@@ -469,29 +471,29 @@ namespace Poker
             int parsedValue;
             if (bigBlindTextBox.Text.Contains(",") || bigBlindTextBox.Text.Contains("."))
             {
-                MessageBox.Show("The Big Blind can be only round number !");
+                this.userInterface.PrintMessage(Messages.BigBlindRoundNumber);
                 bigBlindTextBox.Text = bigBlindAmount.ToString();
                 return;
             }
             if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
             {
-                MessageBox.Show("This is a number only field");
+                this.userInterface.PrintMessage(Messages.OnlyNumbers);
                 smallBlindTextBox.Text = bigBlindAmount.ToString();
                 return;
             }
             if (int.Parse(bigBlindTextBox.Text) > 200000)
             {
-                MessageBox.Show("The maximum of the Big Blind is 200 000");
+                this.userInterface.PrintMessage(Messages.MaxBigBlind);
                 bigBlindTextBox.Text = bigBlindAmount.ToString();
             }
             if (int.Parse(bigBlindTextBox.Text) < 500)
             {
-                MessageBox.Show("The minimum of the Big Blind is 500 $");
+                this.userInterface.PrintMessage(Messages.MinBigBlind);
             }
             if (int.Parse(bigBlindTextBox.Text) >= 500 && int.Parse(bigBlindTextBox.Text) <= 200000)
             {
                 bigBlindAmount = int.Parse(bigBlindTextBox.Text);
-                MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
+                this.userInterface.PrintMessage(Messages.ChangesSave);
             }
         }
         private void Layout_Change(object sender, LayoutEventArgs e)

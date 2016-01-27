@@ -10,7 +10,7 @@ namespace Poker.Interfaces
 
     public interface IPokerDatabase
     {
-        IEnumerable<IPlayer> Players { get; }
+        IPlayer[] Players { get; }
 
         void AddPlayer(IPlayer player);
     }

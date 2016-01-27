@@ -1,9 +1,10 @@
 ﻿namespace Poker.Core.Database
 {
     using System;
-    using System.Collections.Generic;
     using Constants;
     using Interfaces;
+
+    using Poker.Models.Players;
 
     public class PokerDatabase : IPokerDatabase
     {
@@ -16,7 +17,7 @@
             this.players = new IPlayer[Common.NumberOfPlayers];
         }
 
-        public IEnumerable<IPlayer> Players
+        public IPlayer[] Players
         {
             get
             {

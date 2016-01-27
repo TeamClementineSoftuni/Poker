@@ -22,7 +22,7 @@
 
         public override string ToString()
         {
-            return $"Chips : {this.Amount}";
+            return string.Format("Chips : {0}",this.Amount);
         }
     }
 }

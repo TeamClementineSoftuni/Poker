@@ -4,7 +4,7 @@
 
     using Poker.Interfaces;
 
-    public class WindowsForms : IUserInterface
+    public class WindowsFormUserInterface : IUserInterface
     {
         public void PrintMessage(string message)
         {

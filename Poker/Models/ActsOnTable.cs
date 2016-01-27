@@ -19,6 +19,6 @@
 
         public int CallAmount { get; set; }
 
-        public double RoundsPassed { get; }
+        public double RoundsPassed { get; private set; }
     }
 }
