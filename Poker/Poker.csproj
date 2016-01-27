@@ -50,9 +50,12 @@
     <Compile Include="AddChipsForm.Designer.cs">
       <DependentUpon>AddChipsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Constants\Messages.cs" />
     <Compile Include="Core\ArtificialIntelligence.cs" />
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Constants\Locations.cs" />
+    <Compile Include="Core\Database\PokerDatabase.cs" />
+    <Compile Include="Core\Factories\PlayerFactory.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +70,8 @@
     <Compile Include="Interfaces\IHand.cs" />
     <Compile Include="Interfaces\IMessagePrintable.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Interfaces\IPlayerFactory.cs" />
+    <Compile Include="Interfaces\IPokerDatabase.cs" />
     <Compile Include="Interfaces\IPot.cs" />
     <Compile Include="Interfaces\IResult.cs" />
     <Compile Include="Interfaces\IUserInterface.cs" />
