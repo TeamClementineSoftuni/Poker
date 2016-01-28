@@ -9,16 +9,28 @@
 
     public class Deck : IDeck
     {
-        //TODO: rename cards images files to fit the format --> example: AceSpades.png
+        private static Deck instance;
         private readonly ICard[] cards = new Card[Common.NumberOfPlayingCards];
 
         private string cardsImagesLocation;
 
-        public Deck(string cardsImagesLocation)
+        private Deck(string cardsImagesLocation = Common.ImagesDefaultPath)
         {
             this.CardsImagesLocation = cardsImagesLocation;
             this.PopulateWithCards();
             this.Shuffle();
+        }
+
+        public static Deck Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Deck();
+                }
+                return instance;
+            }
         }
 
         public ICard[] Cards
@@ -39,9 +51,7 @@
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException(
-                        "CardsImagesLocation",
-                        "CardsImagesLocation cannot be null or empty!");
+                    throw new ArgumentNullException("CardsImagesLocation cannot be null or empty!");
                 }
 
                 this.cardsImagesLocation = value;

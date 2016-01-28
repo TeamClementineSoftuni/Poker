@@ -23,5 +23,9 @@
         public const int NumberOfBoardCards = 5;
 
         public const int MaxRankWinningHands = 9;
+
+        public const string ImagesDefaultPath = "Assets\\Cards\\RenamedCards\\";
+
+        public const string ImagesBackDefaultPath = "Assets\\Cards\\RenamedCards\\back.png";
     }
 }

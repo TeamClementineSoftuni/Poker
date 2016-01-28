@@ -32,12 +32,9 @@
         private readonly PictureBox[] boardPictureBoxes = new PictureBox[Common.NumberOfBoardCards];
 
         private readonly Dealer dealer = new Dealer();
-
-        private readonly IDeck deck = new Deck("Assets\\Cards\\RenamedCards\\");
-
+       
         private readonly HandEvaluator handEvaluator = new HandEvaluator();
 
-        //TODO: initialize arrays and lists
         // parallel branch
 
         int height, width;
@@ -100,14 +97,14 @@
         // parallel
         async Task DealCards()
         {
-            this.deck.Shuffle();
+            Deck.Instance.Shuffle();
             // give 2 cards to every player  --> the cards are taken from the deck;
             for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
             {
                 if (this.pokerDatabase.Players[index].ChipsSet.Amount > 0)
                 {
-                    this.pokerDatabase.Players[index].Hand.Card1 = this.deck.Cards[2 * index];
-                    this.pokerDatabase.Players[index].Hand.Card2 = this.deck.Cards[2 * index + 1];
+                    this.pokerDatabase.Players[index].Hand.Card1 = Deck.Instance.Cards[2 * index];
+                    this.pokerDatabase.Players[index].Hand.Card2 = Deck.Instance.Cards[2 * index + 1];
                     this.pokerDatabase.Players[index].IsFolded = false;
                     this.pokerDatabase.Players[index].AllInAmount = 0;
                     this.pokerDatabase.Players[index].RaiseAmount = 0;
@@ -132,19 +129,19 @@
             for (int botIndex = 1; botIndex < this.pokerDatabase.Players.Length; botIndex++)
             {
                 this.pokerDatabase.Players[botIndex].Card1PictureBox.Image =
-                    Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
+                    Image.FromFile(Common.ImagesBackDefaultPath);
                 await Task.Delay(150);
                 // TODO: currently it gives a player 2 cards and then moves to next player. If you want to make
                 // it like in real game, it should first give every player 1 card, and only when all players are dealt 1 card, deal them another one.
                 this.pokerDatabase.Players[botIndex].Card2PictureBox.Image =
-                    Image.FromFile("Assets\\Cards\\RenamedCards\\back.png");
+                    Image.FromFile(Common.ImagesBackDefaultPath);
                 await Task.Delay(150);
             }
             // we have given every player 2 cards ( 6 * 2 = 12), so the first 12 cards from the deck are already reserved. 
             // Now we reserve 5 more cards for the board (the five cards visible by every player). 
             for (int index = 12; index < 12 + 5; index++)
             {
-                this.board[index - 12] = this.deck.Cards[index];
+                this.board[index - 12] = Deck.Instance.Cards[index];
                 PictureBox boardCardPictureBox = new PictureBox();
                 boardCardPictureBox.Location = Locations.BoardCardsLocations(index - 12);
                 boardCardPictureBox.Width = 80;
@@ -195,10 +192,10 @@
 
                 if (street == 0)
                 {
-                    this.amountRaisedTo = 500; //or use BB or SB
+                    this.amountRaisedTo = Common.InitialCallAmount; //or use BB or SB
                 }
 
-                this.buttonCall.Text = "Call " + this.amountRaisedTo;
+                this.buttonCall.Text = Actions.Call.ToString() + this.amountRaisedTo;
 
                 while (this.playersLeftToAct.Count != 0 && moreThanOnePlayerLeftInTheHand)
                 {
@@ -418,7 +415,7 @@
 
         private void ButtonFold_Click(object sender, EventArgs e)
         {
-            this.pokerDatabase.Players[0].StatusLabel.Text = "Fold";
+            this.pokerDatabase.Players[0].StatusLabel.Text = Actions.Fold.ToString();
             this.pokerDatabase.Players[0].IsFolded = true;
 
             this.signal.Release();
@@ -426,7 +423,7 @@
 
         private void ButtonCheck_Click(object sender, EventArgs e)
         {
-            this.pokerDatabase.Players[0].StatusLabel.Text = "Check";
+            this.pokerDatabase.Players[0].StatusLabel.Text = Actions.Check.ToString();
             this.signal.Release();
         }
 
@@ -440,7 +437,7 @@
             this.pokerDatabase.Players[0].PrevRaise = this.pokerDatabase.Players[0].RaiseAmount;
             this.pokerDatabase.Players[0].RaiseAmount = amountToCall;
             this.buttonCall.Enabled = false;
-            this.pokerDatabase.Players[0].StatusLabel.Text = "Call";
+            this.pokerDatabase.Players[0].StatusLabel.Text = Actions.Call.ToString();
 
             this.signal.Release();
         }
@@ -453,7 +450,7 @@
             this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount
                                                             - (int)this.raiseNumericUpDown.Value;
             this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
-            this.pokerDatabase.Players[0].StatusLabel.Text = "Raised to " + this.pokerDatabase.Players[0].RaiseAmount;
+            this.pokerDatabase.Players[0].StatusLabel.Text = Actions.Raise.ToString() + this.pokerDatabase.Players[0].RaiseAmount;
 
             Pot.Instance.ChipsSet.Amount += (int)this.raiseNumericUpDown.Value;
             this.amountRaisedTo = this.pokerDatabase.Players[0].RaiseAmount;
