@@ -9,6 +9,8 @@ using Poker.Models;
 
 namespace PokerGame.Tests
 {
+    using Moq;
+
     [TestClass]
     public class HandEvaluatorTests
     {
@@ -42,16 +44,20 @@ namespace PokerGame.Tests
         public void TestEvaluate_HighCard_ShouldReturnResultWithType0()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Clubs, CardsRank.Six, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Nine, this.mockedImageOfCard);
             this.board[3] = new Card(Suits.Spades, CardsRank.Jack, this.mockedImageOfCard);
             this.board[4] = new Card(Suits.Spades, CardsRank.Ace, this.mockedImageOfCard);
 
+
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 0, "result.Type should be 0 for a High Card!");
@@ -62,8 +68,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_PairKings_ShouldReturnResultType1()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Clubs, CardsRank.Six, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.King, this.mockedImageOfCard);
@@ -71,7 +79,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Spades, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 1, "result.Type should be 1 for a pair!");
@@ -82,8 +90,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_TwoPairs_ShouldReturnResultType2()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.King, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.King, this.mockedImageOfCard);
@@ -91,7 +101,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Hearts, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 2, "result.Type should be 2 for two pairs!");
@@ -102,8 +112,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_ThreeOfAKind_ShouldReturnResultType3()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.King, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Ace, this.mockedImageOfCard);
@@ -111,7 +123,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Hearts, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 3, "result.Type should be 3 for three of a kind!");
@@ -122,8 +134,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_Straight_ShouldReturnResultType4()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.Six, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Seven, this.mockedImageOfCard);
@@ -131,7 +145,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Hearts, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 4, "result.Type should be 4 for a straight!");
@@ -142,8 +156,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_Flush_ShouldReturnResultType5()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.Six, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Diamonds, CardsRank.Seven, this.mockedImageOfCard);
@@ -151,7 +167,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Diamonds, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 5, "result.Type should be 5 for a flush!");
@@ -162,8 +178,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_FullHouse_ShouldReturnResultType6()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Seven, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.Seven, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Seven, this.mockedImageOfCard);
@@ -171,7 +189,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Clubs, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 6, "result.Type should be 6 for a full house!");
@@ -182,8 +200,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_FourOfAKind_ShouldReturnResultType7()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Seven, mockedImageOfCard);
             this.board[1] = new Card(Suits.Hearts, CardsRank.Seven, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Seven, this.mockedImageOfCard);
@@ -191,7 +211,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Clubs, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 7, "result.Type should be 7 for four of a kind!");
@@ -202,8 +222,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_StraightFlush_ShouldReturnResultType8()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Four, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Five, mockedImageOfCard);
             this.board[1] = new Card(Suits.Diamonds, CardsRank.Six, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Diamonds, CardsRank.Seven, this.mockedImageOfCard);
@@ -211,7 +233,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Diamonds, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 8, "result.Type should be 8 for a straight flush!");
@@ -222,8 +244,10 @@ namespace PokerGame.Tests
         public void TestEvaluate_StraightTo5_ShouldReturnResultWithType4()
         {
             // Assign
-            this.hand.Card1 = new Card(Suits.Diamonds, CardsRank.Two, this.mockedImageOfCard);
-            this.hand.Card2 = new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard);
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Card1).Returns(new Card(Suits.Diamonds, CardsRank.Two, this.mockedImageOfCard));
+            mockHand.Setup(h => h.Card2).Returns(new Card(Suits.Diamonds, CardsRank.Three, this.mockedImageOfCard));
+
             this.board[0] = new Card(Suits.Diamonds, CardsRank.Four, mockedImageOfCard);
             this.board[1] = new Card(Suits.Clubs, CardsRank.Five, this.mockedImageOfCard);
             this.board[2] = new Card(Suits.Clubs, CardsRank.Nine, this.mockedImageOfCard);
@@ -231,7 +255,7 @@ namespace PokerGame.Tests
             this.board[4] = new Card(Suits.Spades, CardsRank.Ace, this.mockedImageOfCard);
 
             // Act
-            IResult result = handEvaluator.Evaluate(this.hand, this.board);
+            IResult result = handEvaluator.Evaluate(mockHand.Object, this.board);
 
             // Assert
             Debug.Assert(result.Type == 4, "result.Type should be 4 for straight!");

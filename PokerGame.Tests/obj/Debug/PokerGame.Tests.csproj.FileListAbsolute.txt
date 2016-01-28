@@ -14,3 +14,12 @@ D:\SoftUni\Poker\PokerGame.Tests\bin\Debug\Poker.pdb
 D:\SoftUni\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.csprojResolveAssemblyReference.cache
 D:\SoftUni\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.dll
 D:\SoftUni\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.pdb
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\PokerGame.Tests.dll
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\PokerGame.Tests.pdb
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\Moq.dll
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\Poker.exe
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\Poker.pdb
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\bin\Debug\Moq.xml
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.csprojResolveAssemblyReference.cache
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.dll
+D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.pdb
