@@ -20,7 +20,7 @@ namespace Poker
     using Poker.Core.Factories;
     using Poker.UI;
 
-    public partial class Form1 : Form
+    public partial class PokerGameEngine : Form
     {
         // parallel branch
         private IPlayerFactory playerFactory = new PlayerFactory();
@@ -32,7 +32,7 @@ namespace Poker
         private PictureBox[] boardPictureBoxes = new PictureBox[Common.NumberOfBoardCards];
         private int amountRaisedTo = 0;
         private SemaphoreSlim signal = new SemaphoreSlim(0, 1);
-        
+
         private List<IPlayer> listOfWinners = new List<IPlayer>();
         private List<Label> playersStatusLabel = new List<Label>();
         private List<IResult> winnersTypes = new List<IResult>();
@@ -51,7 +51,7 @@ namespace Poker
         private int sb = 250;
         private int bb = 500;
 
-        public Form1()
+        public PokerGameEngine()
         {
             InitializeComponent();
             //parallel branch
@@ -82,6 +82,7 @@ namespace Poker
             }
 
             ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
+
         }
 
         // parallel
@@ -105,6 +106,8 @@ namespace Poker
                 else
                 {
                     this.pokerDatabase.Players[index].IsFolded = true;
+                    this.pokerDatabase.Players[index].Card1PictureBox.Visible = false;
+                    this.pokerDatabase.Players[index].Card2PictureBox.Visible = false;
                 }
             }
 
@@ -143,21 +146,16 @@ namespace Poker
 
             while (true)
             {
+                this.pokerDatabase.Players[4].ChipsSet.Amount -= this.sb;
+                this.pokerDatabase.Players[4].ChipsTextBox.Text = this.pokerDatabase.Players[4].ChipsSet.Amount.ToString();
+                this.pokerDatabase.Players[5].ChipsSet.Amount -= this.bb;
+                this.pokerDatabase.Players[5].ChipsTextBox.Text = this.pokerDatabase.Players[5].ChipsSet.Amount.ToString();
                 await ProcessHand();
                 await DealCards();
             }
         }
 
-        private void numericUpDown1_KeyUp(object sender, KeyEventArgs e)
-        {
-            this.numericUpDown1.Maximum = this.pokerDatabase.Players[0].ChipsSet.Amount;
-
-            if (this.numericUpDown1.Value > this.numericUpDown1.Maximum)
-            {
-                this.numericUpDown1.Value = this.numericUpDown1.Maximum;
-            }
-        }
-
+       
         // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
         // and somehow getting rid of if-s with polymorphism i guess?
         async Task ProcessHand()
@@ -357,6 +355,16 @@ namespace Poker
             }
         }
 
+        private void RaiseNumericUpDown1_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.raiseNumericUpDown.Maximum = this.pokerDatabase.Players[0].ChipsSet.Amount;
+
+            if (this.raiseNumericUpDown.Value > this.raiseNumericUpDown.Maximum)
+            {
+                this.raiseNumericUpDown.Value = this.raiseNumericUpDown.Maximum;
+            }
+        }
+
         private void DisableButtons(params Button[] buttons)
         {
             for (int buttonIndex = 0; buttonIndex < buttons.Length; buttonIndex++)
@@ -404,12 +412,12 @@ namespace Poker
         private void ButtonRaise_Click(object sender, EventArgs e)
         {
             this.pokerDatabase.Players[0].PrevRaise = this.pokerDatabase.Players[0].RaiseAmount;
-            this.pokerDatabase.Players[0].RaiseAmount = this.pokerDatabase.Players[0].RaiseAmount + (int)this.numericUpDown1.Value;
-            this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount - (int)this.numericUpDown1.Value;
+            this.pokerDatabase.Players[0].RaiseAmount = this.pokerDatabase.Players[0].RaiseAmount + (int)this.raiseNumericUpDown.Value;
+            this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount - (int)this.raiseNumericUpDown.Value;
             this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
             this.pokerDatabase.Players[0].StatusLabel.Text = "Raised to " + this.pokerDatabase.Players[0].RaiseAmount;
 
-            Pot.Instance.ChipsSet.Amount += (int)this.numericUpDown1.Value;
+            Pot.Instance.ChipsSet.Amount += (int)this.raiseNumericUpDown.Value;
             this.amountRaisedTo = this.pokerDatabase.Players[0].RaiseAmount;
 
             signal.Release();
@@ -417,96 +425,41 @@ namespace Poker
 
         private void ButtonAddChips_Click(object sender, EventArgs e)
         {
-            if (addChipsTextBox.Text == "") { }
-            else
+            foreach (var player in this.pokerDatabase.Players)
             {
-                foreach (var player in this.pokerDatabase.Players)
-                {
-                    // TODO: unhandled exception when put string instead integer
-                    player.ChipsSet.Amount += int.Parse(addChipsTextBox.Text);
-                }
+                player.ChipsSet.Amount += (int)this.addChipsNumericUpDown.Value;
+                player.ChipsTextBox.Text = player.ChipsSet.Amount.ToString();
             }
-
-            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
         }
+
         private void ButtonOptions_Click(object sender, EventArgs e)
         {
-            bigBlindTextBox.Text = bigBlindAmount.ToString();
-            smallBlindTextBox.Text = sb.ToString();
-            if (bigBlindTextBox.Visible == false)
+            this.bigBlindNumericUpDown.Text = bigBlindAmount.ToString();
+            if (this.bigBlindNumericUpDown.Visible == false)
             {
-                bigBlindTextBox.Visible = true;
-                smallBlindTextBox.Visible = true;
+                this.bigBlindNumericUpDown.Visible = true;
+                this.smallBlindNumericUpDown.Visible = true;
                 buttonBigBlind.Visible = true;
                 buttonSmallBlind.Visible = true;
             }
             else
             {
-                bigBlindTextBox.Visible = false;
-                smallBlindTextBox.Visible = false;
+                this.bigBlindNumericUpDown.Visible = false;
+                this.smallBlindNumericUpDown.Visible = false;
                 buttonBigBlind.Visible = false;
                 buttonSmallBlind.Visible = false;
             }
         }
         private void ButtonSmallBlind_Click(object sender, EventArgs e)
         {
-            int parsedValue;
-            if (smallBlindTextBox.Text.Contains(",") || smallBlindTextBox.Text.Contains("."))
-            {
-                this.userInterface.PrintMessage(Messages.SmallBlindRoundNumber);
-                smallBlindTextBox.Text = sb.ToString();
-                return;
-            }
-            if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
-            {
-                this.userInterface.PrintMessage(Messages.OnlyNumbers);
-                smallBlindTextBox.Text = sb.ToString();
-                return;
-            }
-            if (int.Parse(smallBlindTextBox.Text) > 100000)
-            {
-                this.userInterface.PrintMessage(Messages.MaxSmallBlind);
-                smallBlindTextBox.Text = sb.ToString();
-            }
-            if (int.Parse(smallBlindTextBox.Text) < 250)
-            {
-                this.userInterface.PrintMessage(Messages.MinSmallBlind);
-            }
-            if (int.Parse(smallBlindTextBox.Text) >= 250 && int.Parse(smallBlindTextBox.Text) <= 100000)
-            {
-                sb = int.Parse(smallBlindTextBox.Text);
-                this.userInterface.PrintMessage(Messages.ChangesSave);
-            }
+            sb = (int)this.smallBlindNumericUpDown.Value;
+            this.userInterface.PrintMessage(Messages.ChangesSave);
         }
+
         private void ButtonBigBlind_Click(object sender, EventArgs e)
         {
-            int parsedValue;
-            if (bigBlindTextBox.Text.Contains(",") || bigBlindTextBox.Text.Contains("."))
-            {
-                this.userInterface.PrintMessage(Messages.BigBlindRoundNumber);
-                bigBlindTextBox.Text = bigBlindAmount.ToString();
-                return;
-            }
-            if (!int.TryParse(smallBlindTextBox.Text, out parsedValue))
-            {
-                this.userInterface.PrintMessage(Messages.OnlyNumbers);
-                smallBlindTextBox.Text = bigBlindAmount.ToString();
-                return;
-            }
-            if (int.Parse(bigBlindTextBox.Text) > 200000)
-            {
-                this.userInterface.PrintMessage(Messages.MaxBigBlind);
-                bigBlindTextBox.Text = bigBlindAmount.ToString();
-            }
-            if (int.Parse(bigBlindTextBox.Text) < 500)
-            {
-                this.userInterface.PrintMessage(Messages.MinBigBlind);
-            }
-            if (int.Parse(bigBlindTextBox.Text) >= 500 && int.Parse(bigBlindTextBox.Text) <= 200000)
-            {
-                bigBlindAmount = int.Parse(bigBlindTextBox.Text);
-                this.userInterface.PrintMessage(Messages.ChangesSave);
-            }
+            bb = (int)this.bigBlindNumericUpDown.Value;
+            this.userInterface.PrintMessage(Messages.ChangesSave);
         }
         private void Layout_Change(object sender, LayoutEventArgs e)
         {
@@ -536,7 +489,7 @@ namespace Poker
                 this.bot3StatusLabel,
                 this.bot4StatusLabel,
                 this.bot5StatusLabel
-            }; 
+            };
         }
     }
 }

@@ -10,7 +10,7 @@
             this.Player = player;
         }  
 
-        public Actions ActionType { get; }
+        public Actions ActionType { get; set; }
 
         public IPlayer Player { get; protected set; }
 

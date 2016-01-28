@@ -3,7 +3,7 @@
     using System.Windows.Forms;
     using System.Drawing;
 
-    partial class Form1
+    partial class PokerGameEngine
     {
         /// <summary>
         /// Required designer variable.
@@ -18,11 +18,7 @@
         private Button buttonBigBlind;
         private Button buttonSmallBlind;
         private ProgressBar timerProgressBar;
-        private TextBox raiseAmountTextBox;
-        private TextBox addChipsTextBox;
         private TextBox humanChipsTextBox;
-        private TextBox smallBlindTextBox;
-        private TextBox bigBlindTextBox;
         private TextBox bot5ChipsTextBox;
         private TextBox bot4ChipsTextBox;
         private TextBox bot3ChipsTextBox;
@@ -36,7 +32,10 @@
         private Label bot1StatusLabel;
         private Label humanStatusLabel;
         private Label bot2StatusLabel;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown raiseNumericUpDown;
+        private NumericUpDown addChipsNumericUpDown;
+        private NumericUpDown smallBlindNumericUpDown;
+        private NumericUpDown bigBlindNumericUpDown;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -69,11 +68,7 @@
             this.buttonAddChips = new System.Windows.Forms.Button();
             this.timerProgressBar = new System.Windows.Forms.ProgressBar();
             this.potLabel = new System.Windows.Forms.Label();
-            this.addChipsTextBox = new System.Windows.Forms.TextBox();
             this.potTextBox = new System.Windows.Forms.TextBox();
-            this.bigBlindTextBox = new System.Windows.Forms.TextBox();
-            this.smallBlindTextBox = new System.Windows.Forms.TextBox();
-            this.raiseAmountTextBox = new System.Windows.Forms.TextBox();
             this.bot5StatusLabel = new System.Windows.Forms.Label();
             this.bot4StatusLabel = new System.Windows.Forms.Label();
             this.bot3StatusLabel = new System.Windows.Forms.Label();
@@ -86,8 +81,14 @@
             this.bot2ChipsTextBox = new System.Windows.Forms.TextBox();
             this.bot1ChipsTextBox = new System.Windows.Forms.TextBox();
             this.humanChipsTextBox = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.raiseNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.addChipsNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.smallBlindNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.bigBlindNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.addChipsNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.smallBlindNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigBlindNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonFold
@@ -201,14 +202,6 @@
             this.potLabel.TabIndex = 0;
             this.potLabel.Text = "Pot";
             // 
-            // addChipsTextBox
-            // 
-            this.addChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.addChipsTextBox.Location = new System.Drawing.Point(93, 700);
-            this.addChipsTextBox.Name = "addChipsTextBox";
-            this.addChipsTextBox.Size = new System.Drawing.Size(125, 20);
-            this.addChipsTextBox.TabIndex = 8;
-            // 
             // potTextBox
             // 
             this.potTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -219,30 +212,6 @@
             this.potTextBox.Size = new System.Drawing.Size(125, 23);
             this.potTextBox.TabIndex = 14;
             this.potTextBox.Text = "0";
-            // 
-            // bigBlindTextBox
-            // 
-            this.bigBlindTextBox.Location = new System.Drawing.Point(12, 283);
-            this.bigBlindTextBox.Name = "bigBlindTextBox";
-            this.bigBlindTextBox.Size = new System.Drawing.Size(75, 20);
-            this.bigBlindTextBox.TabIndex = 19;
-            this.bigBlindTextBox.Text = "500";
-            // 
-            // smallBlindTextBox
-            // 
-            this.smallBlindTextBox.Location = new System.Drawing.Point(12, 228);
-            this.smallBlindTextBox.Name = "smallBlindTextBox";
-            this.smallBlindTextBox.Size = new System.Drawing.Size(75, 20);
-            this.smallBlindTextBox.TabIndex = 17;
-            this.smallBlindTextBox.Text = "250";
-            // 
-            // raiseAmountTextBox
-            // 
-            this.raiseAmountTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.raiseAmountTextBox.Location = new System.Drawing.Point(965, 703);
-            this.raiseAmountTextBox.Name = "raiseAmountTextBox";
-            this.raiseAmountTextBox.Size = new System.Drawing.Size(108, 20);
-            this.raiseAmountTextBox.TabIndex = 0;
             // 
             // bot5StatusLabel
             // 
@@ -350,28 +319,77 @@
             this.humanChipsTextBox.TabIndex = 6;
             this.humanChipsTextBox.Text = "Chips : 0";
             // 
-            // numericUpDown1
+            // raiseNumericUpDown
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(965, 677);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.raiseNumericUpDown.Location = new System.Drawing.Point(965, 697);
+            this.raiseNumericUpDown.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 32;
-            this.numericUpDown1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.numericUpDown1_KeyUp);
+            this.raiseNumericUpDown.Name = "raiseNumericUpDown";
+            this.raiseNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.raiseNumericUpDown.TabIndex = 32;
+            this.raiseNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.RaiseNumericUpDown1_KeyUp);
             // 
-            // Form1
+            // addChipsNumericUpDown
+            // 
+            this.addChipsNumericUpDown.Location = new System.Drawing.Point(93, 701);
+            this.addChipsNumericUpDown.Name = "addChipsNumericUpDown";
+            this.addChipsNumericUpDown.Size = new System.Drawing.Size(125, 20);
+            this.addChipsNumericUpDown.TabIndex = 33;
+            // 
+            // smallBlindNumericUpDown
+            // 
+            this.smallBlindNumericUpDown.Location = new System.Drawing.Point(12, 228);
+            this.smallBlindNumericUpDown.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.smallBlindNumericUpDown.Minimum = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            this.smallBlindNumericUpDown.Name = "smallBlindNumericUpDown";
+            this.smallBlindNumericUpDown.Size = new System.Drawing.Size(75, 20);
+            this.smallBlindNumericUpDown.TabIndex = 34;
+            this.smallBlindNumericUpDown.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            // 
+            // bigBlindNumericUpDown
+            // 
+            this.bigBlindNumericUpDown.Location = new System.Drawing.Point(12, 283);
+            this.bigBlindNumericUpDown.Maximum = new decimal(new int[] {
+            200000,
+            0,
+            0,
+            0});
+            this.bigBlindNumericUpDown.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.bigBlindNumericUpDown.Name = "bigBlindNumericUpDown";
+            this.bigBlindNumericUpDown.Size = new System.Drawing.Size(75, 20);
+            this.bigBlindNumericUpDown.TabIndex = 35;
+
+            // 
+            // PokerGameEngine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Poker.Properties.Resources.poker_table___Copy;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1350, 729);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.raiseAmountTextBox);
+            this.Controls.Add(this.bigBlindNumericUpDown);
+            this.Controls.Add(this.smallBlindNumericUpDown);
+            this.Controls.Add(this.addChipsNumericUpDown);
+            this.Controls.Add(this.raiseNumericUpDown);
             this.Controls.Add(this.potLabel);
             this.Controls.Add(this.bot2StatusLabel);
             this.Controls.Add(this.humanStatusLabel);
@@ -379,9 +397,7 @@
             this.Controls.Add(this.bot3StatusLabel);
             this.Controls.Add(this.bot4StatusLabel);
             this.Controls.Add(this.bot5StatusLabel);
-            this.Controls.Add(this.bigBlindTextBox);
             this.Controls.Add(this.buttonSmallBlind);
-            this.Controls.Add(this.smallBlindTextBox);
             this.Controls.Add(this.buttonBigBlind);
             this.Controls.Add(this.buttonOptions);
             this.Controls.Add(this.potTextBox);
@@ -390,7 +406,6 @@
             this.Controls.Add(this.bot3ChipsTextBox);
             this.Controls.Add(this.bot4ChipsTextBox);
             this.Controls.Add(this.bot5ChipsTextBox);
-            this.Controls.Add(this.addChipsTextBox);
             this.Controls.Add(this.buttonAddChips);
             this.Controls.Add(this.humanChipsTextBox);
             this.Controls.Add(this.timerProgressBar);
@@ -399,15 +414,19 @@
             this.Controls.Add(this.buttonCheck);
             this.Controls.Add(this.buttonFold);
             this.DoubleBuffered = true;
-            this.Name = "Form1";
+            this.Name = "PokerGameEngine";
             this.Text = "GLS Texas Poker";
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout_Change);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.addChipsNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.smallBlindNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigBlindNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
         #endregion
+
     }
 }
 
