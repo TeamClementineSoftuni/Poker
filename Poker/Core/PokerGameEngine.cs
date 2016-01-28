@@ -317,7 +317,6 @@
                     this.boardPictureBoxes[4].Visible = true;
                 }
 
-                // TODO: refactor
                 if (street == 3)
                 {
                     await Task.Delay(1000);
@@ -337,10 +336,6 @@
 
                     await Task.Delay(1000);
 
-                    // TODO: Implement winning hand algo
-                    //this.pokerDatabase.Players[0].ChipsSet.Amount += Pot.Instance.ChipsSet.Amount;
-                    //this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
-
                     IList<IPlayer> playersToShowDown =
                         this.pokerDatabase.Players.Where(player => player.IsFolded == false).ToList();
 
@@ -357,19 +352,8 @@
                     for (int boardCardIndex = 0; boardCardIndex < this.boardPictureBoxes.Length; boardCardIndex++)
                     {
                         this.boardPictureBoxes[boardCardIndex].Visible = false;
-                    }
-                    //show all bots cards which are not Fold
-                }
-
-                // TODO: figure out how to show common cards (board) after each street. Maybe solved?
-                // after the first street 3 cards are shown (flop)
-                //after the last street, no more cards from the board are left to be shown. That's why
-                //there are 2 conditions in the loop
-                //for (int boardCard = 0; boardCard < street + 3 && boardCard < board.Length; boardCard++)
-                //{
-                //    //Show() method is not implemented
-                //    board[boardCard].Show();
-                //}
+                    } 
+                }          
             }
         }
 
