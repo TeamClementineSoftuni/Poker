@@ -43,8 +43,6 @@ C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.pdb
 C:\Users\Skynet\ClementineTeam\Poker\bin\Debug\Poker.exe
 C:\Users\Skynet\ClementineTeam\Poker\bin\Debug\Poker.pdb
 C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
-C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.AddChips.resources
-C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.Form1.resources
 C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.Properties.Resources.resources
 C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 D:\Git_Root\Poker\Poker\bin\Debug\Poker.exe.config
@@ -71,3 +69,5 @@ D:\SoftUni\Poker\Poker\bin\Debug\Poker.pdb
 C:\GIT\Poker\obj\Debug\Poker.AddChipsForm.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.PokerGameEngine.resources
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.PokerGameEngine.resources
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.AddChipsForm.resources
+C:\Users\Skynet\ClementineTeam\Poker\obj\Debug\Poker.PokerGameEngine.resources

@@ -361,7 +361,7 @@
 
                     foreach (var player in playersToShowDown)
                     {
-                        player.Result = this.handEvaluator.Apply(player.Hand, this.board);
+                        player.Result = this.handEvaluator.Evaluate(player.Hand, this.board);
                     }
 
                     this.dealer.CheckWinners(playersToShowDown, this.userInterface);

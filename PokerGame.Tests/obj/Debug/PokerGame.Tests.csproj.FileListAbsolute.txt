@@ -1,0 +1,8 @@
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\obj\Debug\PokerGame.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\bin\Debug\PokerGame.Tests.dll
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\bin\Debug\PokerGame.Tests.pdb
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\bin\Debug\Poker.exe
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\bin\Debug\Poker.pdb
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\obj\Debug\PokerGame.Tests.dll
+C:\Users\Skynet\ClementineTeam\PokerGame.Tests\obj\Debug\PokerGame.Tests.pdb
