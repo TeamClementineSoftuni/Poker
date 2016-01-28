@@ -12,7 +12,7 @@
         private Label ranOutOfChipsLabel;
         private Button buttonAddChips;
         private Button buttonExit;
-        private TextBox addChipsTextBox;
+        private NumericUpDown addChipsUpDown;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -38,7 +38,8 @@
             this.ranOutOfChipsLabel = new System.Windows.Forms.Label();
             this.buttonAddChips = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
-            this.addChipsTextBox = new System.Windows.Forms.TextBox();
+            this.addChipsUpDown = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.addChipsUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // ranOutOfChipsLabel
@@ -73,28 +74,30 @@
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
-            // addChipsTextBox
+            // addChipsUpDown
             // 
-            this.addChipsTextBox.Location = new System.Drawing.Point(91, 229);
-            this.addChipsTextBox.Name = "addChipsTextBox";
-            this.addChipsTextBox.Size = new System.Drawing.Size(100, 20);
-            this.addChipsTextBox.TabIndex = 3;
+            this.addChipsUpDown.Location = new System.Drawing.Point(91, 226);
+            this.addChipsUpDown.Name = "addChipsUpDown";
+            this.addChipsUpDown.Size = new System.Drawing.Size(100, 20);
+            this.addChipsUpDown.TabIndex = 4;
             // 
             // AddChipsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.addChipsTextBox);
+            this.Controls.Add(this.addChipsUpDown);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonAddChips);
             this.Controls.Add(this.ranOutOfChipsLabel);
             this.Name = "AddChipsForm";
             this.Text = "You Ran Out Of Chips";
+            ((System.ComponentModel.ISupportInitialize)(this.addChipsUpDown)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
         #endregion
+
+
     }
 }
