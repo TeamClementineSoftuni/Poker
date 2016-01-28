@@ -23,3 +23,5 @@ D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.T
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.csprojResolveAssemblyReference.cache
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.dll
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\PokerGame.Tests\obj\Debug\PokerGame.Tests.pdb
+D:\SoftUni\Poker\PokerGame.Tests\bin\Debug\Moq.dll
+D:\SoftUni\Poker\PokerGame.Tests\bin\Debug\Moq.xml

@@ -92,7 +92,6 @@
         private async Task DealCards()
         {
             Deck.Instance.Shuffle();
-            // give 2 cards to every player  --> the cards are taken from the deck;
             for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
             {
                 if (this.pokerDatabase.Players[index].ChipsSet.Amount > 0)
@@ -114,7 +113,6 @@
                 }
             }
 
-            // TODO: refactor
             this.pokerDatabase.Players[0].Card1PictureBox.Image = this.pokerDatabase.Players[0].Hand.Card1.CardImage;
             await Task.Delay(150);
             this.pokerDatabase.Players[0].Card2PictureBox.Image = this.pokerDatabase.Players[0].Hand.Card2.CardImage;
@@ -125,27 +123,24 @@
                 this.pokerDatabase.Players[botIndex].Card1PictureBox.Image =
                     Image.FromFile(Common.ImagesBackDefaultPath);
                 await Task.Delay(150);
-                // TODO: currently it gives a player 2 cards and then moves to next player. If you want to make
-                // it like in real game, it should first give every player 1 card, and only when all players are dealt 1 card, deal them another one.
                 this.pokerDatabase.Players[botIndex].Card2PictureBox.Image =
                     Image.FromFile(Common.ImagesBackDefaultPath);
                 await Task.Delay(150);
             }
-            // we have given every player 2 cards ( 6 * 2 = 12), so the first 12 cards from the deck are already reserved. 
-            // Now we reserve 5 more cards for the board (the five cards visible by every player). 
-            for (int index = 12; index < 12 + 5; index++)
+
+            for (int index = Common.TotalNumberPlayersCards; index < Common.TotalNumberPlayersCards + Common.NumberOfBoardCards; index++)
             {
-                this.board[index - 12] = Deck.Instance.Cards[index];
+                this.board[index - Common.TotalNumberPlayersCards] = Deck.Instance.Cards[index];
                 PictureBox boardCardPictureBox = new PictureBox();
-                boardCardPictureBox.Location = Locations.BoardCardsLocations(index - 12);
+                boardCardPictureBox.Location = Locations.BoardCardsLocations(index - Common.TotalNumberPlayersCards);
                 boardCardPictureBox.Width = 80;
                 boardCardPictureBox.Height = 130;
-                boardCardPictureBox.Image = this.board[index - 12].CardImage;
+                boardCardPictureBox.Image = this.board[index - Common.TotalNumberPlayersCards].CardImage;
                 boardCardPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 boardCardPictureBox.Visible = false;
 
-                this.boardPictureBoxes[index - 12] = boardCardPictureBox;
-                this.Controls.Add(this.boardPictureBoxes[index - 12]);
+                this.boardPictureBoxes[index - Common.TotalNumberPlayersCards] = boardCardPictureBox;
+                this.Controls.Add(this.boardPictureBoxes[index - Common.TotalNumberPlayersCards]);
             }
 
             while (true)
@@ -161,8 +156,6 @@
             }
         }
 
-        // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
-        // and somehow getting rid of if-s with polymorphism i guess?
         private async Task ProcessHand()
         {
             this.amountRaisedTo = 0;
@@ -186,7 +179,7 @@
 
                 if (street == 0)
                 {
-                    this.amountRaisedTo = Common.InitialCallAmount; //or use BB or SB
+                    this.amountRaisedTo = Common.InitialCallAmount;
                 }
 
                 this.buttonCall.Text = string.Format("{0} {1}", Actions.Call, this.amountRaisedTo);
@@ -214,8 +207,7 @@
                                     this.playersLeftToAct[playerIndex].StatusLabel.Text = Actions.Check.ToString();
                                     break;
                                 case Actions.Call:
-                                    Pot.Instance.ChipsSet.Amount += this.amountRaisedTo
-                                                                    - this.playersLeftToAct[playerIndex].PrevRaise;
+                                    
                                     break;
                                 case Actions.Raise:
                                     Pot.Instance.ChipsSet.Amount += this.playersLeftToAct[playerIndex].RaiseAmount

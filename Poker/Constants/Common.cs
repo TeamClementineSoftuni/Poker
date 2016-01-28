@@ -31,5 +31,7 @@
         public const int BigBlindAmount = 500;
 
         public const int SmallBlindAmount = 250;
+
+        public const int TotalNumberPlayersCards = 12;
     }
 }

@@ -43,8 +43,9 @@
                     cards.Add(board[4]);
                     break;
             }
+
             int power = this.CalcPower(cards);
-            //this.Power = power;//obsolete
+
             switch (power)
             {
                 case 1:
@@ -57,7 +58,7 @@
                             this.ApplyCallEffects(raisedToAmount);
                             return Actions.Call;
                         }
-                        this.StatusLabel.Text = "Check";
+                        this.StatusLabel.Text = Actions.Check.ToString();
                         return Actions.Check;
                     }
                     this.ApplyAllInEffects(raisedToAmount);
@@ -97,7 +98,7 @@
                 default:
                     if (raisedToAmount == this.RaiseAmount)
                     {
-                        this.StatusLabel.Text = "Check";
+                        this.StatusLabel.Text = Actions.Check.ToString();
                         return Actions.Check;
                     }
 
@@ -108,7 +109,6 @@
 
         private int CalcPower(List<ICard> cards)
         {
-            //bluffing bot :)
             return new Random().Next(0, 10);
         }
 
@@ -127,7 +127,7 @@
 
         private void ApplyFoldEffects()
         {
-            this.StatusLabel.Text = "Fold";
+            this.StatusLabel.Text = Actions.Fold.ToString();
             this.IsFolded = true;
             this.Card1PictureBox.Visible = false;
             this.Card2PictureBox.Visible = false;
@@ -135,21 +135,22 @@
 
         private void ApplyCallEffects(int amountRaisedTo)
         {
-            this.StatusLabel.Text = "Call";
-            this.ChipsSet.Amount = this.ChipsSet.Amount - (amountRaisedTo - this.RaiseAmount);
+            this.StatusLabel.Text = Actions.Call.ToString();
+            this.ChipsSet.Amount -= amountRaisedTo - this.RaiseAmount;
             this.PrevRaise = this.RaiseAmount;
             this.RaiseAmount = amountRaisedTo;
             this.ChipsTextBox.Text = this.ChipsSet.Amount.ToString();
+            Pot.Instance.ChipsSet.Amount += Pot.Instance.AmountRaisedTo - this.PrevRaise;
         }
 
         private void ApplyRaiseEffects(int amountRaisedTo, int raiseAmount)
         {
-            this.ChipsSet.Amount = this.ChipsSet.Amount - ((amountRaisedTo + raiseAmount) - this.RaiseAmount);
+            this.ChipsSet.Amount -= (amountRaisedTo + raiseAmount) - this.RaiseAmount;
             this.PrevRaise = this.RaiseAmount;
             this.RaiseAmount = amountRaisedTo + raiseAmount;
-            this.ChipsTextBox.Text = this.ChipsSet.Amount.ToString();
+            this.ChipsTextBox.Text = this.ChipsSet.ToString();
 
-            this.StatusLabel.Text = "Raised to " + this.RaiseAmount;
+            this.StatusLabel.Text = string.Format("{0} to {1}", Actions.Raise, this.RaiseAmount);
         }
 
         private void ApplyAllInEffects(int amountRaisedTo)
@@ -157,9 +158,9 @@
             this.AllInAmount = this.ChipsSet.Amount;
             this.RaiseAmount = this.PrevRaise + this.AllInAmount;
             this.ChipsSet.Amount = 0;
-            this.ChipsTextBox.Text = this.ChipsSet.Amount.ToString();
+            this.ChipsTextBox.Text = this.ChipsSet.ToString();
 
-            this.StatusLabel.Text = "All in";
+            this.StatusLabel.Text = Actions.AllIn.ToString();
             this.ChipsTextBox.Text = 0.ToString();
         }
 
