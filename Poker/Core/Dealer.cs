@@ -37,10 +37,9 @@
             {
                 winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / this.winners.Count;
                 winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
+                Pot.Instance.ChipsSet.Amount -= winner.ChipsSet.Amount;
+                Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
             }
-
-            Pot.Instance.ChipsSet.Amount = 0;
-            Pot.Instance.PotTextBox.Text = 0.ToString();
         }
     }
 }

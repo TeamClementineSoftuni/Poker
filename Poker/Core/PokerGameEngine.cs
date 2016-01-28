@@ -91,6 +91,7 @@
                 this.pokerDatabase.Players[index].StatusLabel = this.playersStatusLabel[index];
             }
 
+            Pot.Instance.PotTextBox = potTextBox;
             ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
         }
 
@@ -158,10 +159,10 @@
             {
                 this.pokerDatabase.Players[4].ChipsSet.Amount -= this.sb;
                 this.pokerDatabase.Players[4].ChipsTextBox.Text =
-                    this.pokerDatabase.Players[4].ChipsSet.Amount.ToString();
+                    this.pokerDatabase.Players[4].ChipsSet.ToString();
                 this.pokerDatabase.Players[5].ChipsSet.Amount -= this.bb;
                 this.pokerDatabase.Players[5].ChipsTextBox.Text =
-                    this.pokerDatabase.Players[5].ChipsSet.Amount.ToString();
+                    this.pokerDatabase.Players[5].ChipsSet.ToString();
                 await this.ProcessHand();
                 await this.DealCards();
             }
@@ -195,7 +196,7 @@
                     this.amountRaisedTo = Common.InitialCallAmount; //or use BB or SB
                 }
 
-                this.buttonCall.Text = Actions.Call.ToString() + this.amountRaisedTo;
+                this.buttonCall.Text = string.Format("{0} {1}", Actions.Call, this.amountRaisedTo);
 
                 while (this.playersLeftToAct.Count != 0 && moreThanOnePlayerLeftInTheHand)
                 {
@@ -217,7 +218,7 @@
                                 case Actions.Fold:
                                     break;
                                 case Actions.Check:
-                                    this.playersLeftToAct[playerIndex].StatusLabel.Text = "Check";
+                                    this.playersLeftToAct[playerIndex].StatusLabel.Text = Actions.Check.ToString();
                                     break;
                                 case Actions.Call:
                                     Pot.Instance.ChipsSet.Amount += this.amountRaisedTo
@@ -290,7 +291,7 @@
                                 this.buttonRaise);
                         }
 
-                        this.potTextBox.Text = Pot.Instance.ToString();
+                        Pot.Instance.PotTextBox.Text = Pot.Instance.ToString();
                     }
 
                     this.playersLeftToAct.Clear();
@@ -433,7 +434,7 @@
             int amountToCall = int.Parse(amountToCallAsString);
             Pot.Instance.ChipsSet.Amount += amountToCall;
             this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount - amountToCall;
-            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
+            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.ToString();
             this.pokerDatabase.Players[0].PrevRaise = this.pokerDatabase.Players[0].RaiseAmount;
             this.pokerDatabase.Players[0].RaiseAmount = amountToCall;
             this.buttonCall.Enabled = false;
@@ -449,8 +450,8 @@
                                                         + (int)this.raiseNumericUpDown.Value;
             this.pokerDatabase.Players[0].ChipsSet.Amount = this.pokerDatabase.Players[0].ChipsSet.Amount
                                                             - (int)this.raiseNumericUpDown.Value;
-            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.Amount.ToString();
-            this.pokerDatabase.Players[0].StatusLabel.Text = Actions.Raise.ToString() + this.pokerDatabase.Players[0].RaiseAmount;
+            this.pokerDatabase.Players[0].ChipsTextBox.Text = this.pokerDatabase.Players[0].ChipsSet.ToString();
+            this.pokerDatabase.Players[0].StatusLabel.Text = string.Format("{0} to {1}", Actions.Raise, this.pokerDatabase.Players[0].RaiseAmount);
 
             Pot.Instance.ChipsSet.Amount += (int)this.raiseNumericUpDown.Value;
             this.amountRaisedTo = this.pokerDatabase.Players[0].RaiseAmount;
@@ -463,7 +464,7 @@
             foreach (var player in this.pokerDatabase.Players)
             {
                 player.ChipsSet.Amount += (int)this.addChipsNumericUpDown.Value;
-                player.ChipsTextBox.Text = player.ChipsSet.Amount.ToString();
+                player.ChipsTextBox.Text = player.ChipsSet.ToString();
             }
         }
 
