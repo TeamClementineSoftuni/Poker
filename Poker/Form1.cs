@@ -333,7 +333,7 @@ namespace Poker
                         player.Result = this.handEvaluator.Apply(player.Hand, this.board);
                     }
 
-                    this.dealer.CheckWinners(playersToShowDown);
+                    this.dealer.CheckWinners(playersToShowDown, this.userInterface);
                     this.dealer.DistributePot();
 
                     await Task.Delay(1000);

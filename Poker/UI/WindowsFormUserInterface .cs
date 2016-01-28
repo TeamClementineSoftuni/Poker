@@ -12,9 +12,9 @@
             MessageBox.Show(message);
         }
 
-        public void PrintMessage(string format, params string[] args)
+        public void PrintMessage(string format, params object[] args)
         {
-            MessageBox.Show(String.Format(format, (object)args));
+            MessageBox.Show(String.Format(format, args));
         }
     }
 }

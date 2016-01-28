@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\IUserInterface.cs" />
     <Compile Include="Models\Enums\Actions.cs" />
     <Compile Include="Models\ActsOnTable.cs" />
+    <Compile Include="Models\Enums\WinningHandsTypes.cs" />
     <Compile Include="Models\Players\Bot.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Enums\CardsRank.cs" />
