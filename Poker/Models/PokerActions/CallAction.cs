@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poker.Models.PokerActions
+﻿namespace Poker.Models.PokerActions
 {
-    using Interfaces;
+    using Poker.Interfaces;
 
     public class CallAction : Action
     {
         public CallAction(IPlayer player)
-                : base(player, Actions.Call)
-            {
+            : base(player, Actions.Call)
+        {
         }
 
         public override void ApplyAction()
@@ -27,4 +21,3 @@ namespace Poker.Models.PokerActions
         }
     }
 }
-

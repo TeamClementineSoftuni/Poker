@@ -1,7 +1,8 @@
 ﻿namespace Poker.Models
 {
     using System;
-    using Interfaces;
+
+    using Poker.Interfaces;
 
     public class Hand : IHand
     {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace Poker
+﻿namespace Poker
 {
+    using System;
+    using System.Windows.Forms;
+
     static class PokerGame
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///   The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()

@@ -1,12 +1,12 @@
 ﻿namespace Poker.Interfaces
 {
     /// <summary>
-    /// Interface for player factory.
+    ///   Interface for player factory.
     /// </summary>
     public interface IPlayerFactory
     {
         /// <summary>
-        /// Creates player.
+        ///   Creates player.
         /// </summary>
         /// <returns></returns>
         IPlayer CreatePlayer();

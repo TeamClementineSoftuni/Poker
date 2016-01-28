@@ -1,23 +1,23 @@
 ﻿namespace Poker.Interfaces
 {
     /// <summary>
-    /// Interface for deck.
+    ///   Interface for deck.
     /// </summary>
     public interface IDeck
     {
         /// <summary>
-        /// Gets the location of the card image.
+        ///   Gets the location of the card image.
         /// </summary>
         string CardsImagesLocation { get; }
 
         /// <summary>
-        /// Gets the array of cards in a deck.
+        ///   Gets the array of cards in a deck.
         /// </summary>
         ICard[] Cards { get; }
 
         /// <summary>
-        /// Shuffled the deck.
+        ///   Shuffled the deck.
         /// </summary>
-        void Shuffle();       
+        void Shuffle();
     }
 }

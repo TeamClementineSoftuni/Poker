@@ -1,14 +1,20 @@
 ﻿namespace Poker.Core
 {
-    using Models;
     using System;
     using System.Windows.Forms;
 
     using Poker.Interfaces;
+    using Poker.Models;
 
     public class ArtificialIntelligence
     {
-        public static void Apply(int c1, int c2, IPlayer player, IActsOnTable actsOnTable, int name, PictureBox[] Holder)
+        public static void Apply(
+            int c1,
+            int c2,
+            IPlayer player,
+            IActsOnTable actsOnTable,
+            int name,
+            PictureBox[] Holder)
         {
             if (!player.FoldedTurn)
             {
@@ -36,7 +42,7 @@
                 }
                 if (player.Result.Type == 4)
                 {
-                    ActStraight(player, actsOnTable,name);
+                    ActStraight(player, actsOnTable, name);
                 }
                 if (player.Result.Type == 5 || player.Result.Type == 5.5)
                 {
@@ -63,7 +69,7 @@
             }
         }
 
-      private static void ActPairHand(IPlayer player, IActsOnTable actsOnTable)
+        private static void ActPairHand(IPlayer player, IActsOnTable actsOnTable)
         {
             Random rPair = new Random();
             int rCall = rPair.Next(10, 16);
@@ -110,11 +116,11 @@
             {
                 Smooth(player, actsOnTable, name, tCall, tRaise);
             }
-            if (player.Result.Power <= 327 && player.Result.Power >= 321)//10  8
+            if (player.Result.Power <= 327 && player.Result.Power >= 321) //10  8
             {
                 Smooth(player, actsOnTable, name, tCall, tRaise);
             }
-            if (player.Result.Power < 321 && player.Result.Power >= 303)//7 2
+            if (player.Result.Power < 321 && player.Result.Power >= 303) //7 2
             {
                 Smooth(player, actsOnTable, name, tCall, tRaise);
             }
@@ -129,7 +135,7 @@
             {
                 Smooth(player, actsOnTable, name, sCall, sRaise);
             }
-            if (player.Result.Power <= 409 && player.Result.Power >= 407)//10  8
+            if (player.Result.Power <= 409 && player.Result.Power >= 407) //10  8
             {
                 Smooth(player, actsOnTable, name, sCall, sRaise);
             }
@@ -183,7 +189,6 @@
                 Smooth(player, actsOnTable, name, sfCall, sfRaise);
             }
         }
-
 
         private static void ActHighCard(IPlayer player, IActsOnTable actsOnTable, int n, int n1)
         {
@@ -249,7 +254,6 @@
             }
         }
 
-
         private static void PH(IPlayer player, IActsOnTable actsOnTable, int n, int n1, int r)
         {
             Random rand = new Random();
@@ -276,7 +280,8 @@
                             Call(player, actsOnTable);
                         }
 
-                        if (actsOnTable.RaiseAmount <= RoundN(player.ChipsSet.Amount, n) && actsOnTable.RaiseAmount >= RoundN(player.ChipsSet.Amount, n) / 2)
+                        if (actsOnTable.RaiseAmount <= RoundN(player.ChipsSet.Amount, n)
+                            && actsOnTable.RaiseAmount >= RoundN(player.ChipsSet.Amount, n) / 2)
                         {
                             Call(player, actsOnTable);
                         }
@@ -314,12 +319,14 @@
 
                     if (!player.FoldedTurn)
                     {
-                        if (actsOnTable.CallAmount >= RoundN(player.ChipsSet.Amount, n - rnd) && actsOnTable.CallAmount <= RoundN(player.ChipsSet.Amount, n1 - rnd))
+                        if (actsOnTable.CallAmount >= RoundN(player.ChipsSet.Amount, n - rnd)
+                            && actsOnTable.CallAmount <= RoundN(player.ChipsSet.Amount, n1 - rnd))
                         {
                             Call(player, actsOnTable);
                         }
 
-                        if (actsOnTable.RaiseAmount <= RoundN(player.ChipsSet.Amount, n - rnd) && actsOnTable.RaiseAmount >= (RoundN(player.ChipsSet.Amount, n - rnd)) / 2)
+                        if (actsOnTable.RaiseAmount <= RoundN(player.ChipsSet.Amount, n - rnd)
+                            && actsOnTable.RaiseAmount >= (RoundN(player.ChipsSet.Amount, n - rnd)) / 2)
                         {
                             Call(player, actsOnTable);
                         }
@@ -445,4 +452,3 @@
         }
     }
 }
-

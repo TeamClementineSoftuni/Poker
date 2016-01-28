@@ -1,7 +1,8 @@
 ﻿namespace Poker.Models
 {
     using System.Drawing;
-    using Interfaces;
+
+    using Poker.Interfaces;
 
     public class Card : ICard
     {

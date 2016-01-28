@@ -5,7 +5,7 @@
 
     public class Human : Player
     {
-        public Human(Point location) 
+        public Human(Point location)
             : base(location)
         {
             this.Turn = true;

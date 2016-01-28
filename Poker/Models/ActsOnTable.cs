@@ -1,7 +1,7 @@
 ﻿namespace Poker.Models
 {
-    using Constants;
-    using Interfaces;
+    using Poker.Constants;
+    using Poker.Interfaces;
 
     public class ActsOnTable : IActsOnTable
     {

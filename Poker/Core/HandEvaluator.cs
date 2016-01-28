@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Poker.Interfaces;
-namespace Poker.Core
+﻿namespace Poker.Core
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Poker.Interfaces;
+
     public class HandEvaluator
     {
-        private int straightRank = 0;
+        private int straightRank;
 
         public IResult Apply(IHand hand, ICard[] boardCards)
         {
@@ -19,7 +18,7 @@ namespace Poker.Core
             allCards.Add(hand.Card1);
             allCards.Add(hand.Card2);
             allCards = allCards.OrderBy(c => c.Rank).ToList();
-            bool hasStraight = CheckForStraight(allCards);
+            bool hasStraight = this.CheckForStraight(allCards);
 
             //TODO: case A2345
             bool hasFlush = false;
@@ -29,12 +28,22 @@ namespace Poker.Core
             if (cardsFromOneSuit >= 5)
             {
                 hasFlush = true;
-                flushSuit = (int)allCards.GroupBy(ha => ha.Suit).Where(ha => ha.Count() == cardsFromOneSuit).Select(ha => ha.Key).FirstOrDefault();
-                flushRank = (int)allCards.Where(c => (int)c.Suit == flushSuit).OrderBy(c => c.Rank).Select(c => c.Rank).LastOrDefault();
+                flushSuit =
+                    (int)
+                    allCards.GroupBy(ha => ha.Suit)
+                        .Where(ha => ha.Count() == cardsFromOneSuit)
+                        .Select(ha => ha.Key)
+                        .FirstOrDefault();
+                flushRank =
+                    (int)
+                    allCards.Where(c => (int)c.Suit == flushSuit)
+                        .OrderBy(c => c.Rank)
+                        .Select(c => c.Rank)
+                        .LastOrDefault();
             }
             if (hasFlush && hasStraight)
             {
-                bool hasStraightFlush = CheckForStraight(allCards.Where(c => (int)c.Suit == flushSuit).ToList());
+                bool hasStraightFlush = this.CheckForStraight(allCards.Where(c => (int)c.Suit == flushSuit).ToList());
                 if (hasStraightFlush)
                 {
                     resultType = 8;
@@ -44,30 +53,36 @@ namespace Poker.Core
             }
             int sameCardsCount = allCards.GroupBy(c => c.Rank).Select(group => group.Count()).Max();
             int sameCardsRank =
-               (int)allCards.GroupBy(c => c.Rank)
+                (int)
+                allCards.GroupBy(c => c.Rank)
                     .Where(group => group.Count() == sameCardsCount)
                     .Select(group => group.Key)
                     .Max();
             if (sameCardsCount == 4)
             {
                 int kickerRank =
-                   (int)allCards.Where(c => (int)c.Rank != sameCardsRank)
-                        .OrderBy(c => c.Rank)
-                        .Select(c => c.Rank)
-                        .Max();
+                    (int)
+                    allCards.Where(c => (int)c.Rank != sameCardsRank).OrderBy(c => c.Rank).Select(c => c.Rank).Max();
                 resultType = 7;
                 resultPower = sameCardsRank * 4 + kickerRank / 4 + resultType * 100;
                 return new Result(resultType, resultPower);
             }
             if (sameCardsCount == 3)
             {
-                int otherSameCardsCount = allCards.Where(c => (int)c.Rank != sameCardsRank).GroupBy(c => c.Rank).Select(group => group.Count()).Max();
+                int otherSameCardsCount =
+                    allCards.Where(c => (int)c.Rank != sameCardsRank)
+                        .GroupBy(c => c.Rank)
+                        .Select(group => group.Count())
+                        .Max();
                 if (otherSameCardsCount >= 2)
                 {
-                    int otherSameCardsRank = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).GroupBy(c => c.Rank)
-                                                .Where(group => group.Count() == otherSameCardsCount)
-                                                .Select(group => group.Key)
-                                                .Max();
+                    int otherSameCardsRank =
+                        (int)
+                        allCards.Where(c => (int)c.Rank != sameCardsRank)
+                            .GroupBy(c => c.Rank)
+                            .Where(group => group.Count() == otherSameCardsCount)
+                            .Select(group => group.Key)
+                            .Max();
                     resultType = 6;
                     resultPower = sameCardsRank * 4 + otherSameCardsRank / 4.0 + resultType * 100;
                     return new Result(resultType, resultPower);
@@ -82,28 +97,41 @@ namespace Poker.Core
             if (hasStraight)
             {
                 resultType = 4;
-                resultPower = straightRank + resultType * 100;
+                resultPower = this.straightRank + resultType * 100;
                 return new Result(resultType, resultPower);
             }
             if (sameCardsCount == 3)
             {
                 int kicker1 = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).Select(c => c.Rank).Max();
-                int kicker2 = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).Select(c => c.Rank).Where(rank => (int)rank != kicker1).Max();
+                int kicker2 =
+                    (int)
+                    allCards.Where(c => (int)c.Rank != sameCardsRank)
+                        .Select(c => c.Rank)
+                        .Where(rank => (int)rank != kicker1)
+                        .Max();
                 resultType = 3;
                 resultPower = sameCardsRank * 5 + (kicker1 + kicker2) / 8.0 + resultType * 100;
                 return new Result(resultType, resultPower);
             }
             if (sameCardsCount == 2)
             {
-                int otherSameCardsCount = allCards.Where(c => (int)c.Rank != sameCardsRank).GroupBy(c => c.Rank).Select(group => group.Count()).Max();
+                int otherSameCardsCount =
+                    allCards.Where(c => (int)c.Rank != sameCardsRank)
+                        .GroupBy(c => c.Rank)
+                        .Select(group => group.Count())
+                        .Max();
                 if (otherSameCardsCount == 2)
                 {
-                    int otherSameCardsRank = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).GroupBy(c => c.Rank)
-                                                .Where(group => group.Count() == otherSameCardsCount)
-                                                .Select(group => group.Key)
-                                                .Max();
+                    int otherSameCardsRank =
+                        (int)
+                        allCards.Where(c => (int)c.Rank != sameCardsRank)
+                            .GroupBy(c => c.Rank)
+                            .Where(group => group.Count() == otherSameCardsCount)
+                            .Select(group => group.Key)
+                            .Max();
                     int kicker =
-                       (int)allCards.Where(c => (int)c.Rank != sameCardsRank && (int)c.Rank != otherSameCardsRank)
+                        (int)
+                        allCards.Where(c => (int)c.Rank != sameCardsRank && (int)c.Rank != otherSameCardsRank)
                             .Select(c => c.Rank)
                             .Max();
                     resultType = 2;
@@ -111,8 +139,18 @@ namespace Poker.Core
                     return new Result(resultType, resultPower);
                 }
                 int kicker1 = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).Select(c => c.Rank).Max();
-                int kicker2 = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).Select(c => c.Rank).Where(rank => (int)rank != kicker1).Max();
-                int kicker3 = (int)allCards.Where(c => (int)c.Rank != sameCardsRank).Select(c => c.Rank).Where(rank => (int)rank != kicker1 && (int)rank != kicker2).Max();
+                int kicker2 =
+                    (int)
+                    allCards.Where(c => (int)c.Rank != sameCardsRank)
+                        .Select(c => c.Rank)
+                        .Where(rank => (int)rank != kicker1)
+                        .Max();
+                int kicker3 =
+                    (int)
+                    allCards.Where(c => (int)c.Rank != sameCardsRank)
+                        .Select(c => c.Rank)
+                        .Where(rank => (int)rank != kicker1 && (int)rank != kicker2)
+                        .Max();
                 resultType = 1;
                 resultPower = sameCardsRank * 5 + kicker1 / 4.0 + kicker2 / 60.0 + kicker3 / 1200.0 + resultType * 100;
                 return new Result(resultType, resultPower);
@@ -126,6 +164,7 @@ namespace Poker.Core
             resultPower = highCard1 + highCard2 + highCard3 + highCard4 + highCard5;
             return new Result(resultType, resultPower);
         }
+
         private bool CheckForStraight(IList<ICard> cards)
         {
             int straightCounter = 1;

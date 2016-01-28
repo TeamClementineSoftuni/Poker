@@ -1,16 +1,15 @@
 ﻿namespace Poker.Core.Database
 {
     using System;
-    using Constants;
-    using Interfaces;
 
-    using Poker.Models.Players;
+    using Poker.Constants;
+    using Poker.Interfaces;
 
     public class PokerDatabase : IPokerDatabase
     {
         private readonly IPlayer[] players;
 
-        private int index = 0;
+        private int index;
 
         public PokerDatabase()
         {

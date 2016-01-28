@@ -3,25 +3,25 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
-    using Constants;
-    using Interfaces;
+
+    using Poker.Constants;
+    using Poker.Interfaces;
 
     public abstract class Player : IPlayer
     {
         private const double defaultHandType = -1;
 
-        private bool isFolded;
-        private int prevRaise = 0;
-        private int allIn = 0;
         private PictureBox card1PictureBox = new PictureBox();
+
         private PictureBox card2PictureBox = new PictureBox();
 
         protected Player(Point location, string name = Common.DefaultPlayerName)
         {
             this.Location = location;
-            InitializePanel();
-            InitializeCardPictureBox(this.Card1PictureBox, new Point(0, 0));
-            InitializeCardPictureBox(this.Card2PictureBox, new Point(0 + this.Card1PictureBox.Width, 0));  //TODO: refactor 
+            this.InitializePanel();
+            this.InitializeCardPictureBox(this.Card1PictureBox, new Point(0, 0));
+            this.InitializeCardPictureBox(this.Card2PictureBox, new Point(0 + this.Card1PictureBox.Width, 0));
+                //TODO: refactor 
             this.ChipsTextBox = new TextBox();
             this.ChipsSet = new ChipsSet(Common.DefaultPlayerChipsSetAmount);
             this.Hand = new Hand();
@@ -37,7 +37,10 @@
 
         public PictureBox Card1PictureBox
         {
-            get { return this.card1PictureBox; }
+            get
+            {
+                return this.card1PictureBox;
+            }
             set
             {
                 if (value == null)
@@ -51,7 +54,10 @@
 
         public PictureBox Card2PictureBox
         {
-            get { return this.card2PictureBox; }
+            get
+            {
+                return this.card2PictureBox;
+            }
             set
             {
                 if (value == null)
@@ -100,15 +106,14 @@
         {
             this.Panel = new Panel();
             this.Panel.Location = this.Location;
-            this.Panel.BackColor = System.Drawing.Color.Transparent;
+            this.Panel.BackColor = Color.Transparent;
             this.Panel.Name = "PlayerPanel";
-            this.Panel.Size = new System.Drawing.Size(180, 150);
+            this.Panel.Size = new Size(180, 150);
             this.Panel.Visible = true;
         }
 
         private void InitializeCardPictureBox(PictureBox pictureBox, Point location)
         {
-
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox.Width = 80;
             pictureBox.Height = 130;

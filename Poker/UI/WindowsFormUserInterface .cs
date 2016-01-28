@@ -1,6 +1,5 @@
 ﻿namespace Poker.UI
 {
-    using System;
     using System.Windows.Forms;
 
     using Poker.Interfaces;
@@ -14,7 +13,7 @@
 
         public void PrintMessage(string format, params object[] args)
         {
-            MessageBox.Show(String.Format(format, args));
+            MessageBox.Show(string.Format(format, args));
         }
     }
 }

@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using Players;
     using System.Drawing;
-    using Interfaces;
-    using Constants;
+
+    using Poker.Constants;
+    using Poker.Interfaces;
+    using Poker.Models.Players;
 
     public class Bot : Player
     {
@@ -20,7 +21,7 @@
         public Actions Act(int street, int raisedToAmount, ICard[] board)
         {
             this.PrevRaise = this.RaiseAmount;
-            List<ICard> cards = new List<ICard>() { this.Hand.Card1, this.Hand.Card2 };
+            List<ICard> cards = new List<ICard> { this.Hand.Card1, this.Hand.Card2 };
             switch (street)
             {
                 case 2:
@@ -42,75 +43,57 @@
                     cards.Add(board[4]);
                     break;
             }
-            int power = CalcPower(cards);
+            int power = this.CalcPower(cards);
             //this.Power = power;//obsolete
             switch (power)
             {
                 case 1:
                 case 2:
                 case 3:
-                    if (hasEnoughChips(raisedToAmount))
+                    if (this.hasEnoughChips(raisedToAmount))
                     {
                         if (raisedToAmount > this.RaiseAmount)
                         {
-                            ApplyCallEffects(raisedToAmount);
+                            this.ApplyCallEffects(raisedToAmount);
                             return Actions.Call;
                         }
-                        else
-                        {
-                            this.StatusLabel.Text = "Check";
-                            return Actions.Check;
-                        }
+                        this.StatusLabel.Text = "Check";
+                        return Actions.Check;
                     }
-                    else
-                    {
-                        ApplyAllInEffects(raisedToAmount);
-                        return Actions.AllIn;
-                    }
+                    this.ApplyAllInEffects(raisedToAmount);
+                    return Actions.AllIn;
                 case 4:
-                    if (hasEnoughChips(raisedToAmount - this.RaiseAmount + 1000 - 1))
+                    if (this.hasEnoughChips(raisedToAmount - this.RaiseAmount + 1000 - 1))
                     {
-                        ApplyRaiseEffects(raisedToAmount, 1000);
+                        this.ApplyRaiseEffects(raisedToAmount, 1000);
                         return Actions.Raise;
                     }
-                    else
-                    {
-                        ApplyAllInEffects(raisedToAmount);
-                        return Actions.AllIn;
-                    }
+                    this.ApplyAllInEffects(raisedToAmount);
+                    return Actions.AllIn;
                 case 5:
-                    if (hasEnoughChips(raisedToAmount - this.RaiseAmount + 2000 - 1))
+                    if (this.hasEnoughChips(raisedToAmount - this.RaiseAmount + 2000 - 1))
                     {
-                        ApplyRaiseEffects(raisedToAmount, 2000);
+                        this.ApplyRaiseEffects(raisedToAmount, 2000);
                         return Actions.Raise;
                     }
-                    else
-                    {
-                        ApplyAllInEffects(raisedToAmount);
-                        return Actions.AllIn;
-                    }
+                    this.ApplyAllInEffects(raisedToAmount);
+                    return Actions.AllIn;
                 case 6:
-                    if (hasEnoughChips(raisedToAmount - this.RaiseAmount + 3000 - 1))
+                    if (this.hasEnoughChips(raisedToAmount - this.RaiseAmount + 3000 - 1))
                     {
-                        ApplyRaiseEffects(raisedToAmount, 3000);
+                        this.ApplyRaiseEffects(raisedToAmount, 3000);
                         return Actions.Raise;
                     }
-                    else
-                    {
-                        ApplyAllInEffects(raisedToAmount);
-                        return Actions.AllIn;
-                    }
+                    this.ApplyAllInEffects(raisedToAmount);
+                    return Actions.AllIn;
                 case 7:
                     if (raisedToAmount > 5000)
                     {
-                        ApplyAllInEffects(raisedToAmount);
+                        this.ApplyAllInEffects(raisedToAmount);
                         return Actions.AllIn;
                     }
-                    else
-                    {
-                        ApplyFoldEffects();
-                        return Actions.Fold;
-                    }
+                    this.ApplyFoldEffects();
+                    return Actions.Fold;
                 default:
                     if (raisedToAmount == this.RaiseAmount)
                     {
@@ -118,7 +101,7 @@
                         return Actions.Check;
                     }
 
-                    ApplyFoldEffects();
+                    this.ApplyFoldEffects();
                     return Actions.Fold;
             }
         }

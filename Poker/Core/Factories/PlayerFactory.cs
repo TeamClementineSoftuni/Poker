@@ -1,14 +1,15 @@
 ﻿namespace Poker.Core.Factories
 {
-    using Constants;
-    using Interfaces;
-    using Models;
-    using Models.Players;
     using System;
+
+    using Poker.Constants;
+    using Poker.Interfaces;
+    using Poker.Models;
+    using Poker.Models.Players;
 
     public class PlayerFactory : IPlayerFactory
     {
-        private int index = 0;
+        private int index;
 
         public IPlayer CreatePlayer()
         {
@@ -20,17 +21,11 @@
                     this.index++;
                     return bot;
                 }
-                else
-                {
-                    var human = new Human(Locations.PlayersLocations[this.index]);
-                    this.index++;
-                    return human;
-                }
+                var human = new Human(Locations.PlayersLocations[this.index]);
+                this.index++;
+                return human;
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException(Messages.ExceptionMaxPlayers);
-            }
+            throw new ArgumentOutOfRangeException(Messages.ExceptionMaxPlayers);
         }
     }
 }

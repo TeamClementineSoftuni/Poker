@@ -2,36 +2,40 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Poker.Models;
+
+    using Poker.Constants;
     using Poker.Interfaces;
+    using Poker.Models;
     using Poker.Models.Enums;
-    using Constants;
 
     public class Dealer
     {
-        private IList<IPlayer> winners; 
+        private IList<IPlayer> winners;
 
         public void CheckWinners(IList<IPlayer> playersToShowDown, IUserInterface userInterface)
         {
-            double bestHand = playersToShowDown.OrderByDescending(player => player.Result.Power).Select(player => player.Result.Power).FirstOrDefault();
+            double bestHand =
+                playersToShowDown.OrderByDescending(player => player.Result.Power)
+                    .Select(player => player.Result.Power)
+                    .FirstOrDefault();
             this.winners = playersToShowDown.Where(player => player.Result.Power == bestHand).ToList();
 
-            foreach (var player in winners)
+            foreach (var player in this.winners)
             {
-                if (player.Result.Type >=0 && player.Result.Type <= Common.MaxRankWinningHands)
+                if (player.Result.Type >= 0 && player.Result.Type <= Common.MaxRankWinningHands)
                 {
                     WinningHandsTypes handsType = (WinningHandsTypes)player.Result.Type;
 
                     userInterface.PrintMessage("{0} has {1}!", player, handsType.ToString());
                 }
-            }   
+            }
         }
 
         public void DistributePot()
         {
-             foreach (var winner in this.winners)
+            foreach (var winner in this.winners)
             {
-                winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winners.Count;
+                winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / this.winners.Count;
                 winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
             }
 

@@ -1,6 +1,6 @@
 ﻿namespace Poker.Interfaces
 {
-    using Models;
+    using Poker.Models;
 
     public interface IPokerAction
     {

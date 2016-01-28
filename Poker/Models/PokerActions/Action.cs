@@ -1,6 +1,6 @@
 ﻿namespace Poker.Models.PokerActions
 {
-    using Interfaces;
+    using Poker.Interfaces;
 
     public abstract class Action : IPokerAction
     {
@@ -8,7 +8,7 @@
         {
             this.ActionType = action;
             this.Player = player;
-        }  
+        }
 
         public Actions ActionType { get; set; }
 

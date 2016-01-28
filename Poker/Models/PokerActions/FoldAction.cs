@@ -1,6 +1,6 @@
 ﻿namespace Poker.Models.PokerActions
 {
-    using Interfaces;
+    using Poker.Interfaces;
 
     public class FoldAction : Action
     {
@@ -18,4 +18,3 @@
         }
     }
 }
-

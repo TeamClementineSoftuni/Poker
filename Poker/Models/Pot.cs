@@ -1,15 +1,16 @@
 ﻿namespace Poker.Models
 {
     using System.Windows.Forms;
-    using Interfaces;
+
+    using Poker.Interfaces;
 
     public class Pot : IPot
     {
         private static Pot instance;
 
         private Pot()
-        { 
-            ChipsSet  = new ChipsSet();
+        {
+            this.ChipsSet = new ChipsSet();
             this.PotTextBox = new TextBox();
         }
 
