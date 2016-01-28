@@ -8,7 +8,7 @@
         /// <summary>
         ///   Creates player.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns new player</returns>
         IPlayer CreatePlayer();
     }
 }

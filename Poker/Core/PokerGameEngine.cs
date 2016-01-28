@@ -17,13 +17,16 @@
     using Poker.Models.Players;
     using Poker.UI;
 
+    /// <summary>
+    /// Initialize PokerGame and players components and performs the logic of the game
+    /// </summary>
     public partial class PokerGameEngine : Form
     {
-        private IActsOnTable actsOnTable = new ActsOnTable();
-
         private int amountRaisedTo;
 
-        private int bb = 500;
+        private int bigBlind = Common.BigBlindAmount;
+
+        private int smallBlind = Common.SmallBlindAmount;
 
         private readonly double bigBlindAmount = Common.InitialCallAmount;
 
@@ -35,14 +38,13 @@
        
         private readonly HandEvaluator handEvaluator = new HandEvaluator();
 
-        // parallel branch
+        private readonly IPokerDatabase pokerDatabase = new PokerDatabase();
 
-        int height, width;
-
-        private List<IPlayer> listOfWinners = new List<IPlayer>();
-
-        // parallel branch
         private readonly IPlayerFactory playerFactory = new PlayerFactory();
+
+        private readonly SemaphoreSlim signal = new SemaphoreSlim(0, 1);
+
+        private readonly IUserInterface userInterface = new WindowsFormUserInterface();
 
         private List<TextBox> playersChipsTextBoxs = new List<TextBox>();
 
@@ -50,24 +52,17 @@
 
         private List<Label> playersStatusLabel = new List<Label>();
 
-        private readonly IPokerDatabase pokerDatabase = new PokerDatabase();
+        private int height;
 
-        private int sb = 250;
+        private int width;
 
-        private readonly SemaphoreSlim signal = new SemaphoreSlim(0, 1);
-
-        private readonly IUserInterface userInterface = new WindowsFormUserInterface();
-
-        private List<IResult> winnersTypes = new List<IResult>();
 
         public PokerGameEngine()
         {
             this.InitializeComponent();
-            //parallel branch
             this.InitializePlayersComponents();
             this.InitializePlayers();
             this.DealCards();
-            // parallel
         }
 
         private void InitializePlayers()
@@ -78,7 +73,6 @@
                 this.pokerDatabase.AddPlayer(player);
             }
 
-            // Set the panel,ChipsTextBox and StatusLabel for every player
             for (int index = 0; index < this.pokerDatabase.Players.Length; index++)
             {
                 this.Controls.Add(this.pokerDatabase.Players[index].Panel);
@@ -95,8 +89,7 @@
             ((Human)this.pokerDatabase.Players[0]).CallButton = this.buttonCall;
         }
 
-        // parallel
-        async Task DealCards()
+        private async Task DealCards()
         {
             Deck.Instance.Shuffle();
             // give 2 cards to every player  --> the cards are taken from the deck;
@@ -157,10 +150,10 @@
 
             while (true)
             {
-                this.pokerDatabase.Players[4].ChipsSet.Amount -= this.sb;
+                this.pokerDatabase.Players[4].ChipsSet.Amount -= this.smallBlind;
                 this.pokerDatabase.Players[4].ChipsTextBox.Text =
                     this.pokerDatabase.Players[4].ChipsSet.ToString();
-                this.pokerDatabase.Players[5].ChipsSet.Amount -= this.bb;
+                this.pokerDatabase.Players[5].ChipsSet.Amount -= this.bigBlind;
                 this.pokerDatabase.Players[5].ChipsTextBox.Text =
                     this.pokerDatabase.Players[5].ChipsSet.ToString();
                 await this.ProcessHand();
@@ -170,7 +163,7 @@
 
         // The whole method has to be refactured, eventually getting rid of loops by extacting methods 
         // and somehow getting rid of if-s with polymorphism i guess?
-        async Task ProcessHand()
+        private async Task ProcessHand()
         {
             this.amountRaisedTo = 0;
 
@@ -489,13 +482,13 @@
 
         private void ButtonSmallBlind_Click(object sender, EventArgs e)
         {
-            this.sb = (int)this.smallBlindNumericUpDown.Value;
+            this.smallBlind = (int)this.smallBlindNumericUpDown.Value;
             this.userInterface.PrintMessage(Messages.ChangesSave);
         }
 
         private void ButtonBigBlind_Click(object sender, EventArgs e)
         {
-            this.bb = (int)this.bigBlindNumericUpDown.Value;
+            this.bigBlind = (int)this.bigBlindNumericUpDown.Value;
             this.userInterface.PrintMessage(Messages.ChangesSave);
         }
 
@@ -504,8 +497,6 @@
             this.width = this.Width;
             this.height = this.Height;
         }
-
-        //#endregion
 
         private void InitializePlayersComponents()
         {

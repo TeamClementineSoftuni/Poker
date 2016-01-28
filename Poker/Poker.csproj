@@ -51,7 +51,6 @@
       <DependentUpon>AddChipsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants\Messages.cs" />
-    <Compile Include="Core\ArtificialIntelligence.cs" />
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Constants\Locations.cs" />
     <Compile Include="Core\Database\PokerDatabase.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="Core\PokerGameEngine.Designer.cs">
       <DependentUpon>PokerGameEngine.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IActsOnTable.cs" />
     <Compile Include="Interfaces\ICard.cs" />
     <Compile Include="Interfaces\IChipsSet.cs" />
     <Compile Include="Interfaces\IDeck.cs" />
@@ -79,7 +77,6 @@
     <Compile Include="Interfaces\IResult.cs" />
     <Compile Include="Interfaces\IUserInterface.cs" />
     <Compile Include="Models\Enums\Actions.cs" />
-    <Compile Include="Models\ActsOnTable.cs" />
     <Compile Include="Models\Enums\WinningHandsTypes.cs" />
     <Compile Include="Models\Players\Bot.cs" />
     <Compile Include="Models\Card.cs" />

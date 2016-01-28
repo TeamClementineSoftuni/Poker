@@ -8,10 +8,18 @@
     using Poker.Models;
     using Poker.Models.Enums;
 
+    /// <summary>
+    /// Defines the winners and prints a message
+    /// </summary>
     public class Dealer
     {
         private IList<IPlayer> winners;
 
+        /// <summary>
+        /// Check the winners from list of players
+        /// </summary>
+        /// <param name="playersToShowDown">List of players to check for winner</param>
+        /// <param name="userInterface">Get the UserInterface where to print the message</param>
         public void CheckWinners(IList<IPlayer> playersToShowDown, IUserInterface userInterface)
         {
             double bestHand =
@@ -26,11 +34,14 @@
                 {
                     WinningHandsTypes handsType = (WinningHandsTypes)player.Result.Type;
 
-                    userInterface.PrintMessage("{0} has {1}!", player, handsType.ToString());
+                    userInterface.PrintMessage("{0} wins with {1}!", player, handsType.ToString());
                 }
             }
         }
 
+        /// <summary>
+        /// Handles the pot amount to the winners and set to zero the pot
+        /// </summary>
         public void DistributePot()
         {
             foreach (var winner in this.winners)

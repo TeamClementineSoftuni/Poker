@@ -47,7 +47,7 @@
             {
                 return this.cardsImagesLocation;
             }
-            private set
+            set
             {
                 if (string.IsNullOrEmpty(value))
                 {
@@ -88,9 +88,6 @@
                     currentIndexOfDeck++;
                 }
             }
-
-            Debug.Assert(this.cards[0] != null, "Deck was not populated! No card at index 0!");
-            Debug.Assert(this.cards[51] != null, "Deck doesn't have 52 cards!");
         }
     }
 }

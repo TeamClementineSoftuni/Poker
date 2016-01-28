@@ -6,12 +6,12 @@
     public interface IPokerDatabase
     {
         /// <summary>
-        ///   Holds all players.
+        ///   Holds array from all players in database.
         /// </summary>
         IPlayer[] Players { get; }
 
         /// <summary>
-        ///   Add player.
+        ///   Add new player in the Database.
         /// </summary>
         /// <param name="player">Player to add.</param>
         void AddPlayer(IPlayer player);

@@ -27,5 +27,9 @@
         public const string ImagesDefaultPath = "Assets\\Cards\\RenamedCards\\";
 
         public const string ImagesBackDefaultPath = "Assets\\Cards\\RenamedCards\\back.png";
+
+        public const int BigBlindAmount = 500;
+
+        public const int SmallBlindAmount = 250;
     }
 }
