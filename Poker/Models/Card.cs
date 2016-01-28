@@ -18,10 +18,5 @@
         public CardsRank Rank { get; private set; }
 
         public Image CardImage { get; private set; }
-
-        public void Show()
-        {
-            // TODO: implementation
-        }
     }
 }

@@ -14,16 +14,5 @@
         ///   Second card in a hand.
         /// </summary>
         ICard Card2 { get; set; }
-
-        /// <summary>
-        ///   Calculate the hand power.
-        /// </summary>
-        /// <returns>Hand power.</returns>
-        int HandPower();
-
-        /// <summary>
-        ///   Shows faces on the cards in a hand.
-        /// </summary>
-        void ShowHand();
     }
 }
