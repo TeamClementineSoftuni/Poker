@@ -12,6 +12,7 @@
         public const int DefaultChipsSetAmount = 0;
         public const int NumberOfPlayers = 6;
         public const int NumberOfBoardCards = 5;
+        public const int MaxRankWinningHands = 9;
 
     }
 }

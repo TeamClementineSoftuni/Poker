@@ -91,6 +91,11 @@
 
         public bool FoldedTurn { get; set; }
 
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
         private void InitializePanel()
         {
             this.Panel = new Panel();

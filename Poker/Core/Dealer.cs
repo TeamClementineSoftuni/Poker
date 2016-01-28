@@ -1,71 +1,30 @@
 ﻿namespace Poker.Core
 {
     using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Forms;
     using System.Linq;
     using Poker.Models;
-
     using Poker.Interfaces;
+    using Poker.Models.Enums;
+    using Constants;
 
     public class Dealer
     {
         private IList<IPlayer> winners; 
 
-        public void CheckWinners(IList<IPlayer> playersToShowDown)
+        public void CheckWinners(IList<IPlayer> playersToShowDown, IUserInterface userInterface)
         {
             double bestHand = playersToShowDown.OrderByDescending(player => player.Result.Power).Select(player => player.Result.Power).FirstOrDefault();
             this.winners = playersToShowDown.Where(player => player.Result.Power == bestHand).ToList();
 
             foreach (var player in winners)
             {
+                if (player.Result.Type >=0 && player.Result.Type <= Common.MaxRankWinningHands)
+                {
+                    WinningHandsTypes handsType = (WinningHandsTypes)player.Result.Type;
 
-                if (player.Result.Type == 0)
-                {
-                    MessageBox.Show(player.Name + " High Card ");
+                    userInterface.PrintMessage("{0} has {1}!", player, handsType.ToString());
                 }
-                if (player.Result.Type == 1)
-                {
-                    MessageBox.Show(player.Name + " Pair ");
-                }
-                if (player.Result.Type == 2)
-                {
-                    MessageBox.Show(player.Name + " Two Pair ");
-                }
-                if (player.Result.Type == 3)
-                {
-                    MessageBox.Show(player.Name + " Three of a Kind ");
-                }
-                if (player.Result.Type == 4)
-                {
-                    MessageBox.Show(player.Name + " Straight ");
-                }
-                if (player.Result.Type == 5 || player.Result.Type == 5.5)
-                {
-                    MessageBox.Show(player.Name + " Flush ");
-                }
-                if (player.Result.Type == 6)
-                {
-                    MessageBox.Show(player.Name + " Full House ");
-                }
-                if (player.Result.Type == 7)
-                {
-                    MessageBox.Show(player.Name + " Four of a Kind ");
-                }
-                if (player.Result.Type == 8)
-                {
-                    MessageBox.Show(player.Name + " Straight Flush ");
-                }
-                if (player.Result.Type == 9)
-                {
-                    MessageBox.Show(player.Name + " Royal Flush ! ");
-                }
-
-                //MessageBox.Show(player.Result.Power.ToString());
-                //MessageBox.Show(player.Hand.Card1.Rank.ToString() + player.Hand.Card2.Rank.ToString());
-            }
-
-           
+            }   
         }
 
         public void DistributePot()
@@ -74,7 +33,6 @@
             {
                 winner.ChipsSet.Amount += Pot.Instance.ChipsSet.Amount / winners.Count;
                 winner.ChipsTextBox.Text = winner.ChipsSet.Amount.ToString();
-
             }
 
             Pot.Instance.ChipsSet.Amount = 0;
