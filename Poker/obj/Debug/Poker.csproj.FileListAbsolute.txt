@@ -64,10 +64,10 @@ D:\SoftUni\Poker\Poker\obj\Debug\Poker.exe
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.pdb
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.AddChipsForm.resources
-D:\SoftUni\Poker\Poker\obj\Debug\Poker.Form1.resources
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
 D:\SoftUni\Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 D:\SoftUni\Poker\Poker\bin\Debug\Poker.exe
 D:\SoftUni\Poker\Poker\bin\Debug\Poker.pdb
 C:\GIT\Poker\obj\Debug\Poker.AddChipsForm.resources
 D:\Lichni\Dimi\Softuni\Fundamentals\High-Quality Code\Teamwork\Poker\Poker\obj\Debug\Poker.PokerGameEngine.resources
+D:\SoftUni\Poker\Poker\obj\Debug\Poker.PokerGameEngine.resources
